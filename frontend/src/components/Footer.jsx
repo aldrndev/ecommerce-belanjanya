@@ -9,16 +9,14 @@ const Footer = () => {
       <Divider className="my-4 mb-10" />
       <div className="flex justify-between gap-x-10">
         <div className="w-full">
-          <Option title="Daganganku">
-            <div className="mb-2">
-              <Logo />
-            </div>
-            <p>
-              Daganganku adalah situ jual beli barang yang sudah tidak terpakai
-              agar menghasilkan uang. Mulai jual semua barang kamu yang sudah
-              tidak terpakai sekarang juga
-            </p>
-          </Option>
+          <div className="mb-2">
+            <Logo />
+          </div>
+          <p>
+            Belanjanya adalah situ jual beli barang yang sudah tidak terpakai
+            agar menghasilkan uang. Mulai jual semua barang kamu yang sudah
+            tidak terpakai sekarang juga
+          </p>
         </div>
         <div className="w-1/3">
           <Option title="Jual Barang">
@@ -60,7 +58,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="flex justify-center items-center mt-10 text-sm p-5">
-        <p>© {new Date().getFullYear()} Daganganku.id</p>
+        <p>© {new Date().getFullYear()} Belanjanya.com</p>
       </div>
     </div>
   );

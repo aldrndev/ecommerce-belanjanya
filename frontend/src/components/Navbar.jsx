@@ -7,11 +7,14 @@ import AvatarProfile from "./AvatarProfile";
 import { NavLink } from "react-router-dom";
 import AuthPage from "./AuthPage";
 import { FaSearch } from "react-icons/fa";
+import CartHover from "./hover/CartHover";
+import MessageHover from "./hover/MessageHover";
+import ProfileHover from "./hover/ProfileHover";
 
 const Navbar = () => {
   return (
     <nav className="container mx-auto">
-      <div className="flex justify-between p-10 gap-10">
+      <div className="flex justify-between p-10 gap-10 items-center">
         <div className="flex  ">
           <NavLink to="/" className="hover:text-primary">
             <Logo />
@@ -26,12 +29,12 @@ const Navbar = () => {
           />
         </div>
         <div className="flex gap-3 justify-center items-center ">
-          <CartBadge />
-          <MessageBadge />
+          <CartHover />
+          <MessageHover />
         </div>
         <div className="flex gap-5 justify-center items-center">
           <AuthPage />
-          <AvatarProfile />
+          <ProfileHover />
         </div>
       </div>
     </nav>

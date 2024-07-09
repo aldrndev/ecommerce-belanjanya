@@ -1,9 +1,11 @@
-import ProductCard from "./ProductCard";
+import { useEffect } from "react";
+import ProductCard from "../ProductCard";
+import CardLayout from "./CardLayout";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect } from "react";
+import { Pagination } from "@nextui-org/react";
 
-const LatestProduct = () => {
+const WishlistPage = () => {
   useEffect(() => {
     AOS.init({ duration: 500, easing: "linear" });
   }, []);
@@ -51,20 +53,22 @@ const LatestProduct = () => {
   ];
   return (
     <div>
-      <div className="mb-10">
-        <h1 className="text-2xl font-semibold">Produk terbaru</h1>
-      </div>
-      <div className="grid grid-cols-4 gap-5">
-        {list.map((item, index) => {
-          return (
-            <div data-aos="zoom-in">
-              <ProductCard key={index} product={item} />
-            </div>
-          );
-        })}
-      </div>
+      <CardLayout>
+        <div className="grid grid-cols-4 gap-5">
+          {list.map((item, index) => {
+            return (
+              <div data-aos="zoom-in">
+                <ProductCard key={index} product={item} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-8 flex justify-center items-center">
+          <Pagination isCompact showControls total={10} initialPage={1} />
+        </div>
+      </CardLayout>
     </div>
   );
 };
 
-export default LatestProduct;
+export default WishlistPage;

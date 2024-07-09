@@ -74,7 +74,7 @@ const ProductByLocation = () => {
           spaceBetween={30}
           modules={[Pagination]}
           pagination={{ clickable: true, dynamicBullets: true }}
-          className="h-[520px]"
+          className="h-[450px]"
         >
           {list.map((item, index) => {
             return (

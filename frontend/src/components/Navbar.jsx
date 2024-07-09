@@ -26,6 +26,7 @@ const Navbar = () => {
             placeholder="Cari barang yang kamu inginkan..."
             fullWidth
             startContent={<FaSearch />}
+            size="lg"
           />
         </div>
         <div className="flex gap-3 justify-center items-center ">

@@ -83,7 +83,7 @@ const Content = () => {
           </div>
         </CardBody>
       </Card>
-      <div className="flex justify-between p-5">
+      <div className="flex justify-between p-5 items-center mt-2">
         <div className="flex gap-2 items-center">
           <GrMoney size={20} className="text-warning" />
           <p className="text-small">Saldo</p>

@@ -6,14 +6,14 @@ const ProductCard = ({ product }) => {
   return (
     <Card shadow="sm">
       <CardBody className="overflow-visible rounded-2xl ">
-        <div className="p-3 ">
+        <div>
           <Image
             shadow="sm"
             radius="lg"
-            width="100%"
+            width={"100%"}
             alt={product?.title}
             src={product?.img}
-            className="w-full object-contain h-[300px]"
+            className="w-full object-contain h-[250px]"
             isZoomed
           />
         </div>

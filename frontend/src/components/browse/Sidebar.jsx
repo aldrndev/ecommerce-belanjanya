@@ -100,7 +100,7 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="mt-10 flex justify-center">
-          <Button type="submit" color="primary" fullWidth>
+          <Button type="submit" color="danger" fullWidth>
             Cari
           </Button>
         </div>

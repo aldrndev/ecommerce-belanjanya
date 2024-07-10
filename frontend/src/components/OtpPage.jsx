@@ -13,6 +13,11 @@ const OtpPage = () => {
       <Title level={5} align="middle">
         Verifikasi kode OTP di email kamu
       </Title>
+      <div className="text-center">
+        <p>
+          Masukan kode OTP yang dikirimkan ke alamat email wille*****@gmail.com
+        </p>
+      </div>
       <Input.OTP
         formatter={(str) => str.toUpperCase()}
         {...sharedProps}

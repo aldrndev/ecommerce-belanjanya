@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardBody,
+  Chip,
   Divider,
   Dropdown,
   DropdownItem,
@@ -60,7 +61,7 @@ const ChatUserSidebar = () => {
       <div>
         <Link to="/user/chat/1">
           <div
-            className="flex justify-between items-center p-2 rounded-2xl mt-2"
+            className="flex justify-between p-2 rounded-2xl mt-2"
             onMouseEnter={(e) =>
               (e.currentTarget.style.backgroundColor = "#eeeeee")
             }
@@ -68,7 +69,7 @@ const ChatUserSidebar = () => {
               (e.currentTarget.style.backgroundColor = "transparent")
             }
           >
-            <div className="flex gap-x-2 items-center">
+            <div className="flex gap-x-2 ">
               <Image
                 src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
                 width={50}
@@ -79,7 +80,7 @@ const ChatUserSidebar = () => {
                 <p className="text-sm">Apa sudah di kirim ?</p>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-y-2">
+            <div className="flex flex-col items-center gap-2">
               <p className="text-sm">11:34</p>
               <Badge content="2" color="danger" />
             </div>
@@ -123,8 +124,14 @@ const ChatSection = () => {
         <div className="h-[80vh] overflow-auto">
           {/* Sender's Message */}
           <div className="flex justify-end">
-            <div className="bg-blue-500 text-white p-3 rounded-lg max-w-xs">
-              <p>Hi, how are you? lorem </p>
+            <div className="max-w-xs">
+              <Card radius="sm" className="bg-blue-500" shadow="sm">
+                <CardBody>
+                  <p className="text-white">
+                    I'm good, thank you! How about you?
+                  </p>
+                </CardBody>
+              </Card>
             </div>
           </div>
           <div className="flex justify-end text-xs mt-1 mb-4">
@@ -132,17 +139,21 @@ const ChatSection = () => {
           </div>
           {/* Receiver's Message */}
           <div className="flex justify-start">
-            <div className="bg-gray-200 text-black p-3 rounded-lg max-w-xs">
-              <p>I'm good, thank you! How about you?</p>
+            <div className="max-w-xs">
+              <Card radius="sm" className="bg-gray-200" shadow="sm">
+                <CardBody>
+                  <p>I'm good, thank you! How about you?</p>
+                </CardBody>
+              </Card>
             </div>
           </div>
           <div className="flex justify-start text-xs mt-1 mb-4">
-            <p className="text-gray-400">11:50</p>
+            <p className="text-gray-400 text-xs">11:50</p>
           </div>
         </div>
         <div className="mt-3 flex gap-3">
           <Input placeholder="Ketik pesan..." size="lg" />
-          <Button isIconOnly size="lg">
+          <Button isIconOnly size="lg" color="danger">
             <SendOutlined />
           </Button>
         </div>

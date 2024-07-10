@@ -1,14 +1,13 @@
 import { Image } from "@nextui-org/react";
-import React from "react";
 
 const Logo = () => {
   return (
     <div>
       <Image
-        src="/logo.png"
+        src="/logo2.png"
         alt="logo"
         className="object-contain"
-        width={200}
+        width={300}
       />
     </div>
   );

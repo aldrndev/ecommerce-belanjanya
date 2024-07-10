@@ -64,7 +64,13 @@ const WishlistPage = () => {
           })}
         </div>
         <div className="mt-8 flex justify-center items-center">
-          <Pagination isCompact showControls total={10} initialPage={1} />
+          <Pagination
+            isCompact
+            showControls
+            total={10}
+            initialPage={1}
+            color="danger"
+          />
         </div>
       </CardLayout>
     </div>

@@ -1,10 +1,6 @@
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { AppstoreOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
+
 const items = [
   {
     key: "sub1",
@@ -55,15 +51,15 @@ const items = [
         type: "group",
         children: [
           {
-            key: "1",
+            key: "7",
             label: "Ubah Profile",
           },
           {
-            key: "2",
+            key: "8",
             label: "Ubah Password",
           },
           {
-            key: "3",
+            key: "9",
             label: "Ubah Email",
           },
         ],
@@ -76,15 +72,15 @@ const items = [
     icon: <AppstoreOutlined />,
     children: [
       {
-        key: "5",
+        key: "10",
         label: "Jual Barang",
       },
       {
-        key: "6",
+        key: "11",
         label: "Riwayat Penjualan",
       },
       {
-        key: "6",
+        key: "12",
         label: "Pencairan Saldo",
       },
       {
@@ -92,11 +88,11 @@ const items = [
         label: "Aktifitas Penjualan",
         children: [
           {
-            key: "7",
+            key: "13",
             label: "Ulasan",
           },
           {
-            key: "8",
+            key: "14",
             label: "Diskusi",
           },
         ],

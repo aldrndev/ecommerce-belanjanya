@@ -26,7 +26,7 @@ const CardSeller = () => {
           </div>
           <div className="mt-4">
             <Link onClick={handleNoteClick} variant="light">
-              <div className="flex items-center gap-2 text-primary text-sm">
+              <div className="flex items-center gap-2 text-danger text-sm">
                 <GoPencil />
                 {isNote ? "Tambahkan catatan" : "Hapus catatan"}
               </div>
@@ -42,8 +42,8 @@ const CardSeller = () => {
             <p className="font-semibold">Rp41.000.000</p>
           </div>
           <div className="mt-4 flex flex-col gap-2">
-            <Button color="primary">+ Keranjang</Button>
-            <Button color="primary" variant="bordered">
+            <Button color="danger">+ Keranjang</Button>
+            <Button color="danger" variant="bordered">
               Beli Langsung
             </Button>
           </div>

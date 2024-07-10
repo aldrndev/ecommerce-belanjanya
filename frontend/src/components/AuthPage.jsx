@@ -3,7 +3,6 @@ import {
   ModalContent,
   ModalBody,
   useDisclosure,
-  Link,
   Tabs,
   Tab,
   Input,
@@ -12,11 +11,17 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { MdAlternateEmail } from "react-icons/md";
-import { FaRegEye, FaRegEyeSlash, FaLocationArrow } from "react-icons/fa";
+import {
+  FaRegEye,
+  FaRegEyeSlash,
+  FaLocationArrow,
+  FaLock,
+} from "react-icons/fa";
 import { IoMdPerson } from "react-icons/io";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import UploadProfile from "./UploadProfile";
 import OtpPage from "./OtpPage";
+import { Link } from "react-router-dom";
 
 const AuthPage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -106,7 +111,7 @@ const AuthPage = () => {
                           <Link
                             size="sm"
                             onPress={() => setSelected("sign-up")}
-                            className="cursor-pointer hover:text-primary"
+                            className="text-danger hover:text-red-700"
                           >
                             Daftar
                           </Link>
@@ -114,7 +119,7 @@ const AuthPage = () => {
                         <div className="flex gap-2 justify-end">
                           <Button
                             fullWidth
-                            color="primary"
+                            color="danger"
                             className="w-1/2 mx-auto"
                           >
                             Login
@@ -173,11 +178,23 @@ const AuthPage = () => {
                                 </button>
                               }
                             />
+                            <Input
+                              isRequired
+                              label="Konfirmasi Password"
+                              placeholder="Konfirmasi password kamu"
+                              type="password"
+                              endContent={
+                                <FaLock
+                                  size={20}
+                                  className="text-default-500"
+                                />
+                              }
+                            />
 
                             <Button
                               onClick={handleNext}
                               className="mt-5 w-1/2 mx-auto"
-                              color="primary"
+                              color="danger"
                             >
                               Daftar
                             </Button>
@@ -186,7 +203,7 @@ const AuthPage = () => {
                               <Link
                                 size="sm"
                                 onPress={() => setSelected("login")}
-                                className="cursor-pointer hover:text-primary"
+                                className="text-danger hover:text-red-700"
                               >
                                 Login
                               </Link>
@@ -236,7 +253,7 @@ const AuthPage = () => {
                             />
                             <Button
                               fullWidth
-                              color="primary"
+                              color="danger"
                               className="w-1/2 mx-auto mt-5"
                             >
                               Simpan
@@ -251,7 +268,7 @@ const AuthPage = () => {
                             <div className="flex gap-2 justify-end mt-5">
                               <Button
                                 fullWidth
-                                color="primary"
+                                color="danger"
                                 className="w-1/2 mx-auto"
                                 onClick={handleNext}
                               >

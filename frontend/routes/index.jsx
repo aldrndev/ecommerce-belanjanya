@@ -8,6 +8,7 @@ import UseProfile from "../src/components/user/UseProfile";
 import OrderHistory from "../src/components/user/OrderHistory";
 import WishlistPage from "../src/components/user/WishlistPage";
 import ChatPage from "../src/components/user/ChatPage";
+import DiscussionPage from "../src/components/user/DiscussionPage";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
       {
         path: "chat",
         element: <ChatPage />,
+      },
+      {
+        path: "discussion",
+        element: <DiscussionPage />,
       },
     ],
   },

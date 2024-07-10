@@ -1,12 +1,9 @@
 import React from "react";
 import Logo from "./Logo";
-import { Button, Input } from "@nextui-org/react";
-import CartBadge from "./CartBadge";
-import MessageBadge from "./MessageBadge";
-import AvatarProfile from "./AvatarProfile";
+import { Input } from "@nextui-org/react";
+import { SearchOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import AuthPage from "./AuthPage";
-import { FaSearch } from "react-icons/fa";
 import CartHover from "./hover/CartHover";
 import MessageHover from "./hover/MessageHover";
 import ProfileHover from "./hover/ProfileHover";
@@ -25,7 +22,7 @@ const Navbar = () => {
             type="search"
             placeholder="Cari barang yang kamu inginkan..."
             fullWidth
-            startContent={<FaSearch />}
+            startContent={<SearchOutlined />}
             size="lg"
           />
         </div>

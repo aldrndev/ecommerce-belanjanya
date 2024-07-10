@@ -11,11 +11,11 @@ const UserPage = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="flex gap-5 mt-40">
+        <div className="flex gap-5 mt-48">
           <div className="h-full">
             <UserSidebar />
           </div>
-          <div className="flex-1 flex-grow">
+          <div className="flex-grow">
             <Outlet />
           </div>
         </div>

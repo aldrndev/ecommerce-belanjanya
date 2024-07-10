@@ -10,6 +10,7 @@ import {
   DropdownTrigger,
   Image,
   Input,
+  Pagination,
   Select,
   SelectItem,
 } from "@nextui-org/react";
@@ -49,7 +50,15 @@ const OrderHistory = () => {
           <OrderCard />
           <OrderCard />
           <OrderCard />
-          <OrderCard />
+        </div>
+        <div className="mt-8 flex justify-center items-center">
+          <Pagination
+            isCompact
+            showControls
+            total={10}
+            initialPage={1}
+            color="danger"
+          />
         </div>
       </CardLayout>
     </div>
@@ -81,19 +90,23 @@ const OrderCard = () => {
             </Chip>
           </div>
         </div>
-        <div className="mt-2 text-sm">Aldrin Mursidi</div>
-        <div className="flex justify-between items-center mt-2">
+        <div className="mt-2 text-sm font-bold">Aldrin Mursidi</div>
+        <div className="flex justify-between mt-2">
           <div className="flex gap-x-2 w-full">
             <div>
               <Image
                 src="https://images.tokopedia.net/img/cache/900/VqbcmM/2023/1/4/c0efc509-0ccf-4c97-b5e0-03e8419b66f6.png"
-                width={50}
+                width={80}
               />
             </div>
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-bold ">
-                gerd zero pro lambung original obat herbal alami
-              </p>
+              <Link to={"#"}>
+                {" "}
+                <p className="text-sm font-bold hover:text-danger ">
+                  gerd zero pro lambung original obat herbal alami
+                </p>
+              </Link>
+
               <p className="text-sm">1 barang x Rp99.000</p>
             </div>
           </div>
@@ -103,13 +116,16 @@ const OrderCard = () => {
           </div>
         </div>
         <div className="flex justify-end items-center mt-8 gap-3">
-          <Link to="#" className="text-primary text-sm hover:text-blue-700">
+          <Link to="#" className="text-danger text-sm hover:text-red-700">
             Lihat Detail Transaksi
           </Link>
-          <Button variant="bordered" color="primary">
+          <Button variant="bordered" color="danger">
             Ulas
           </Button>
-          <Button variant="solid" color="primary">
+          <Button variant="bordered" color="danger">
+            Lacak
+          </Button>
+          <Button variant="solid" color="danger">
             Beli lagi
           </Button>
           <Dropdown>

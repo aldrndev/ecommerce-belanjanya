@@ -1,4 +1,11 @@
-import { Card, CardBody, Divider, Image } from "@nextui-org/react";
+import {
+  BreadcrumbItem,
+  Breadcrumbs,
+  Card,
+  CardBody,
+  Divider,
+  Image,
+} from "@nextui-org/react";
 import ImageProduct from "../components/browse/ImageProduct";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -7,8 +14,10 @@ import CardSeller from "../components/browse/CardSeller";
 import { CiLocationOn } from "react-icons/ci";
 import ReviewDiscussionPage from "../components/browse/ReviewDiscussionPage";
 import RecommendProduct from "../components/browse/RecommendProduct";
+import { useState } from "react";
 
 const ProductDetail = () => {
+  const [currentPage, setCurrentPage] = useState("song");
   const list = [
     {
       title: "Orange",
@@ -29,7 +38,29 @@ const ProductDetail = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="mt-40 p-8 bg-gray-100 rounded-2xl flex justify-between gap-8">
+        <div className="mt-44">
+          <Breadcrumbs
+            underline="active"
+            onAction={(key) => setCurrentPage(key)}
+          >
+            <BreadcrumbItem key="home" isCurrent={currentPage === "home"}>
+              Home
+            </BreadcrumbItem>
+            <BreadcrumbItem key="music" isCurrent={currentPage === "music"}>
+              Music
+            </BreadcrumbItem>
+            <BreadcrumbItem key="artist" isCurrent={currentPage === "artist"}>
+              Artist
+            </BreadcrumbItem>
+            <BreadcrumbItem key="album" isCurrent={currentPage === "album"}>
+              Album
+            </BreadcrumbItem>
+            <BreadcrumbItem key="song" isCurrent={currentPage === "song"}>
+              Song
+            </BreadcrumbItem>
+          </Breadcrumbs>
+        </div>
+        <div className="mt-4 p-8 bg-gray-100 rounded-xl flex justify-between gap-8">
           <div className="w-full">
             <ImageProduct />
           </div>
@@ -86,7 +117,7 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="w-3/5">
-            <div className="sticky top-40">
+            <div className="sticky top-48">
               <CardSeller />
             </div>
           </div>

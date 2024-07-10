@@ -57,8 +57,8 @@ const ProductPage = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="flex gap-5 mt-40">
-          <div className="bg-white shadow-lg flex w-[300px] h-full">
+        <div className="flex gap-5 mt-48">
+          <div className="bg-white shadow-lg flex w-[300px] h-full sticky top-48">
             <Sidebar />
           </div>
           <div className="flex-1 flex-grow">
@@ -108,7 +108,13 @@ const ProductPage = () => {
               })}
             </div>
             <div className="mt-12 flex justify-center items-center">
-              <Pagination isCompact showControls total={10} initialPage={1} />
+              <Pagination
+                isCompact
+                showControls
+                total={10}
+                initialPage={1}
+                color="danger"
+              />
             </div>
           </div>
         </div>

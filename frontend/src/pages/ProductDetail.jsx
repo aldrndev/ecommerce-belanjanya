@@ -86,7 +86,7 @@ const ProductDetail = () => {
             <div className="mt-5 text-sm flex gap-2 flex-col">
               <p>Kategori: Peralatan Olahraga</p>
               <p>Kondisi: Baru</p>
-              <p>Merk: Asus</p>
+              <p>Merek: Asus</p>
             </div>
             <div className="mt-8 mb-8">
               <h1 className="text-lg font-bold">Deskripsi</h1>

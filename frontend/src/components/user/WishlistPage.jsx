@@ -57,8 +57,8 @@ const WishlistPage = () => {
         <div className="grid grid-cols-4 gap-5">
           {list.map((item, index) => {
             return (
-              <div data-aos="zoom-in">
-                <ProductCard key={index} product={item} />
+              <div data-aos="zoom-in" key={index}>
+                <ProductCard product={item} />
               </div>
             );
           })}

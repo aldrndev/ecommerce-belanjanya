@@ -14,7 +14,7 @@ const Home = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="mt-40 m">
+        <div className="mt-48">
           <Carousel />
         </div>
         <div className="flex justify-center items-center mt-10">

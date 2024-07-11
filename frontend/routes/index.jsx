@@ -9,6 +9,14 @@ import OrderHistory from "../src/components/user/OrderHistory";
 import WishlistPage from "../src/components/user/WishlistPage";
 import ChatPage from "../src/components/user/ChatPage";
 import DiscussionPage from "../src/components/user/DiscussionPage";
+import ReviewPage from "../src/components/user/ReviewPage";
+import ChangeProfile from "../src/components/user/ChangeProfile";
+import ChangePassword from "../src/components/user/ChangePassword";
+import ChangeEmail from "../src/components/user/ChangeEmail";
+import SellingProduct from "../src/components/seller/SellingProduct";
+import ProductList from "../src/components/seller/ProductList";
+import SalesHistory from "../src/components/seller/SalesHistory";
+import RegisterSeller from "../src/components/seller/RegisterSeller";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +58,52 @@ const router = createBrowserRouter([
       {
         path: "discussion",
         element: <DiscussionPage />,
+      },
+      {
+        path: "review",
+        element: <ReviewPage />,
+      },
+      {
+        path: "change-profile",
+        element: <ChangeProfile />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePassword />,
+      },
+      {
+        path: "change-email",
+        element: <ChangeEmail />,
+      },
+    ],
+  },
+  {
+    path: "/seller",
+    element: <UserPage />,
+    children: [
+      {
+        path: "register",
+        element: <RegisterSeller />,
+      },
+      {
+        path: "add-product",
+        element: <SellingProduct />,
+      },
+      {
+        path: "product-list",
+        element: <ProductList />,
+      },
+      {
+        path: "sales-history",
+        element: <SalesHistory />,
+      },
+      {
+        path: "wishlist",
+        element: <WishlistPage />,
+      },
+      {
+        path: "chat",
+        element: <ChatPage />,
       },
     ],
   },

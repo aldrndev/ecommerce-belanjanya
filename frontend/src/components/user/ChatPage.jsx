@@ -31,7 +31,7 @@ const ChatPage = () => {
                 fullWidth
               />
             </div>
-            <div className="mr-3 overflow-auto">
+            <div className="mr-2 overflow-auto">
               <div>
                 <ChatUserSidebar />
                 <ChatUserSidebar />

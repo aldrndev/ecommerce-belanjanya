@@ -69,7 +69,7 @@ export default OrderHistory;
 
 const OrderCard = () => {
   return (
-    <Card className="mt-5" shadow="sm">
+    <Card className="mt-5 p-2" shadow="sm">
       <CardBody>
         <div className="flex justify-between items-center">
           <div className="flex gap-x-3 text-sm items-center">

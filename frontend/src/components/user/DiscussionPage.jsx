@@ -43,7 +43,7 @@ export default DiscussionPage;
 const DiscussionCard = () => {
   const [isReply, setIsReply] = useState(false);
   return (
-    <Card shadow="sm" className="mb-5">
+    <Card shadow="sm" className="mb-5 p-2">
       <CardBody>
         <div className="flex justify-between">
           <div className="flex gap-x-5">
@@ -86,66 +86,62 @@ const DiscussionCard = () => {
           <div className="flex flex-col">
             <p className="text-xs">3 hari lalu</p>
             <p className="text-sm">Aldrin Mursidi</p>
+            <div className="bg-white">
+              <p className="text-sm">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
+              </p>
+              <p
+                className="text-danger hover:text-red-700 cursor-pointer text-sm mt-1"
+                onClick={() => setIsReply(!isReply)}
+              >
+                {isReply ? "Tutup" : "Komentar"}
+              </p>
+            </div>
           </div>
         </div>
-        <div className="mt-2">
-          <div className="bg-white">
-            <p className="text-sm">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
-            </p>
-            <p
-              className="text-danger hover:text-red-700 cursor-pointer text-sm mt-2"
-              onClick={() => setIsReply(!isReply)}
-            >
-              {isReply ? "Tutup" : "Komentar"}
-            </p>
-          </div>
-          <div className="bg-gray-100 p-3 mt-5 rounded-2xl">
-            <div className="flex gap-3 ml-20 mt-3">
-              <div className="w-[50px]">
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                />
-              </div>
-              <div className="flex flex-col">
-                <p className="text-xs">3 hari lalu</p>
-                <p className="text-sm">Aldrin Mursidi</p>
-              </div>
+        <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
+          <div className="flex gap-3 ml-20 mt-3">
+            <div className="w-[50px]">
+              <Image
+                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                radius="full"
+              />
             </div>
-            <div className="ml-20 mt-2">
+            <div className="flex flex-col">
+              <p className="text-xs">3 hari lalu</p>
+              <p className="text-sm">Aldrin Mursidi</p>
               <p className="text-sm">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
                 earum inventore, dolorum eos commodi totam laudantium nesciunt
                 molestiae et atque sint ad iure
               </p>
             </div>
-
-            {isReply && (
-              <>
-                <div className="flex gap-3 ml-20 items-center mt-3">
-                  <div>
-                    <Image
-                      src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                      radius="full"
-                      width={50}
-                    />
-                  </div>
-                  <div className="mt-3 w-full">
-                    <Textarea
-                      placeholder="Tulis balasan kamu disini"
-                      variant="bordered"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end mt-3">
-                  <Button color="danger" variant="bordered">
-                    Kirim
-                  </Button>
-                </div>
-              </>
-            )}
           </div>
+
+          {isReply && (
+            <>
+              <div className="flex gap-3 ml-20 items-center mt-1">
+                <div>
+                  <Image
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                    radius="full"
+                    width={50}
+                  />
+                </div>
+                <div className="mt-3 w-full">
+                  <Textarea
+                    placeholder="Tulis balasan kamu disini"
+                    variant="bordered"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end mt-3">
+                <Button color="danger" variant="bordered">
+                  Kirim
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </CardBody>
     </Card>

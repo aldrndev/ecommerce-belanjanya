@@ -12,19 +12,21 @@ import {
 import { RiPoliceBadgeFill } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
 import { IoLogOutOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const ProfileHover = () => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
-      <User
-        avatarProps={{
-          isBordered: true,
-          src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-        }}
-        className="transition-transform"
-        description="@aldrnmrsd"
-        name="Aldrin Mursidi"
-      />
+      <div className="flex gap-x-2 items-center">
+        <Image
+          src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+          width={50}
+          radius="full"
+        />
+        <div>
+          <p className="text-sm">Aldrin Mursidi</p>
+        </div>
+      </div>
     </Tooltip>
   );
 };
@@ -33,34 +35,36 @@ export default ProfileHover;
 
 const items = [
   {
-    key: "edit2",
-    label: "Jual Barang",
+    key: "2",
+    label: "/user/discussion",
+    name: "Diskusi",
   },
   {
-    key: "new",
-    label: "Chat",
+    key: "3",
+    label: "/user/review",
+    name: "Ulasan",
   },
   {
-    key: "copy",
-    label: "Diskusi",
-  },
-  {
-    key: "edit",
-    label: "Ulasan",
+    key: "7",
+    label: "/user/wishlist",
+    name: "Wishlist",
   },
 ];
 const items2 = [
   {
-    key: "new",
-    label: "Profile",
+    key: "4",
+    label: "/user/profile",
+    name: "Profile",
   },
   {
-    key: "copy",
-    label: "Riwayat Pesanan",
+    key: "5",
+    label: "/user/chat",
+    name: "Chat",
   },
   {
-    key: "edit",
-    label: "Wishlist",
+    key: "6",
+    label: "/user/order-history",
+    name: "Riwayat Pesanan",
   },
 ];
 const Content = () => {
@@ -88,41 +92,38 @@ const Content = () => {
           <GrMoney size={20} className="text-warning" />
           <p className="text-small">Saldo</p>
         </div>
-        <div className="font-bold">Rp50.000.00</div>
+        <div className="font-bold">Rp50.000.000</div>
       </div>
       <Divider className="my-1" />
-      <div className="flex justify-between">
-        <div className="mt-2">
-          <Listbox
-            items={items}
-            aria-label="Dynamic Actions"
-            onAction={(key) => alert(key)}
-          >
-            {(item) => (
-              <ListboxItem key={item.key} color={"default"}>
-                {item.label}
-              </ListboxItem>
-            )}
-          </Listbox>
+      <div className="grid grid-cols-2 gap-2">
+        <div className="mt-2 flex flex-col gap-y-1">
+          {items2.map((item, index) => (
+            <Button
+              as={Link}
+              to={item.label}
+              key={index}
+              variant="flat"
+              className="mb-1"
+            >
+              {item.name}
+            </Button>
+          ))}
         </div>
-        <div className="mt-4">
-          <Divider orientation="vertical" />
-        </div>
-        <div className="mt-2">
-          <Listbox
-            items={items2}
-            aria-label="Dynamic Actions"
-            onAction={(key) => alert(key)}
-          >
-            {(item) => (
-              <ListboxItem key={item.key} color={"default"}>
-                {item.label}
-              </ListboxItem>
-            )}
-          </Listbox>
+        <div className="mt-2 flex flex-col gap-y-1">
+          {items.map((item, index) => (
+            <Button
+              as={Link}
+              to={item.label}
+              key={index}
+              variant="flat"
+              className="mb-1"
+            >
+              {item.name}
+            </Button>
+          ))}
         </div>
       </div>
-      <div className="flex items-center justify-center mt-5 mb-4">
+      <div className="flex items-center justify-center mt-3 mb-4">
         <Button
           variant="bordered"
           startContent={<IoLogOutOutline size={20} />}

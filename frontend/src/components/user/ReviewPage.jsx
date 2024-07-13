@@ -153,6 +153,9 @@ const NotReview = () => {
                             </div>
                           </button>
                         </Upload>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Maksimal 4 foto
+                        </p>
                       </Form.Item>
                     </div>
                     <div className="flex gap-x-2">

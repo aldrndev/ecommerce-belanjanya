@@ -20,7 +20,7 @@ const SellingProduct = () => {
             label="Harga Produk"
             placeholder="Masukan harga produk"
             startContent={
-              <div className="font-semibold w-8 flex justify-center items-center text-center">
+              <div className="w-8 flex justify-center items-center text-center">
                 Rp
               </div>
             }
@@ -171,7 +171,7 @@ const UploadPhoto = () => {
               </div>
             </button>
           </Upload>
-          <p className="text-xs text-gray-400 mt-2">Maksimal 8 Foto Produk</p>
+          <p className="text-xs text-gray-400 mt-2">Maksimal 9 Foto Produk</p>
         </Form.Item>
       </div>
     </>

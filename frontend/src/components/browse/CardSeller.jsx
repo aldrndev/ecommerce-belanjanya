@@ -14,7 +14,7 @@ const CardSeller = () => {
     setIsNote(!isNote);
   };
   return (
-    <Card>
+    <Card shadow="sm">
       <CardBody>
         <div>
           <h1 className="font-semibold">Atur jumlah</h1>

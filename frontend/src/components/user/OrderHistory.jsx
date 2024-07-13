@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -13,6 +12,7 @@ import {
   Pagination,
   Select,
   SelectItem,
+  useDisclosure,
 } from "@nextui-org/react";
 
 import {
@@ -23,6 +23,10 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import CardLayout from "./CardLayout";
+import OrderDetail from "./modal/OrderDetail";
+import ReviewModal from "./modal/ReviewModal";
+import TrackingOrder from "./modal/TrackingOrder";
+import ChatModal from "./modal/ChatModal";
 
 const OrderHistory = () => {
   return (
@@ -68,6 +72,7 @@ const OrderHistory = () => {
 export default OrderHistory;
 
 const OrderCard = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
     <Card className="mt-5 p-2" shadow="sm">
       <CardBody>
@@ -101,7 +106,6 @@ const OrderCard = () => {
             </div>
             <div className="flex flex-col gap-1">
               <Link to={"#"}>
-                {" "}
                 <p className="text-sm font-bold hover:text-danger ">
                   gerd zero pro lambung original obat herbal alami
                 </p>
@@ -116,15 +120,9 @@ const OrderCard = () => {
           </div>
         </div>
         <div className="flex justify-end items-center mt-8 gap-3">
-          <Link to="#" className="text-danger text-sm hover:text-red-700">
-            Lihat Detail Transaksi
-          </Link>
-          <Button variant="bordered" color="danger">
-            Ulas
-          </Button>
-          <Button variant="bordered" color="danger">
-            Lacak
-          </Button>
+          <OrderDetail />
+          <ReviewModal />
+          <TrackingOrder />
           <Button variant="solid" color="danger">
             Beli lagi
           </Button>
@@ -135,11 +133,14 @@ const OrderCard = () => {
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions">
-              <DropdownItem key="new">Tanya Penjual</DropdownItem>
+              <DropdownItem key="new" onClick={onOpen}>
+                Tanya Penjual
+              </DropdownItem>
               <DropdownItem key="copy">Batalkan Pesanan</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
+        <ChatModal isOpen={isOpen} onOpenChange={onOpenChange} />
       </CardBody>
     </Card>
   );

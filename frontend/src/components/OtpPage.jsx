@@ -14,7 +14,7 @@ const OtpPage = () => {
         Verifikasi kode OTP di email kamu
       </Title>
       <div className="text-center">
-        <p>
+        <p className="text-sm">
           Masukan kode OTP yang dikirimkan ke alamat email wille*****@gmail.com
         </p>
       </div>

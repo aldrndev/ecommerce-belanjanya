@@ -49,7 +49,7 @@ const AuthPage = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         placement="top-center"
-        size="5xl"
+        size="4xl"
         scrollBehavior="outside"
       >
         <ModalContent>

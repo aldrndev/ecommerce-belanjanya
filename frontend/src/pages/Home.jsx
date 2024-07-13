@@ -6,6 +6,7 @@ import LatestProduct from "../components/LatestProduct";
 import ProductByLocation from "../components/ProductByLocation";
 import Footer from "../components/Footer";
 import WhyUs from "../components/WhyUs";
+import FloatChat from "../components/user/chat/FloatChat";
 
 const Home = () => {
   return (
@@ -28,6 +29,9 @@ const Home = () => {
         </div>
         <div className="mt-20">
           <WhyUs />
+        </div>
+        <div>
+          <FloatChat />
         </div>
         <div className="mt-20">
           <Footer />

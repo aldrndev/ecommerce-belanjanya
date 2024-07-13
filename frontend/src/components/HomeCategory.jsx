@@ -45,7 +45,7 @@ const HomeCategory = () => {
         return (
           <Button
             key={index}
-            variant="shadow"
+            variant="solid"
             color="danger"
             size="lg"
             radius="full"

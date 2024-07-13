@@ -11,10 +11,10 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { FaStar } from "react-icons/fa";
 import CardSeller from "../components/browse/CardSeller";
-import { CiLocationOn } from "react-icons/ci";
 import ReviewDiscussionPage from "../components/browse/ReviewDiscussionPage";
 import RecommendProduct from "../components/browse/RecommendProduct";
 import { useState } from "react";
+import FloatChat from "../components/user/chat/FloatChat";
 
 const ProductDetail = () => {
   const [currentPage, setCurrentPage] = useState("song");
@@ -127,6 +127,9 @@ const ProductDetail = () => {
         </div>
         <div className="mt-5">
           <RecommendProduct />
+        </div>
+        <div>
+          <FloatChat />
         </div>
         <div className="mt-20">
           <Footer />

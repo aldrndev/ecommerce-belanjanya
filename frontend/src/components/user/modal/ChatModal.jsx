@@ -1,4 +1,28 @@
-import CardLayout from "./CardLayout";
+const ChatModal = ({ isOpen, onOpenChange }) => {
+  return (
+    <div>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior="inside"
+        size="4xl"
+        className="p-2"
+      >
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">
+            Chat Sekarang
+          </ModalHeader>
+          <ModalBody>
+            <ChatPage />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </div>
+  );
+};
+
+export default ChatModal;
+
 import {
   Badge,
   Button,
@@ -11,6 +35,10 @@ import {
   DropdownTrigger,
   Image,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
 } from "@nextui-org/react";
 import { SearchOutlined, MoreOutlined, SendOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -19,40 +47,36 @@ import { LiaCheckDoubleSolid } from "react-icons/lia";
 const ChatPage = () => {
   return (
     <div>
-      <CardLayout>
-        <div className="flex gap-3">
-          <div className="flex flex-col w-[300px] h-[100vh] shadow-none border-r-small ">
-            <div className="mb-4 sticky z-10 bg-white w-[280px]">
-              <Input
-                placeholder="Search"
-                startContent={<SearchOutlined />}
-                size="lg"
-                fullWidth
-              />
-            </div>
-            <div className="mr-2 overflow-auto">
-              <div>
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-              </div>
-            </div>
+      <div className="flex gap-3">
+        <div className="flex flex-col w-[300px] h-[100vh] shadow-none border-r-small ">
+          <div className="mb-4 sticky z-10 bg-white w-[280px]">
+            <Input
+              placeholder="Search"
+              startContent={<SearchOutlined />}
+              size="lg"
+              fullWidth
+            />
           </div>
-          <div className="flex-grow ">
-            <ChatSection />
+          <div className="mr-2 overflow-auto">
+            <div>
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+              <ChatUserSidebar />
+            </div>
           </div>
         </div>
-      </CardLayout>
+        <div className="flex-grow ">
+          <ChatSection />
+        </div>
+      </div>
     </div>
   );
 };
-
-export default ChatPage;
 
 const ChatUserSidebar = () => {
   return (

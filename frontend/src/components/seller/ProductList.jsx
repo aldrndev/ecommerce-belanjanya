@@ -54,6 +54,7 @@ const TablePage = () => {
       >
         <TableHeader>
           <TableColumn>PRODUK</TableColumn>
+          <TableColumn>DILIHAT</TableColumn>
           <TableColumn>STOCK</TableColumn>
           <TableColumn>TERJUAL</TableColumn>
           <TableColumn>AKTIF</TableColumn>
@@ -77,6 +78,7 @@ const TablePage = () => {
                 </div>
               </div>
             </TableCell>
+            <TableCell>500x</TableCell>
             <TableCell>10000</TableCell>
             <TableCell>500</TableCell>
             <TableCell>

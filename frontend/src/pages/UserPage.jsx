@@ -11,7 +11,7 @@ const UserPage = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="flex gap-5 mt-48">
+        <div className="flex gap-5 mt-40">
           <div className="h-full">
             <UserSidebar />
           </div>

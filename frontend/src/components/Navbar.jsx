@@ -11,9 +11,9 @@ import ProfileHover from "./hover/ProfileHover";
 const Navbar = () => {
   return (
     <nav className="container mx-auto">
-      <div className="flex justify-between p-10 gap-10 items-center">
-        <div className="flex  ">
-          <NavLink to="/" className="hover:text-primary">
+      <div className="flex justify-between gap-10 items-center h-32 mx-auto">
+        <div>
+          <NavLink to="/">
             <Logo />
           </NavLink>
         </div>

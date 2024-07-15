@@ -148,7 +148,7 @@ const UserSidebar = () => {
       onClick={onClick}
       style={{
         width: 256,
-        boxShadow: "0px 0px 20px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
         borderRadius: "10px",
       }}
       selectedKeys={[selectedKey]}

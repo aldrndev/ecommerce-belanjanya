@@ -17,6 +17,8 @@ import SellingProduct from "../src/components/seller/SellingProduct";
 import ProductList from "../src/components/seller/ProductList";
 import SalesHistory from "../src/components/seller/SalesHistory";
 import RegisterSeller from "../src/components/seller/RegisterSeller";
+import CartPage from "../src/pages/CartPage";
+import ShipmentPage from "../src/pages/ShipmentPage";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +108,14 @@ const router = createBrowserRouter([
         element: <ChatPage />,
       },
     ],
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
+  },
+  {
+    path: "/cart/shipment",
+    element: <ShipmentPage />,
   },
 ]);
 

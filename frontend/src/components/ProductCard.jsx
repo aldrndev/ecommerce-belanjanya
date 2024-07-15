@@ -1,6 +1,9 @@
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { CiLocationOn } from "react-icons/ci";
-import { GoHeart, GoHeartFill } from "react-icons/go";
+import {
+  EnvironmentOutlined,
+  HeartOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 
 const ProductCard = ({ product }) => {
   return (
@@ -25,12 +28,12 @@ const ProductCard = ({ product }) => {
               <b>{product?.title}</b>
             </div>
             <div className="flex justify-end">
-              <GoHeart size={20} />
+              <HeartOutlined size={20} />
             </div>
           </div>
           <p className="text-default-500">{product?.price}</p>
           <div className="flex items-center gap-1">
-            <CiLocationOn />
+            <EnvironmentOutlined />
             Jakarta, Indonesia
           </div>
         </div>

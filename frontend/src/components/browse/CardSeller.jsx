@@ -1,17 +1,23 @@
 import { Button, Card, CardBody, Image, Input } from "@nextui-org/react";
-import { Divider, InputNumber } from "antd";
+import { Divider } from "antd";
 import { useState } from "react";
 import { GoPencil } from "react-icons/go";
 import { Link } from "react-router-dom";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { CiLocationOn, CiShare2 } from "react-icons/ci";
-import { GoHeart, GoHeartFill } from "react-icons/go";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { FaStar } from "react-icons/fa";
+import CustomInputNumber from "../CustomInputNumber";
 
 const CardSeller = () => {
   const [isNote, setIsNote] = useState("false");
   const handleNoteClick = () => {
     setIsNote(!isNote);
+  };
+  const [value, setValue] = useState(1);
+
+  const handleInputChange = (e) => {
+    setValue(e.target.value);
   };
   return (
     <Card shadow="sm">
@@ -19,7 +25,17 @@ const CardSeller = () => {
         <div>
           <h1 className="font-semibold">Atur jumlah</h1>
           <div className="mt-3 flex justify-between gap-3">
-            <InputNumber addonBefore="-" addonAfter="+" defaultValue={0} />
+            <CustomInputNumber
+              width={"w-full"}
+              value={value}
+              onChange={handleInputChange}
+              startContent={
+                <button onClick={() => setValue(value - 1)}>-</button>
+              }
+              endContent={
+                <button onClick={() => setValue(value + 1)}>+</button>
+              }
+            />
             <div className="w-full flex items-center">
               <p className="text-sm">Stock Total: 400</p>
             </div>
@@ -76,7 +92,7 @@ const CardSeller = () => {
             </div>
             {"|"}
             <div className="flex items-center gap-2">
-              <GoHeart />
+              <HeartOutlined />
               Wishlist
             </div>
             {"|"}

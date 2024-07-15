@@ -3,6 +3,7 @@ import {
   Breadcrumbs,
   Card,
   CardBody,
+  Chip,
   Divider,
   Image,
 } from "@nextui-org/react";
@@ -38,7 +39,7 @@ const ProductDetail = () => {
         <Navbar />
       </div>
       <div className="container mx-auto">
-        <div className="mt-44">
+        <div className="mt-40">
           <Breadcrumbs
             underline="active"
             onAction={(key) => setCurrentPage(key)}
@@ -81,6 +82,10 @@ const ProductDetail = () => {
             </div>
             <div className="mt-5">
               <h1 className="text-3xl font-bold">Rp120.099</h1>
+              <Chip color="warning" size="sm" radius="sm">
+                -70%
+              </Chip>
+              <span className="line-through text-gray-500 ml-2">Rp250.000</span>
             </div>
             <Divider className="my-4" />
             <div className="mt-5 text-sm flex gap-2 flex-col">
@@ -117,7 +122,7 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="w-3/5">
-            <div className="sticky top-48">
+            <div className="sticky top-40">
               <CardSeller />
             </div>
           </div>

@@ -29,7 +29,7 @@ const Content = () => {
           <h1 className="font-bold text-base">Keranjang(5)</h1>
         </div>
         <div className="text-base">
-          <Link to="/keranjang" className="text-danger hover:text-red-700 ">
+          <Link to="/cart" className="text-danger hover:text-red-700 ">
             Lihat
           </Link>
         </div>

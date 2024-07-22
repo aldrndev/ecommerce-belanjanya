@@ -92,6 +92,7 @@ const ProductDetail = () => {
               <p>Kategori: Peralatan Olahraga</p>
               <p>Kondisi: Baru</p>
               <p>Merek: Asus</p>
+              <p>Berat: 10kg</p>
             </div>
             <div className="mt-8 mb-8">
               <h1 className="text-lg font-bold">Deskripsi</h1>

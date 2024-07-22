@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "./Logo";
 import { Input } from "@nextui-org/react";
 import { SearchOutlined } from "@ant-design/icons";
@@ -9,6 +9,9 @@ import MessageHover from "./hover/MessageHover";
 import ProfileHover from "./hover/ProfileHover";
 
 const Navbar = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLogin = localStorage.getItem("isLogin");
+
   return (
     <nav className="container mx-auto">
       <div className="flex justify-between gap-10 items-center h-32 mx-auto">
@@ -31,8 +34,7 @@ const Navbar = () => {
           <MessageHover />
         </div>
         <div className="flex gap-5 justify-center items-center">
-          <AuthPage />
-          <ProfileHover />
+          {!isLogin ? <AuthPage /> : <ProfileHover user={user} />}
         </div>
       </div>
     </nav>

@@ -57,6 +57,18 @@ const SellingProduct = () => {
             labelPlacement="outside"
             type="number"
           />
+          <Input
+            isRequired
+            label="Berat Produk"
+            placeholder="Masukan berat produk"
+            labelPlacement="outside"
+            type="number"
+            endContent={
+              <div className="w-8 flex justify-center items-center text-center">
+                Kg
+              </div>
+            }
+          />
         </div>
         <div className="mb-5">
           <Textarea

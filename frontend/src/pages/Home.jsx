@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Carousel from "../components/Carousel";
 import HomeCategory from "../components/HomeCategory";

@@ -1,11 +1,18 @@
-import { Tooltip, Button, Badge, Divider, Image } from "@nextui-org/react";
+import {
+  Tooltip,
+  Button,
+  Badge,
+  Divider,
+  Image,
+  link,
+} from "@nextui-org/react";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 
 const CartHover = () => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
-      <Button isIconOnly variant="light" size="lg">
+      <Button as={Link} to="/cart" isIconOnly variant="light" size="lg">
         <Badge content="2" color="danger">
           <HiOutlineShoppingCart size={24} />
         </Badge>

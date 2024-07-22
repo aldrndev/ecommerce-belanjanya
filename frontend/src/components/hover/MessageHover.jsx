@@ -6,11 +6,12 @@ import {
   ListboxItem,
 } from "@nextui-org/react";
 import { HiOutlineEnvelope } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const MessageHover = () => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
-      <Button isIconOnly variant="light" size="lg">
+      <Button as={Link} to={"/user/chat"} isIconOnly variant="light" size="lg">
         <Badge content="2" color="danger">
           <HiOutlineEnvelope size={24} />
         </Badge>

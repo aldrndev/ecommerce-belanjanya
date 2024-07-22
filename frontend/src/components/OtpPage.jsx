@@ -1,10 +1,19 @@
 import { Flex, Input, Typography } from "antd";
 const { Title } = Typography;
 
-const OtpPage = () => {
+const OtpPage = ({ email, setValue }) => {
   const onChange = (text) => {
-    console.log("onChange:", text);
+    setValue("otpUser", text);
   };
+
+  const newEmail = (email) => {
+    if (email) {
+      const [name, domain] = email.split("@");
+      const sliceEmail = name.slice(0, -4);
+      return `${sliceEmail}****@${domain}`;
+    }
+  };
+
   const sharedProps = {
     onChange,
   };
@@ -15,13 +24,14 @@ const OtpPage = () => {
       </Title>
       <div className="text-center">
         <p className="text-sm">
-          Masukan kode OTP yang dikirimkan ke alamat email wille*****@gmail.com
+          Masukan kode OTP yang dikirimkan ke alamat email {newEmail(email)}
         </p>
       </div>
       <Input.OTP
         formatter={(str) => str.toUpperCase()}
         {...sharedProps}
         justify="end"
+        onChange={onChange}
       />
     </Flex>
   );

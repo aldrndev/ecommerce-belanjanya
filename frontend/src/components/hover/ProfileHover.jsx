@@ -14,19 +14,21 @@ import { GrMoney } from "react-icons/gr";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
-const ProfileHover = () => {
+const ProfileHover = ({ user }) => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
-      <div className="flex gap-x-2 items-center">
-        <Image
-          src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-          width={50}
-          radius="full"
-        />
-        <div>
-          <p className="text-sm">Aldrin Mursidi</p>
+      <Link to="/user/profile">
+        <div className="flex gap-x-2 items-center">
+          <Image
+            src={`http://localhost:3000/${user.image}`}
+            width={50}
+            radius="full"
+          />
+          <div>
+            <p className="text-sm capitalize">{user.name}</p>
+          </div>
         </div>
-      </div>
+      </Link>
     </Tooltip>
   );
 };
@@ -70,7 +72,7 @@ const items2 = [
 const Content = () => {
   return (
     <div className="w-[300px]">
-      <Card className="mt-2">
+      <Card className="mt-2" shadow="sm">
         <CardBody>
           <div className="flex gap-2">
             <Image
@@ -102,7 +104,7 @@ const Content = () => {
               as={Link}
               to={item.label}
               key={index}
-              variant="flat"
+              variant="light"
               className="mb-1"
             >
               {item.name}
@@ -115,7 +117,7 @@ const Content = () => {
               as={Link}
               to={item.label}
               key={index}
-              variant="flat"
+              variant="light"
               className="mb-1"
             >
               {item.name}
@@ -125,7 +127,7 @@ const Content = () => {
       </div>
       <div className="flex items-center justify-center mt-3 mb-4">
         <Button
-          variant="bordered"
+          variant="light"
           startContent={<IoLogOutOutline size={20} />}
           color="danger"
         >

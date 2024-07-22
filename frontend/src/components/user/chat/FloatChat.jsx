@@ -19,10 +19,8 @@ const FloatChat = () => {
           <FloatButton
             icon={<MessageOutlined />}
             type="primary"
-            shape="circle"
             className="w-14 h-14"
             tooltip="Chat Sekarang"
-            description="Chat"
             onClick={onOpen}
           />
         )}

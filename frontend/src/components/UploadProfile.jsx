@@ -1,45 +1,44 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Upload } from "antd";
+import { Upload, message } from "antd";
 import { useState } from "react";
 
-const UploadProfile = () => {
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+const UploadProfile = ({ setValue }) => {
+  const [fileList, setFileList] = useState([]);
 
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload Foto
-      </div>
-    </button>
-  );
+  const handleUpload = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    setValue("image", newFileList[0].originFileObj);
+  };
+
+  const beforeUpload = (file) => {
+    const isImage =
+      file.type === "image/jpeg" ||
+      file.type === "image/png" ||
+      file.type === "image/jpg";
+    if (!isImage) {
+      message.error("Hanya boleh gambar JPG/PNG!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+      message.error("Gambar harus lebih kecil dari 2MB!");
+    }
+    return isImage && isLt2M;
+  };
+
   return (
     <>
       <Upload
-        // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-        listType="picture-circle"
+        showUploadList={{
+          showRemoveIcon: true,
+          showPreviewIcon: false,
+        }}
+        listType="picture-card"
         fileList={fileList}
-        onChange={handleChange}
+        onChange={handleUpload}
+        beforeUpload={beforeUpload}
+        maxCount={1}
       >
-        {fileList.length >= 1 ? null : uploadButton}
+        {fileList.length < 1 && "+ Upload"}
       </Upload>
     </>
   );

@@ -20,6 +20,7 @@ import {
 import { Divider, Empty } from "antd";
 import { useState } from "react";
 import { CiDiscount1 } from "react-icons/ci";
+import Footer from "../../Footer";
 
 const Shipment = () => {
   const [isAddress, setIsAddress] = useState(false);
@@ -69,17 +70,23 @@ const Shipment = () => {
                   <Input
                     labelPlacement="outside"
                     isRequired
+                    label="Alamat Penerima"
+                    placeholder="Alamat Penerima"
+                  />
+                  <Input
+                    labelPlacement="outside"
+                    isRequired
                     label="Provinsi"
                     placeholder="Provinsi"
                   />
+                </div>
+                <div className="flex justify-between gap-x-5 mb-5">
                   <Input
                     labelPlacement="outside"
                     isRequired
                     label="Kota"
                     placeholder="Kota"
                   />
-                </div>
-                <div className="flex justify-between gap-x-5 mb-5">
                   <Input
                     labelPlacement="outside"
                     isRequired
@@ -167,6 +174,9 @@ const Shipment = () => {
             </Button>
           </div>
         </div>
+      </div>
+      <div className="mt-20">
+        <Footer />
       </div>
     </div>
   );

@@ -39,13 +39,10 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
-      image: {
-        type: Sequelize.STRING,
-      },
-      UserId: {
+      SellerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
+          model: "Sellers",
           key: "id",
         },
         onDelete: "cascade",

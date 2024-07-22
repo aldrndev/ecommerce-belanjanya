@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasOne(models.Profile);
       User.hasOne(models.Seller);
-      User.hasMany(models.Product);
       User.hasMany(models.Order);
       User.hasMany(models.Payment);
       User.hasMany(models.Checkout);
@@ -28,8 +27,33 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: true,
+          notEmpty: true,
+          notNull: true,
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: [5],
+        },
+      },
+      isSeller: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

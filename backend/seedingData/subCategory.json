@@ -1,0 +1,132 @@
+[
+  {
+    "title": "Komputer",
+    "value": "Komputer",
+    "CategoryId": 1
+  },
+  {
+    "title": "Telepon & Tablet",
+    "value": "Telepon & Tablet",
+    "CategoryId": 1
+  },
+  {
+    "title": "Audio & Video",
+    "value": "Audio & Video",
+    "CategoryId": 1
+  },
+  {
+    "title": "Gaming",
+    "value": "Gaming",
+    "CategoryId": 1
+  },
+  {
+    "title": "Peralatan Jaringan",
+    "value": "Peralatan Jaringan",
+    "CategoryId": 1
+  },
+  {
+    "title": "Atasan Pria",
+    "value": "Atasan Pria",
+    "CategoryId": 2
+  },
+  {
+    "title": "Bawahan Pria",
+    "value": "Bawahan Pria",
+    "CategoryId": 2
+  },
+  {
+    "title": "Pakaian Dalam Pria",
+    "value": "Pakaian Dalam Pria",
+    "CategoryId": 2
+  },
+  {
+    "title": "Aksesoris Pria",
+    "value": "Aksesoris Pria",
+    "CategoryId": 2
+  },
+  {
+    "title": "Atasan Wanita",
+    "value": "Atasan Wanita",
+    "CategoryId": 3
+  },
+  {
+    "title": "Bawahan Wanita",
+    "value": "Bawahan Wanita",
+    "CategoryId": 3
+  },
+  {
+    "title": "Gaun & Dress",
+    "value": "Gaun & Dress",
+    "CategoryId": 3
+  },
+  {
+    "title": "Pakaian Dalam & Tidur",
+    "value": "Pakaian Dalam & Tidur",
+    "CategoryId": 3
+  },
+  {
+    "title": "Aksesoris Wanita",
+    "value": "Aksesoris Wanita",
+    "CategoryId": 3
+  },
+  {
+    "title": "Dapur & Makan",
+    "value": "Dapur & Makan",
+    "CategoryId": 4
+  },
+  {
+    "title": "Kebersihan & Perawatan",
+    "value": "Kebersihan & Perawatan",
+    "CategoryId": 4
+  },
+  {
+    "title": "Peralatan Listrik",
+    "value": "Peralatan Listrik",
+    "CategoryId": 4
+  },
+  {
+    "title": "Dekorasi Rumah",
+    "value": "Dekorasi Rumah",
+    "CategoryId": 4
+  },
+  {
+    "title": "Fitness & Gym",
+    "value": "Fitness & Gym",
+    "CategoryId": 5
+  },
+  {
+    "title": "Olahraga Air",
+    "value": "Olahraga Air",
+    "CategoryId": 5
+  },
+  {
+    "title": "Olahraga Luar Ruangan",
+    "value": "Olahraga Luar Ruangan",
+    "CategoryId": 5
+  },
+  {
+    "title": "Olahraga Tim",
+    "value": "Olahraga Tim",
+    "CategoryId": 5
+  },
+  {
+    "title": "Mobil",
+    "value": "Mobil",
+    "CategoryId": 6
+  },
+  {
+    "title": "Motor",
+    "value": "Motor",
+    "CategoryId": 6
+  },
+  {
+    "title": "Perawatan & Perbaikan",
+    "value": "Perawatan & Perbaikan",
+    "CategoryId": 6
+  },
+  {
+    "title": "Navigasi & Elektronik",
+    "value": "Navigasi & Elektronik",
+    "CategoryId": 6
+  }
+]

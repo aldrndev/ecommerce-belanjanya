@@ -1,0 +1,517 @@
+[
+  {
+    "title": "Laptop",
+    "value": "Laptop",
+    "SubCategoryId": 1
+  },
+  {
+    "title": "Desktop",
+    "value": "Desktop",
+    "SubCategoryId": 1
+  },
+  {
+    "title": "Komponen Komputer",
+    "value": "Komponen Komputer",
+    "SubCategoryId": 1
+  },
+  {
+    "title": "Aksesoris Komputer",
+    "value": "Aksesoris Komputer",
+    "SubCategoryId": 1
+  },
+  {
+    "title": "Smartphone",
+    "value": "Smartphone",
+    "SubCategoryId": 2
+  },
+  {
+    "title": "Tablet",
+    "value": "Tablet",
+    "SubCategoryId": 2
+  },
+  {
+    "title": "Aksesoris Telepon",
+    "value": "Aksesoris Telepon",
+    "SubCategoryId": 2
+  },
+  {
+    "title": "Smartwatch",
+    "value": "Smartwatch",
+    "SubCategoryId": 2
+  },
+  {
+    "title": "TV",
+    "value": "TV",
+    "SubCategoryId": 3
+  },
+  {
+    "title": "Speaker",
+    "value": "Speaker",
+    "SubCategoryId": 3
+  },
+  {
+    "title": "Headphone & Earphone",
+    "value": "Headphone & Earphone",
+    "SubCategoryId": 3
+  },
+  {
+    "title": "Sound System",
+    "value": "Sound System",
+    "SubCategoryId": 3
+  },
+  {
+    "title": "Konsol Game",
+    "value": "Konsol Game",
+    "SubCategoryId": 4
+  },
+  {
+    "title": "Aksesoris Gaming",
+    "value": "Aksesoris Gaming",
+    "SubCategoryId": 4
+  },
+  {
+    "title": "Game PC",
+    "value": "Game PC",
+    "SubCategoryId": 4
+  },
+  {
+    "title": "Game Konsol",
+    "value": "Game Konsol",
+    "SubCategoryId": 4
+  },
+  {
+    "title": "Router",
+    "value": "Router",
+    "SubCategoryId": 5
+  },
+  {
+    "title": "Modem",
+    "value": "Modem",
+    "SubCategoryId": 5
+  },
+  {
+    "title": "Switch",
+    "value": "Switch",
+    "SubCategoryId": 5
+  },
+  {
+    "title": "Kabel Jaringan",
+    "value": "Kabel Jaringan",
+    "SubCategoryId": 5
+  },
+  {
+    "title": "Kaos",
+    "value": "Kaos",
+    "SubCategoryId": 6
+  },
+  {
+    "title": "Kemeja",
+    "value": "Kemeja",
+    "SubCategoryId": 6
+  },
+  {
+    "title": "Jaket & Hoodie",
+    "value": "Jaket & Hoodie",
+    "SubCategoryId": 6
+  },
+  {
+    "title": "Sweater",
+    "value": "Sweater",
+    "SubCategoryId": 6
+  },
+  {
+    "title": "Celana Panjang",
+    "value": "Celana Panjang",
+    "SubCategoryId": 7
+  },
+  {
+    "title": "Celana Pendek",
+    "value": "Celana Pendek",
+    "SubCategoryId": 7
+  },
+  {
+    "title": "Jeans",
+    "value": "Jeans",
+    "SubCategoryId": 7
+  },
+  {
+    "title": "Celana Olahraga",
+    "value": "Celana Olahraga",
+    "SubCategoryId": 7
+  },
+  {
+    "title": "Celana Dalam",
+    "value": "Celana Dalam",
+    "SubCategoryId": 8
+  },
+  {
+    "title": "Kaos Dalam",
+    "value": "Kaos Dalam",
+    "SubCategoryId": 8
+  },
+  {
+    "title": "Piyama & Loungewear",
+    "value": "Piyama & Loungewear",
+    "SubCategoryId": 8
+  },
+  {
+    "title": "Topi",
+    "value": "Topi",
+    "SubCategoryId": 9
+  },
+  {
+    "title": "Sabuk",
+    "value": "Sabuk",
+    "SubCategoryId": 9
+  },
+  {
+    "title": "Dasi",
+    "value": "Dasi",
+    "SubCategoryId": 9
+  },
+  {
+    "title": "Kacamata",
+    "value": "Kacamata",
+    "SubCategoryId": 9
+  },
+  {
+    "title": "Blouse",
+    "value": "Blouse",
+    "SubCategoryId": 10
+  },
+  {
+    "title": "Kaos",
+    "value": "Kaos",
+    "SubCategoryId": 10
+  },
+  {
+    "title": "Kemeja",
+    "value": "Kemeja",
+    "SubCategoryId": 10
+  },
+  {
+    "title": "Sweater & Cardigan",
+    "value": "Sweater & Cardigan",
+    "SubCategoryId": 10
+  },
+  {
+    "title": "Rok",
+    "value": "Rok",
+    "SubCategoryId": 11
+  },
+  {
+    "title": "Celana Panjang",
+    "value": "Celana Panjang",
+    "SubCategoryId": 11
+  },
+  {
+    "title": "Jeans",
+    "value": "Jeans",
+    "SubCategoryId": 11
+  },
+  {
+    "title": "Legging",
+    "value": "Legging",
+    "SubCategoryId": 11
+  },
+  {
+    "title": "Mini Dress",
+    "value": "Mini Dress",
+    "SubCategoryId": 12
+  },
+  {
+    "title": "Maxi Dress",
+    "value": "Maxi Dress",
+    "SubCategoryId": 12
+  },
+  {
+    "title": "Formal Dress",
+    "value": "Formal Dress",
+    "SubCategoryId": 12
+  },
+  {
+    "title": "Casual Dress",
+    "value": "Casual Dress",
+    "SubCategoryId": 12
+  },
+  {
+    "title": "Bra",
+    "value": "Bra",
+    "SubCategoryId": 13
+  },
+  {
+    "title": "Celana Dalam",
+    "value": "Celana Dalam",
+    "SubCategoryId": 13
+  },
+  {
+    "title": "Piyama & Loungewear",
+    "value": "Piyama & Loungewear",
+    "SubCategoryId": 13
+  },
+  {
+    "title": "Lingerie",
+    "value": "Lingerie",
+    "SubCategoryId": 13
+  },
+  {
+    "title": "Syal",
+    "value": "Syal",
+    "SubCategoryId": 14
+  },
+  {
+    "title": "Topi",
+    "value": "Topi",
+    "SubCategoryId": 14
+  },
+  {
+    "title": "Perhiasan",
+    "value": "Perhiasan",
+    "SubCategoryId": 14
+  },
+  {
+    "title": "Kacamata",
+    "value": "Kacamata",
+    "SubCategoryId": 14
+  },
+  {
+    "title": "Peralatan Masak",
+    "value": "Peralatan Masak",
+    "SubCategoryId": 15
+  },
+  {
+    "title": "Peralatan Makan",
+    "value": "Peralatan Makan",
+    "SubCategoryId": 15
+  },
+  {
+    "title": "Peralatan Penyimpanan",
+    "value": "Peralatan Penyimpanan",
+    "SubCategoryId": 15
+  },
+  {
+    "title": "Alat Minum & Pembuat Kopi",
+    "value": "Alat Minum & Pembuat Kopi",
+    "SubCategoryId": 15
+  },
+  {
+    "title": "Vacuum Cleaner",
+    "value": "Vacuum Cleaner",
+    "SubCategoryId": 16
+  },
+  {
+    "title": "Alat Pel & Sapu",
+    "value": "Alat Pel & Sapu",
+    "SubCategoryId": 16
+  },
+  {
+    "title": "Detergen & Pembersih",
+    "value": "Detergen & Pembersih",
+    "SubCategoryId": 16
+  },
+  {
+    "title": "Alat Cuci Piring",
+    "value": "Alat Cuci Piring",
+    "SubCategoryId": 16
+  },
+  {
+    "title": "Lampu",
+    "value": "Lampu",
+    "SubCategoryId": 17
+  },
+  {
+    "title": "Kipas Angin",
+    "value": "Kipas Angin",
+    "SubCategoryId": 17
+  },
+  {
+    "title": "Setrika",
+    "value": "Setrika",
+    "SubCategoryId": 17
+  },
+  {
+    "title": "Blender & Mixer",
+    "value": "Blender & Mixer",
+    "SubCategoryId": 17
+  },
+  {
+    "title": "Hiasan Dinding",
+    "value": "Hiasan Dinding",
+    "SubCategoryId": 18
+  },
+  {
+    "title": "Tanaman Hias",
+    "value": "Tanaman Hias",
+    "SubCategoryId": 18
+  },
+  {
+    "title": "Karpet",
+    "value": "Karpet",
+    "SubCategoryId": 18
+  },
+  {
+    "title": "Gorden",
+    "value": "Gorden",
+    "SubCategoryId": 18
+  },
+  {
+    "title": "Dumbbell & Barbell",
+    "value": "Dumbbell & Barbell",
+    "SubCategoryId": 19
+  },
+  {
+    "title": "Matras Yoga",
+    "value": "Matras Yoga",
+    "SubCategoryId": 19
+  },
+  {
+    "title": "Alat Kardio",
+    "value": "Alat Kardio",
+    "SubCategoryId": 19
+  },
+  {
+    "title": "Peralatan Angkat Beban",
+    "value": "Peralatan Angkat Beban",
+    "SubCategoryId": 19
+  },
+  {
+    "title": "Renang",
+    "value": "Renang",
+    "SubCategoryId": 20
+  },
+  {
+    "title": "Diving & Snorkeling",
+    "value": "Diving & Snorkeling",
+    "SubCategoryId": 20
+  },
+  {
+    "title": "Surfing",
+    "value": "Surfing",
+    "SubCategoryId": 20
+  },
+  {
+    "title": "Kayak & Kano",
+    "value": "Kayak & Kano",
+    "SubCategoryId": 20
+  },
+  {
+    "title": "Sepeda & Aksesoris",
+    "value": "Sepeda & Aksesoris",
+    "SubCategoryId": 21
+  },
+  {
+    "title": "Camping & Hiking",
+    "value": "Camping & Hiking",
+    "SubCategoryId": 21
+  },
+  {
+    "title": "Panjat Tebing",
+    "value": "Panjat Tebing",
+    "SubCategoryId": 21
+  },
+  {
+    "title": "Skateboard & Rollerblade",
+    "value": "Skateboard & Rollerblade",
+    "SubCategoryId": 21
+  },
+  {
+    "title": "Sepak Bola",
+    "value": "Sepak Bola",
+    "SubCategoryId": 22
+  },
+  {
+    "title": "Basket",
+    "value": "Basket",
+    "SubCategoryId": 22
+  },
+  {
+    "title": "Voli",
+    "value": "Voli",
+    "SubCategoryId": 22
+  },
+  {
+    "title": "Tenis & Bulutangkis",
+    "value": "Tenis & Bulutangkis",
+    "SubCategoryId": 22
+  },
+  {
+    "title": "Aksesoris Mobil",
+    "value": "Aksesoris Mobil",
+    "SubCategoryId": 23
+  },
+  {
+    "title": "Sparepart Mobil",
+    "value": "Sparepart Mobil",
+    "SubCategoryId": 23
+  },
+  {
+    "title": "Perawatan & Poles Mobil",
+    "value": "Perawatan & Poles Mobil",
+    "SubCategoryId": 23
+  },
+  {
+    "title": "Audio & Video Mobil",
+    "value": "Audio & Video Mobil",
+    "SubCategoryId": 23
+  },
+  {
+    "title": "Aksesoris Motor",
+    "value": "Aksesoris Motor",
+    "SubCategoryId": 24
+  },
+  {
+    "title": "Sparepart Motor",
+    "value": "Sparepart Motor",
+    "SubCategoryId": 24
+  },
+  {
+    "title": "Helm & Pelindung",
+    "value": "Helm & Pelindung",
+    "SubCategoryId": 24
+  },
+  {
+    "title": "Jaket & Sarung Tangan",
+    "value": "Jaket & Sarung Tangan",
+    "SubCategoryId": 24
+  },
+  {
+    "title": "Oli & Pelumas",
+    "value": "Oli & Pelumas",
+    "SubCategoryId": 25
+  },
+  {
+    "title": "Perawatan Cat Mobil",
+    "value": "Perawatan Cat Mobil",
+    "SubCategoryId": 25
+  },
+  {
+    "title": "Peralatan Cuci Mobil",
+    "value": "Peralatan Cuci Mobil",
+    "SubCategoryId": 25
+  },
+  {
+    "title": "Perbaikan Mesin",
+    "value": "Perbaikan Mesin",
+    "SubCategoryId": 25
+  },
+  {
+    "title": "GPS & Navigasi",
+    "value": "GPS & Navigasi",
+    "SubCategoryId": 26
+  },
+  {
+    "title": "Kamera Dashboard",
+    "value": "Kamera Dashboard",
+    "SubCategoryId": 26
+  },
+  {
+    "title": "Sistem Keamanan Mobil",
+    "value": "Sistem Keamanan Mobil",
+    "SubCategoryId": 26
+  },
+  {
+    "title": "Car Audio",
+    "value": "Car Audio",
+    "SubCategoryId": 26
+  }
+]

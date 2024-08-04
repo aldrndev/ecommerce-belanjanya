@@ -1,4 +1,3 @@
-const path = require("path");
 const { generateOTP, sendEmail } = require("../helpers/helper");
 const { User, Profile, sequelize } = require("../models");
 const { comparePassword } = require("../utils/bcrypt");
@@ -66,7 +65,6 @@ class AuthController {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "Strict",
-          path: "/api/auth/refresh-token",
         });
 
         res.status(200).json({
@@ -96,7 +94,6 @@ class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
-        path: "/api/auth/refresh-token",
       });
 
       res.status(200).json({
@@ -106,6 +103,7 @@ class AuthController {
         access_token: token,
         isVerified: true,
         isProfile: true,
+        isSeller: checkUser.isSeller,
       });
     } catch (error) {
       next(error);
@@ -113,10 +111,7 @@ class AuthController {
   }
   static async register(req, res, next) {
     try {
-      const { email, password, confirmPassword } = req.body;
-
-      if (password !== confirmPassword)
-        return next(new Error("Password tidak sama"));
+      const { email, password } = req.body;
 
       const createUser = await User.create({
         email,
@@ -171,13 +166,13 @@ class AuthController {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "Strict",
-        path: "/api/auth/refresh-token",
       });
 
       res.status(201).json({
         statusCode: 201,
         message: `Email kamu berhasil di verifikasi`,
         access_token: generateToken,
+        isSeller: checkUser.isSeller,
       });
     } catch (error) {
       next(error);
@@ -216,8 +211,6 @@ class AuthController {
         address: createProfile.address,
         image: createProfile.image,
       };
-
-      console.log(user);
 
       res.status(201).json({
         statusCode: 201,
@@ -271,14 +264,17 @@ class AuthController {
         access_token: newToken,
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
 
   static async logout(req, res, next) {
     try {
-      res.clearCookie("refresh_token");
+      res.clearCookie("refresh_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+      });
       res.status(200).json({
         statusCode: 200,
         message: "Berhasil keluar",

@@ -15,9 +15,10 @@ const errorHandler = (error, req, res, next) => {
   if (
     error.name === "SequelizeValidationError" ||
     error.name === "SequelizeUniqueConstraintError" ||
-    error.name === "SequelizeDatabaseError"
+    error.name === "SequelizeDatabaseError" ||
+    error.name === "SequelizeConnectionError"
   ) {
-    message = error.errors.map((error) => error.message).join(",");
+    message = error?.errors?.map((error) => error.message).join(",");
     statusCode = 400;
   }
 

@@ -1,4 +1,4 @@
-const { User, Cart, Seller } = require("../models");
+const { User, Cart, Seller, Product } = require("../models");
 const { verifyToken } = require("../utils/jwt");
 
 const authenticate = async (req, res, next) => {
@@ -41,20 +41,24 @@ const authorizeSeller = async (req, res, next) => {
   }
 };
 
-const authorizeCart = async (req, res, next) => {
+const authorizeAddCart = async (req, res, next) => {
   try {
     const { id } = req.user;
-    const { id: cartId } = req.params;
+    const { productId } = req.body;
 
-    const checkCart = await Cart.findOne({
+    const checkProduct = await Product.findOne({
       where: {
-        id: cartId,
+        id: productId,
       },
+      include: Seller,
     });
 
-    if (!checkCart) return next(new Error("Cart tidak di temukan"));
+    if (!checkProduct) return next(new Error("Product tidak di temukan"));
 
-    if (checkCart.UserId !== id) return next(new Error("forbidden"));
+    if (checkProduct.Seller.UserId === id)
+      return next(
+        new Error("Tidak dapat menambahkan produk sendiri ke keranjang")
+      );
 
     next();
   } catch (error) {
@@ -62,4 +66,4 @@ const authorizeCart = async (req, res, next) => {
   }
 };
 
-module.exports = { authenticate, authorizeCart, authorizeSeller };
+module.exports = { authenticate, authorizeAddCart, authorizeSeller };

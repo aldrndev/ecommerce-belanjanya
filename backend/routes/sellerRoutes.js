@@ -12,5 +12,8 @@ router.post(
   upload.array("image", 9),
   SellerController.addProduct
 );
+router.get("/category", SellerController.getCategory);
+router.get("/sub-category", SellerController.getSubCategory);
+router.get("/children-sub-category", SellerController.getChildrenSubCategory);
 
 module.exports = router;

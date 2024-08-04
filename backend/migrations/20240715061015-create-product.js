@@ -18,15 +18,6 @@ module.exports = {
       brand: {
         type: Sequelize.STRING,
       },
-      CategoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Categories",
-          key: "id",
-        },
-        onDelete: "cascade",
-        onUpdate: "cascade",
-      },
       condition: {
         type: Sequelize.STRING,
       },
@@ -39,10 +30,22 @@ module.exports = {
       description: {
         type: Sequelize.TEXT,
       },
+      location: {
+        type: Sequelize.STRING,
+      },
       SellerId: {
         type: Sequelize.INTEGER,
         references: {
           model: "Sellers",
+          key: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      },
+      ChildrenSubCategoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "ChildrenSubCategories",
           key: "id",
         },
         onDelete: "cascade",

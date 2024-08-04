@@ -1,4 +1,14 @@
-const { sequelize, Seller, User, ProductImage, Product } = require("../models");
+const {
+  sequelize,
+  Seller,
+  User,
+  ProductImage,
+  Product,
+  Category,
+  SubCategory,
+  ChildrenSubCategory,
+  ListProduct,
+} = require("../models");
 
 class SellerController {
   static async register(req, res, next) {
@@ -17,8 +27,15 @@ class SellerController {
         postalCode,
       } = req.body;
 
-      const checkSeller = await User.findByPk(id);
-      if (checkSeller.isSeller)
+      const checkSeller = await Seller.findOne({
+        where: {
+          UserId: id,
+        },
+      });
+
+      const checkUser = await User.findByPk(id);
+
+      if (checkSeller && checkUser.isSeller)
         return next(new Error("Akun anda sudah menjadi seller"));
 
       const create = await Seller.create(
@@ -50,9 +67,9 @@ class SellerController {
 
       res.status(201).json({
         statusCode: 201,
-        message:
-          "Sukses membuat profile seller, Silahkan untuk menambahkan produk anda",
+        message: "Selamat anda sudah terdaftar sebagai Seller",
         data: create,
+        isSeller: true,
       });
     } catch (error) {
       await transaction.rollback();
@@ -67,7 +84,7 @@ class SellerController {
         title,
         price,
         brand,
-        CategoryId,
+        ChildrenSubCategoryId,
         condition,
         stock,
         weight,
@@ -75,24 +92,26 @@ class SellerController {
       } = req.body;
       const { id } = req.seller;
 
-      const productImg = req.files.map((file) => file.path);
+      const productImg = req.files?.map((file) => file.path);
 
-      console.log(productImg);
-
-      const create = await Product.create({
-        title,
-        price,
-        brand,
-        CategoryId,
-        condition,
-        stock,
-        weight,
-        description,
-        SellerId: id,
-      });
+      const create = await Product.create(
+        {
+          title,
+          price,
+          brand,
+          condition,
+          stock,
+          weight,
+          description,
+          location: req.seller.city,
+          SellerId: id,
+          ChildrenSubCategoryId,
+        },
+        { transaction }
+      );
 
       const createImg = await ProductImage.bulkCreate(
-        productImg.map((img) => {
+        productImg?.map((img) => {
           return {
             ProductId: create.id,
             image: img,
@@ -105,14 +124,75 @@ class SellerController {
 
       res.status(201).json({
         statusCode: 201,
-        message: "Sukses membuat product",
+        message: `Sukses menambahkan produk ${create.title}`,
         data: {
-          product: create,
-          image: createImg,
+          Product: create,
+          Image: createImg,
         },
       });
     } catch (error) {
-      console.log(error);
+      await transaction.rollback();
+      next(error);
+    }
+  }
+
+  static async getCategory(req, res, next) {
+    try {
+      const category = await Category.findAll();
+
+      if (category.length === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Tidak ada kategori yang ditemukan",
+        });
+      }
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data kategori",
+        data: category,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getSubCategory(req, res, next) {
+    try {
+      const subCategory = await SubCategory.findAll();
+
+      if (subCategory.length === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Tidak ada sub kategori yang ditemukan",
+        });
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data sub kategori",
+        data: subCategory,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getChildrenSubCategory(req, res, next) {
+    try {
+      const childrenSubCategory = await ChildrenSubCategory.findAll();
+
+      if (childrenSubCategory.length === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Tidak ada children sub kategori yang ditemukan",
+        });
+      }
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data children sub kategori",
+        data: childrenSubCategory,
+      });
+    } catch (error) {
       next(error);
     }
   }

@@ -1,5 +1,16 @@
 const { generateOTP, sendEmail } = require("../helpers/helper");
-const { Profile, Order, Wishlist, Discussion, Cart } = require("../models");
+const {
+  Profile,
+  Order,
+  Wishlist,
+  Discussion,
+  Cart,
+  Product,
+  User,
+  ProductImage,
+  Seller,
+  Review,
+} = require("../models");
 const { comparePassword } = require("../utils/bcrypt");
 const { createOtp, verifyToken } = require("../utils/jwt");
 
@@ -192,7 +203,7 @@ class UserController {
   }
   static async updatePassword(req, res, next) {
     try {
-      const { oldPassword, newPassword, newConfirmPassword } = req.body;
+      const { oldPassword, newPassword } = req.body;
 
       const { id } = req.user;
 
@@ -200,9 +211,6 @@ class UserController {
 
       if (!comparePassword(oldPassword, checkUser.password))
         return next(new Error("Password lama tidak sesuai"));
-
-      if (newPassword !== newConfirmPassword)
-        return next(new Error("Konfirmasi password tidak sesuai"));
 
       await User.update(
         {
@@ -246,6 +254,7 @@ class UserController {
         statusCode: 201,
         message: "Silahkan cek email anda untuk verifikasi OTP",
         tokenOtp,
+        email: newEmail,
       });
     } catch (error) {
       next(error);
@@ -272,25 +281,143 @@ class UserController {
       );
       res.status(200).json({
         statusCode: 200,
-        message: "Sukses mengupdate email",
+        message: "Sukses mengubah email",
       });
     } catch (error) {
       next(error);
     }
   }
+  static async addCart(req, res, next) {
+    try {
+      const { id } = req.user;
+      const { productId, quantity, note } = req.body;
+
+      const checkCart = await Cart.findOne({
+        where: {
+          ProductId: productId,
+          UserId: id,
+        },
+      });
+
+      if (checkCart) {
+        checkCart.quantity += quantity;
+        checkCart.note = note;
+        await checkCart.save();
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Sukses menambahkan produk ke keranjang",
+          data: checkCart,
+        });
+      }
+
+      const cart = await Cart.create({
+        ProductId: productId,
+        UserId: id,
+        quantity,
+        note,
+      });
+
+      res.status(201).json({
+        statusCode: 201,
+        message: "Sukses menambahkan produk ke keranjang",
+        data: cart,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async getCart(req, res, next) {
+    try {
+      const { id } = req.user;
+
+      const cart = await Cart.findAll({
+        where: {
+          UserId: id,
+        },
+        include: [
+          {
+            model: Product,
+            include: Seller,
+          },
+        ],
+      });
+
+      if (cart.length === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Belum ada keranjang",
+          data: [],
+        });
+      }
+
+      const newCart = await Promise.all(
+        cart.map(async (item) => {
+          const findImage = await ProductImage.findAll({
+            where: {
+              ProductId: item.ProductId,
+            },
+          });
+
+          if (findImage.length === 0) {
+            return res.status(200).json({
+              statusCode: 200,
+              message: "Belum ada gambar produk",
+              data: [],
+            });
+          }
+
+          const product = item.toJSON();
+          const images = findImage.filter(
+            (image) => image.ProductId === item.ProductId
+          );
+          product.Product.Images = images;
+          return product;
+        })
+      );
+
+      const groupedCartItems = newCart.reduce((acc, item) => {
+        const sellerId = item.Product.Seller.id;
+        const sellerName = item.Product.Seller.name;
+
+        let sellerGroup = acc.find((group) => group.sellerId === sellerId);
+
+        if (!sellerGroup) {
+          sellerGroup = {
+            sellerId,
+            sellerName,
+            products: [],
+          };
+          acc.push(sellerGroup);
+        }
+
+        sellerGroup.products.push(item);
+        return acc;
+      }, []);
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data keranjang",
+        data: groupedCartItems,
+      });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
   static async updateCart(req, res, next) {
     try {
-      const { note, quantity } = req.body;
-      const { id } = req.params;
+      const { note, quantity, productId } = req.body;
+      const { id } = req.user;
 
       const update = await Cart.update(
         {
-          note,
           quantity,
+          note,
         },
         {
           where: {
-            id,
+            UserId: id,
+            ProductId: productId,
           },
         }
       );

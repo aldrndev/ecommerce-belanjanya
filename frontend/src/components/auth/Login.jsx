@@ -2,7 +2,7 @@ import { Input, Button, Image, Link as LinkNext } from "@nextui-org/react";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../../../api";
+import { login } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -29,13 +29,13 @@ const Login = ({
   const { isPending, mutate } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
       if (data.isVerified && data.isProfile) {
         toast.success(data.message);
         const user = JSON.stringify(data.data);
         localStorage.setItem("isLogin", "true");
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user", user);
+        localStorage.setItem("isSeller", data.isSeller);
         navigate("/home");
         onOpenChange(false);
         reset();

@@ -1,10 +1,6 @@
-import api from "./axios";
+import api, { axiosApi } from "./axios";
 import axios from "axios";
 
-const axiosApi = axios.create({
-  baseURL: "http://localhost:3000/api",
-  withCredentials: true,
-});
 export const login = async (body) => {
   try {
     const { data } = await axiosApi({
@@ -87,7 +83,7 @@ export const createProfile = async (body) => {
 
 export const registerSeller = async (body) => {
   try {
-    const data = api({
+    const data = await api({
       method: "POST",
       url: "/seller/register",
       data: {
@@ -164,6 +160,24 @@ export const indonesiasubDistrict = async (districtId) => {
       error.response.data.message ||
         error.message ||
         "Ada kesalahan saat mengambil data"
+    );
+  }
+};
+
+export const logout = async (messageCb) => {
+  try {
+    const { data } = await axiosApi({
+      method: "POST",
+      url: `/auth/logout`,
+    });
+
+    messageCb(data.message);
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data.message ||
+        error?.message ||
+        "Ada kesalahan saat keluar"
     );
   }
 };

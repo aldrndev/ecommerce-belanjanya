@@ -42,3 +42,8 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export const axiosApi = axios.create({
+  baseURL: "http://localhost:3000/api",
+  withCredentials: true,
+});

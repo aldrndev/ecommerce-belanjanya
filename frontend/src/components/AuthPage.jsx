@@ -77,6 +77,7 @@ const AuthPage = () => {
                     step={step}
                     handleNext={handleNext}
                     setSelected={setSelected}
+                    handleNextLogin={handleNextLogin}
                   />
                 </Tab>
               </Tabs>

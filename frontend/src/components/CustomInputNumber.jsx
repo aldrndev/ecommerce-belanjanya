@@ -1,6 +1,7 @@
 const CustomInputNumber = ({
   value,
   startContent,
+  handleBlur,
   endContent,
   onChange,
   width,
@@ -27,6 +28,7 @@ const CustomInputNumber = ({
         value={value}
         onKeyDown={handleKeyDown}
         onChange={handleInputChange}
+        onBlur={handleBlur}
         className={`${width} p-2 text-center focus:outline-none`}
       />
       <div className="flex items-center justify-center px-3">{endContent}</div>

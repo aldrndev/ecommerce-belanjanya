@@ -17,17 +17,20 @@ const UploadProfile = ({ setValue }) => {
       file.type === "image/jpg";
     if (!isImage) {
       message.error("Hanya boleh gambar JPG/PNG!");
+      return Upload.LIST_IGNORE;
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error("Gambar harus lebih kecil dari 2MB!");
+      return Upload.LIST_IGNORE;
     }
-    return isImage && isLt2M;
+    return false;
   };
 
   return (
     <>
       <Upload
+        action=""
         showUploadList={{
           showRemoveIcon: true,
           showPreviewIcon: false,
@@ -38,7 +41,7 @@ const UploadProfile = ({ setValue }) => {
         beforeUpload={beforeUpload}
         maxCount={1}
       >
-        {fileList.length < 1 && "+ Upload"}
+        {fileList.length < 1 && "Pilih Foto"}
       </Upload>
     </>
   );

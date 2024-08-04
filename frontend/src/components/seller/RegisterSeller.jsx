@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import CardLayout from "../user/CardLayout";
 import {
   Autocomplete,
@@ -16,11 +16,12 @@ import {
   indonesiaProvince,
   indonesiasubDistrict,
   registerSeller,
-} from "../../../api";
+} from "../../../api/auth";
 import toast from "react-hot-toast";
 
 const RegisterSeller = () => {
   const navigate = useNavigate();
+  const { setIsSeller } = useSeller();
 
   const {
     register,
@@ -34,7 +35,10 @@ const RegisterSeller = () => {
     mutationFn: registerSeller,
     onSuccess: (data) => {
       toast.success(data.message);
-      navigate("/add-product");
+      localStorage.removeItem("isSeller");
+      setIsSeller(data.isSeller); // update context
+      localStorage.setItem("isSeller", data.isSeller);
+      navigate("/seller/add-product");
       reset();
     },
     onError: (error) => {
@@ -49,48 +53,24 @@ const RegisterSeller = () => {
   const { data: province } = useQuery({
     queryKey: ["province"],
     queryFn: indonesiaProvince,
-    onSuccess: () => {
-      toast.success("Sukses mengambil data provinsi");
-    },
-    onError: () => {
-      toast.error("Gagal mengambil data provinsi");
-    },
   });
 
   const { data: cityData, refetch: refetchCity } = useQuery({
     queryKey: ["city", selectedProvince],
     queryFn: () => indonesiaCity(selectedProvince),
     enabled: !!selectedProvince,
-    onSuccess: () => {
-      toast.success("Sukses mengambil data kota");
-    },
-    onError: () => {
-      toast.error("Gagal mengambil data kota");
-    },
   });
 
   const { data: districtData, refetch: refetchDistrict } = useQuery({
     queryKey: ["district", selectedCity],
     queryFn: () => indonesiaDistrict(selectedCity),
     enabled: !!selectedCity,
-    onSuccess: () => {
-      toast.success("Sukses mengambil data kecamatan");
-    },
-    onError: () => {
-      toast.error("Gagal mengambil data kecamatan");
-    },
   });
 
   const { data: subDistrictData, refetch: refetchSubDistrict } = useQuery({
     queryKey: ["subDistrict", selectedDistrict],
     queryFn: () => indonesiasubDistrict(selectedDistrict),
     enabled: !!selectedDistrict,
-    onSuccess: () => {
-      toast.success("Sukses mengambil data kelurahan");
-    },
-    onError: () => {
-      toast.error("Gagal mengambil data kelurahan");
-    },
   });
 
   const handleProvince = (value) => {
@@ -199,7 +179,13 @@ const RegisterSeller = () => {
                 label="RT"
                 placeholder="RT"
                 className="w-1/2"
-                {...register("rt", { required: "RT harus diisi" })}
+                {...register("rt", {
+                  required: "RT harus diisi",
+                  maxLength: {
+                    value: 3,
+                    message: "RT maximal 3 digit",
+                  },
+                })}
               />
               <Input
                 labelPlacement="outside"
@@ -207,7 +193,13 @@ const RegisterSeller = () => {
                 label="RW"
                 placeholder="RW"
                 className="w-1/2"
-                {...register("rw", { required: "RW harus diisi" })}
+                {...register("rw", {
+                  required: "RW harus diisi",
+                  maxLength: {
+                    value: 3,
+                    message: "RT maximal 3 digit",
+                  },
+                })}
               />
               <Input
                 labelPlacement="outside"
@@ -217,6 +209,10 @@ const RegisterSeller = () => {
                 className="w-1/2"
                 {...register("postalCode", {
                   required: "Kode pos harus diisi",
+                  maxLength: {
+                    value: 10,
+                    message: "Kode pos maximal 10 digit",
+                  },
                 })}
               />
               <div className="w-full">
@@ -246,3 +242,18 @@ const RegisterSeller = () => {
 };
 
 export default RegisterSeller;
+
+const SellerContext = createContext();
+export const SellerProvider = ({ children }) => {
+  const [isSeller, setIsSeller] = useState(
+    localStorage.getItem("isSeller") === "true"
+  );
+
+  return (
+    <SellerContext.Provider value={{ isSeller, setIsSeller }}>
+      {children}
+    </SellerContext.Provider>
+  );
+};
+
+export const useSeller = () => useContext(SellerContext);

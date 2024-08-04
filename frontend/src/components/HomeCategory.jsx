@@ -10,32 +10,32 @@ const HomeCategory = () => {
   const category = [
     {
       name: "Elektronik & Komputer",
-      path: "/product/elektronik-komputer",
+      path: "/product?newCategory=1",
       icon: <RiComputerLine size={24} />,
     },
     {
       name: "Pakaian Pria",
-      path: "/product/pakaian-pria",
+      path: "/product?newCategory=2",
       icon: <IoIosMan size={24} />,
     },
     {
       name: "Pakaian Wanita",
-      path: "/product/pakaian-wanita",
+      path: "/product?newCategory=3",
       icon: <IoIosWoman size={24} />,
     },
     {
       name: "Peralatan Rumah Tangga",
-      path: "/product/peralatan-rumah-tangga",
+      path: "/product?newCategory=4",
       icon: <GiBlender size={24} />,
     },
     {
       name: "Peralatan Olahraga",
-      path: "/product/peralatan-olahraga",
+      path: "/product?newCategory=5",
       icon: <MdOutlineSportsSoccer size={24} />,
     },
     {
       name: "Otomotif",
-      path: "/product/otomotif",
+      path: "/product?newCategory=6",
       icon: <FaCar size={24} />,
     },
   ];

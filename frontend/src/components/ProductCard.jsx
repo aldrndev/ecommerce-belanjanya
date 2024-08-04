@@ -1,40 +1,71 @@
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, Spinner } from "@nextui-org/react";
 import {
   EnvironmentOutlined,
   HeartOutlined,
   HeartFilled,
 } from "@ant-design/icons";
+import { FaStar } from "react-icons/fa";
+
+import { formatRupiah } from "../../utils/formatCurrency";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const ProductCard = ({ product }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [Link]);
   return (
     <Card shadow="sm">
       <CardBody className="overflow-visible rounded-2xl ">
         <div>
-          <Image
-            shadow="sm"
-            radius="lg"
-            width={"100%"}
-            alt={product?.title}
-            src={product?.img}
-            className="w-full object-contain h-[250px]"
-            isZoomed
-          />
+          <Link
+            to={`/${product?.Seller?.name
+              .toLowerCase()
+              .replace(" ", "")}/${product?.title
+              .toLowerCase()
+              .replaceAll(" ", "-")}?id=${product?.id}`}
+          >
+            <Image
+              shadow="sm"
+              radius="lg"
+              width={"100%"}
+              alt={product?.title}
+              src={`http://localhost:3000/${product?.Images?.at(0).image}`}
+              className="w-full object-contain h-[220px] cursor-pointer"
+              isZoomed
+            />
+          </Link>
         </div>
       </CardBody>
       <CardFooter className="h-full">
         <div className="flex justify-start flex-col gap-2 w-full p-3">
-          <div className="flex justify-between ">
-            <div className="flex justify-start">
-              <b>{product?.title}</b>
+          <div className="flex justify-between items-center">
+            <div className="flex justify-start cursor-pointer">
+              <Link
+                to={`/${product?.Seller?.name
+                  .toLowerCase()
+                  .replace(" ", "")}/${product?.title
+                  .toLowerCase()
+                  .replaceAll(" ", "-")}?id=${product?.id}`}
+              >
+                <b>{product?.title}</b>
+              </Link>
             </div>
             <div className="flex justify-end">
-              <HeartOutlined size={20} />
+              <HeartOutlined />
             </div>
           </div>
-          <p className="text-default-500">{product?.price}</p>
+          <p className="text-default-500">{formatRupiah(product?.price)}</p>
           <div className="flex items-center gap-1">
             <EnvironmentOutlined />
-            Jakarta, Indonesia
+            {product?.location}
+          </div>
+          <div className="flex justify-between items-center">
+            <div className="flex gap-x-2 items-center">
+              <FaStar className="text-yellow-400" />
+              <span>4.9</span>
+              <p>| 100+ terjual</p>
+            </div>
           </div>
         </div>
       </CardFooter>

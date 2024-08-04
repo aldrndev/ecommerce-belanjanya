@@ -29,9 +29,9 @@ const Navbar = () => {
             size="lg"
           />
         </div>
-        <div className="flex gap-3 justify-center items-center ">
-          <CartHover />
-          <MessageHover />
+        <div className="flex gap-3 justify-center items-center">
+          {isLogin && <CartHover />}
+          {isLogin && <MessageHover />}
         </div>
         <div className="flex gap-5 justify-center items-center">
           {!isLogin ? <AuthPage /> : <ProfileHover user={user} />}

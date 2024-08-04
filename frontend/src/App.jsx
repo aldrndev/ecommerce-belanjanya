@@ -12,7 +12,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
-      <Toaster position="top-center" />
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          duration: 5000,
+          style: { maxWidth: "400px" },
+        }}
+      />
     </QueryClientProvider>
   );
 }

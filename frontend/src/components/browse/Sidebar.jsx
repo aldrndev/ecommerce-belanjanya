@@ -1,91 +1,80 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TreeSelect } from "antd";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Button,
-  Input,
-} from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 import { CiLocationOn } from "react-icons/ci";
-const { SHOW_PARENT } = TreeSelect;
 
-const Sidebar = () => {
-  const treeData = [
-    {
-      title: "Elektronik & Komputer",
-      value: "0-0",
-      key: "0-0",
-      children: [
-        {
-          title: "Laptop",
-          value: "0-0-0",
-          key: "0-0-0",
-        },
-        {
-          title: "Komputer",
-          value: "0-0-1",
-          key: "0-0-1",
-        },
-      ],
-    },
-    {
-      title: "Node2",
-      value: "0-1",
-      key: "0-1",
-      children: [
-        {
-          title: "Child Node3",
-          value: "0-1-0",
-          key: "0-1-0",
-        },
-        {
-          title: "Child Node4",
-          value: "0-1-1",
-          key: "0-1-1",
-        },
-        {
-          title: "Child Node5",
-          value: "0-1-2",
-          key: "0-1-2",
-        },
-      ],
-    },
-  ];
+import { useSearchParams } from "react-router-dom";
+import {
+  fetchCategory,
+  fetchChildrenSubCategory,
+  fetchSubCategory,
+} from "../../../api/seller";
+import { useQuery } from "@tanstack/react-query";
 
-  const [value, setValue] = useState(["0-0-0"]);
-  const onChange = (newValue) => {
-    console.log("onChange ", newValue);
-    setValue(newValue);
+const Sidebar = ({ setCategoryId, updateSearchParams }) => {
+  const nameHandler = (value) => {
+    updateSearchParams("name", value);
   };
-  const tProps = {
-    treeData,
-    value,
-    onChange,
-    treeCheckable: true,
-    showCheckedStrategy: SHOW_PARENT,
-    placeholder: "Pilih Kategori",
-    style: {
-      width: "100%",
-    },
-    size: "large",
+
+  const categoryHandler = (value) => {
+    updateSearchParams("category", value);
   };
+
+  const priceMinHandler = (value) => {
+    updateSearchParams("priceMin", value);
+  };
+
+  const priceMaxHandler = (value) => {
+    updateSearchParams("priceMax", value);
+  };
+
+  const locationHandler = (value) => {
+    updateSearchParams("location", value);
+  };
+
   return (
     <>
       <div className="w-full p-4">
         <div>
-          <h1 className="font-semibold mb-3">Filter Produk</h1>
+          <h1 className="font-semibold mb-3">Filter Produk Pilihanmu</h1>
         </div>
-        <TreeSelect {...tProps} />
+        <div className="mb-3">
+          <h1 className=" mb-3 mt-5">Nama produk</h1>
+          <Input
+            placeholder="Nama produk"
+            onValueChange={nameHandler}
+            isClearable
+          />
+        </div>
         <div>
-          <h1 className="font-semibold mb-3 mt-10">Harga</h1>
-          <div className="flex justify-between gap-3 items-center">
-            <Input type="number" placeholder="Min" startContent="Rp" />
-            {"-"}
-            <Input type="number" placeholder="Maks" startContent="Rp" />
+          <h1 className=" mb-3 mt-5">Kategori produk</h1>
+          <SelectCategory
+            categoryHandler={categoryHandler}
+            setCategoryId={setCategoryId}
+          />
+        </div>
+        <div>
+          <h1 className=" mb-3 mt-5">Harga</h1>
+          <div className="flex flex-col gap-y-3">
+            <Input
+              type="number"
+              placeholder="Harga Minimal"
+              startContent="Rp"
+              isClearable
+              onValueChange={priceMinHandler}
+            />
+
+            <Input
+              type="number"
+              placeholder="Harga Maksimal"
+              startContent="Rp"
+              isClearable
+              onValueChange={priceMaxHandler}
+            />
           </div>
         </div>
         <div>
-          <h1 className="font-semibold mb-3 mt-10">Lokasi</h1>
+          <h1 className=" mb-3 mt-5">Lokasi</h1>
           <div className="flex justify-between gap-3 items-center">
             <Autocomplete
               placeholder="Pilih lokasimu..."
@@ -94,15 +83,11 @@ const Sidebar = () => {
               className="max-w-xs"
               label="Kota"
               isClearable
+              onSelectionChange={locationHandler}
             >
-              <AutocompleteItem>Indonesia</AutocompleteItem>
+              <AutocompleteItem key={"jakarta"}>Jakarta</AutocompleteItem>
             </Autocomplete>
           </div>
-        </div>
-        <div className="mt-10 flex justify-center">
-          <Button type="submit" color="danger" fullWidth>
-            Cari
-          </Button>
         </div>
       </div>
     </>
@@ -110,3 +95,96 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+const SelectCategory = ({ categoryHandler, setCategoryId }) => {
+  const [treeData, setTreeData] = useState([]);
+  const [value, setValueState] = useState(undefined);
+
+  const onChange = (newValue) => {
+    setCategoryId(newValue);
+    setValueState(newValue);
+    if (newValue === undefined) {
+      categoryHandler(null);
+    } else {
+      treeData.forEach((item) => {
+        item.children.forEach((subItem) => {
+          subItem.children.forEach((childrenItem) => {
+            if (childrenItem.value === newValue) {
+              categoryHandler(childrenItem.title.toLowerCase());
+            }
+          });
+        });
+      });
+    }
+  };
+
+  const { data: categories, isPending: pendingCategories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategory,
+  });
+
+  const { data: subCategories, isPending: pendingSubCategories } = useQuery({
+    queryKey: ["subCategories"],
+    queryFn: fetchSubCategory,
+  });
+
+  const {
+    data: childrenSubCategories,
+    isPending: pendingChildrenSubCategories,
+  } = useQuery({
+    queryKey: ["childrenSubCategories"],
+    queryFn: fetchChildrenSubCategory,
+  });
+
+  useEffect(() => {
+    if (categories && subCategories && childrenSubCategories) {
+      const formattedData = categories.map((category) => ({
+        title: category.title,
+        value: category.title,
+        selectable: false,
+        children: subCategories
+          .filter((subCategory) => subCategory.CategoryId === category.id)
+          .map((subCategory) => ({
+            title: subCategory.title,
+            value: subCategory.title,
+            selectable: false,
+            children: childrenSubCategories
+              .filter(
+                (childSubCategory) =>
+                  childSubCategory.SubCategoryId === subCategory.id
+              )
+              .map((childSubCategory) => ({
+                title: childSubCategory.title,
+                value: childSubCategory.id,
+              })),
+          })),
+      }));
+      setTreeData(formattedData);
+    }
+  }, [categories, subCategories, childrenSubCategories]);
+
+  return (
+    <>
+      <div className="flex flex-col gap-y-1">
+        <TreeSelect
+          style={{
+            width: "100%",
+          }}
+          dropdownStyle={{
+            maxHeight: 400,
+            overflow: "auto",
+          }}
+          treeData={treeData}
+          placeholder="Pilih kategori produk"
+          onChange={onChange}
+          allowClear
+          value={value}
+          showSearch
+          size="large"
+          treeNodeFilterProp="title"
+          treeExpandAction="click"
+        />
+      </div>
+    </>
+  );
+};

@@ -12,7 +12,9 @@ import {
 import { RiPoliceBadgeFill } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
 import { IoLogOutOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../../api/auth";
+import toast from "react-hot-toast";
 
 const ProfileHover = ({ user }) => {
   return (
@@ -24,9 +26,9 @@ const ProfileHover = ({ user }) => {
             width={50}
             radius="full"
           />
-          <div>
+          {/* <div>
             <p className="text-sm capitalize">{user.name}</p>
-          </div>
+          </div> */}
         </div>
       </Link>
     </Tooltip>
@@ -70,6 +72,17 @@ const items2 = [
   },
 ];
 const Content = () => {
+  const navigate = useNavigate();
+
+  const messageCB = (message) => {
+    toast.success(message);
+  };
+
+  const handleLogout = () => {
+    logout(messageCB);
+    localStorage.clear();
+    navigate("/");
+  };
   return (
     <div className="w-[300px]">
       <Card className="mt-2" shadow="sm">
@@ -130,6 +143,7 @@ const Content = () => {
           variant="light"
           startContent={<IoLogOutOutline size={20} />}
           color="danger"
+          onClick={() => handleLogout()}
         >
           Logout
         </Button>

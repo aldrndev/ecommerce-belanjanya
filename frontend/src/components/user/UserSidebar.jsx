@@ -2,114 +2,8 @@ import { AppstoreOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSeller } from "../seller/RegisterSeller";
 
-const items = [
-  {
-    key: "sub1",
-    label: "Menu User",
-    icon: <UserOutlined />,
-    children: [
-      {
-        key: "g1",
-        label: "Info Akun",
-        type: "group",
-        children: [
-          {
-            key: "1",
-            label: <Link to="/user/profile">Profile</Link>,
-          },
-          {
-            key: "2",
-            label: <Link to="/user/order-history">Riwayat Pesanan</Link>,
-          },
-          {
-            key: "3",
-            label: <Link to="/user/wishlist">Wishlist</Link>,
-          },
-        ],
-      },
-      {
-        key: "g2",
-        label: "Kotak Masuk",
-        type: "group",
-        children: [
-          {
-            key: "4",
-            label: <Link to="/user/chat">Chat</Link>,
-          },
-          {
-            key: "5",
-            label: <Link to="/user/discussion">Diskusi Produk</Link>,
-          },
-          {
-            key: "6",
-            label: <Link to="/user/review">Ulasan Produk</Link>,
-          },
-        ],
-      },
-      {
-        key: "g3",
-        label: "Pengaturan",
-        type: "group",
-        children: [
-          {
-            key: "7",
-            label: <Link to="/user/change-profile">Ubah Profile</Link>,
-          },
-          {
-            key: "8",
-            label: <Link to="/user/change-password">Ubah Password</Link>,
-          },
-          {
-            key: "9",
-            label: <Link to="/user/change-email">Ubah Email</Link>,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: "sub2",
-    label: "Menu Seller",
-    icon: <AppstoreOutlined />,
-    children: [
-      {
-        key: "16",
-        label: <Link to="/seller/register">Daftar Seller</Link>,
-      },
-      {
-        key: "10",
-        label: <Link to="/seller/add-product">Jual Produk</Link>,
-      },
-      {
-        key: "15",
-        label: <Link to="/seller/product-list">Daftar Produk</Link>,
-      },
-      {
-        key: "11",
-        label: <Link to="/seller/sales-history">Riwayat Penjualan</Link>,
-      },
-      {
-        key: "12",
-        label: <Link to="/seller/balance-withdrawal">Penarikan Saldo</Link>,
-      },
-      {
-        key: "sub3",
-        label: "Aktifitas Penjualan",
-        children: [
-          {
-            key: "13",
-            label: <Link to="/seller/review">Ulasan</Link>,
-          },
-          {
-            key: "14",
-            label: <Link to="/seller/discussion">Diskusi</Link>,
-          },
-        ],
-      },
-    ],
-  },
-];
 const pathToKeyMap = {
   "/user/profile": "1",
   "/user/order-history": "2",
@@ -130,6 +24,115 @@ const pathToKeyMap = {
 };
 
 const UserSidebar = () => {
+  const { isSeller } = useSeller();
+
+  const items = [
+    {
+      key: "sub1",
+      label: "Menu User",
+      icon: <UserOutlined />,
+      children: [
+        {
+          key: "g1",
+          label: "Info Akun",
+          type: "group",
+          children: [
+            {
+              key: "1",
+              label: <Link to="/user/profile">Profile</Link>,
+            },
+            {
+              key: "2",
+              label: <Link to="/user/order-history">Riwayat Pesanan</Link>,
+            },
+            {
+              key: "3",
+              label: <Link to="/user/wishlist">Wishlist</Link>,
+            },
+          ],
+        },
+        {
+          key: "g2",
+          label: "Kotak Masuk",
+          type: "group",
+          children: [
+            {
+              key: "4",
+              label: <Link to="/user/chat">Chat</Link>,
+            },
+            {
+              key: "5",
+              label: <Link to="/user/discussion">Diskusi Produk</Link>,
+            },
+            {
+              key: "6",
+              label: <Link to="/user/review">Ulasan Produk</Link>,
+            },
+          ],
+        },
+        {
+          key: "g3",
+          label: "Pengaturan",
+          type: "group",
+          children: [
+            {
+              key: "7",
+              label: <Link to="/user/change-profile">Ubah Profile</Link>,
+            },
+            {
+              key: "8",
+              label: <Link to="/user/change-password">Ubah Password</Link>,
+            },
+            {
+              key: "9",
+              label: <Link to="/user/change-email">Ubah Email</Link>,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: "sub2",
+      label: "Menu Seller",
+      icon: <AppstoreOutlined />,
+      children: [
+        !isSeller && {
+          key: "16",
+          label: <Link to="/seller/register">Daftar Seller</Link>,
+        },
+        isSeller && {
+          key: "10",
+          label: <Link to="/seller/add-product">Jual Produk</Link>,
+        },
+        isSeller && {
+          key: "15",
+          label: <Link to="/seller/product-list">Daftar Produk</Link>,
+        },
+        isSeller && {
+          key: "11",
+          label: <Link to="/seller/sales-history">Riwayat Penjualan</Link>,
+        },
+        isSeller && {
+          key: "12",
+          label: <Link to="/seller/balance-withdrawal">Penarikan Saldo</Link>,
+        },
+        isSeller && {
+          key: "sub3",
+          label: "Aktifitas Penjualan",
+          children: [
+            {
+              key: "13",
+              label: <Link to="/seller/review">Ulasan</Link>,
+            },
+            {
+              key: "14",
+              label: <Link to="/seller/discussion">Diskusi</Link>,
+            },
+          ],
+        },
+      ],
+    },
+  ];
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState("");
 

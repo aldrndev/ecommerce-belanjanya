@@ -14,7 +14,7 @@ import UploadProfile from "../UploadProfile";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { createProfile, registerUser, verifyUser } from "../../../api";
+import { createProfile, registerUser, verifyUser } from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
 
 const Register = ({
@@ -24,6 +24,7 @@ const Register = ({
   step,
   handleNext,
   setSelected,
+  handleNextLogin,
 }) => {
   const navigate = useNavigate();
   return (
@@ -40,7 +41,9 @@ const Register = ({
             setSelected={setSelected}
           />
         )}
-        {step === 2 && <StepTwo handleNext={handleNext} />}
+        {step === 2 && (
+          <StepTwo handleNext={handleNext} handleNextLogin={handleNextLogin} />
+        )}
         {step === 3 && (
           <StepThree navigate={navigate} onOpenChange={onOpenChange} />
         )}
@@ -173,6 +176,7 @@ export const StepTwo = ({ handleNext, handleNextLogin }) => {
       localStorage.removeItem("tokenOtp");
       localStorage.removeItem("email");
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("isSeller", data.isSeller);
       handleNext();
       handleNextLogin(1);
       reset();

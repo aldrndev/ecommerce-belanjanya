@@ -21,7 +21,7 @@ const ChatPage = () => {
     <div>
       <CardLayout>
         <div className="flex gap-3">
-          <div className="flex flex-col w-[300px] h-[100vh] shadow-none border-r-small ">
+          <div className="flex flex-col w-[300px] h-[70vh] shadow-none border-r-small ">
             <div className="mb-4 sticky z-10 bg-white w-[280px]">
               <Input
                 placeholder="Search"
@@ -32,13 +32,6 @@ const ChatPage = () => {
             </div>
             <div className="mr-2 overflow-auto">
               <div>
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
-                <ChatUserSidebar />
                 <ChatUserSidebar />
               </div>
             </div>
@@ -122,15 +115,13 @@ const ChatSection = () => {
       </div>
       <Divider className="my-4" />
       <div className="mt-3">
-        <div className="h-[80vh] overflow-auto">
+        <div className="h-[50vh] overflow-auto">
           {/* Sender's Message */}
           <div className="flex justify-end">
             <div className="max-w-xs">
               <Card radius="sm" className="bg-blue-500" shadow="sm">
                 <CardBody>
-                  <p className="text-white">
-                    I'm good, thank you! How about you?
-                  </p>
+                  <p className="text-white">Hi, How are you ?</p>
                 </CardBody>
               </Card>
             </div>
@@ -142,17 +133,131 @@ const ChatSection = () => {
             </div>
           </div>
           {/* Receiver's Message */}
-          <div className="flex justify-start">
-            <div className="max-w-xs">
-              <Card radius="sm" className="bg-gray-200" shadow="sm">
-                <CardBody>
-                  <p>I'm good, thank you! How about you?</p>
-                </CardBody>
-              </Card>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
             </div>
           </div>
-          <div className="flex justify-start text-xs mt-1 mb-4">
-            <p className="text-gray-400 text-xs">11:50</p>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="max-w-xs">
+                <Card radius="sm" className="bg-gray-200" shadow="sm">
+                  <CardBody>
+                    <p>I'm good, thank you! How about you?</p>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
+            <div className="flex justify-start text-xs mt-1 mb-4">
+              <p className="text-gray-400 text-xs">11:50</p>
+            </div>
           </div>
         </div>
         <div className="mt-3 flex gap-3">

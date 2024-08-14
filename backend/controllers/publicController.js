@@ -125,11 +125,13 @@ class PublicController {
 
       let filterPrice = {};
       if (priceMin && priceMax) {
-        filterPrice = { price: { [Op.between]: [priceMin, priceMax] } };
+        filterPrice = {
+          price: { [Op.between]: [Number(priceMin), Number(priceMax)] },
+        };
       } else if (priceMin) {
-        filterPrice = { price: { [Op.gte]: priceMin } };
+        filterPrice = { price: { [Op.gte]: Number(priceMin) } };
       } else if (priceMax) {
-        filterPrice = { price: { [Op.lte]: priceMax } };
+        filterPrice = { price: { [Op.lte]: Number(priceMax) } };
       }
 
       const filterLocation = location
@@ -138,7 +140,6 @@ class PublicController {
 
       let sortProduct = [];
       if (sort === "termurah") {
-        console.log("masuk");
         sortProduct = [["price", "ASC"]];
       } else if (sort === "termahal") {
         sortProduct = [["price", "DESC"]];

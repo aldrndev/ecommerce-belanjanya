@@ -14,8 +14,15 @@ import UploadProfile from "../UploadProfile";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { createProfile, registerUser, verifyUser } from "../../../api/auth";
+import {
+  createProfile,
+  registerUser,
+  resendOtp,
+  verifyUser,
+} from "../../../api/auth";
 import { useNavigate } from "react-router-dom";
+import { useSeller } from "../seller/RegisterSeller";
+import { useEffect, useState } from "react";
 
 const Register = ({
   onOpenChange,
@@ -27,6 +34,7 @@ const Register = ({
   handleNextLogin,
 }) => {
   const navigate = useNavigate();
+  const { setIsSeller } = useSeller();
   return (
     <div className="flex justify-between gap-4 items-center">
       <div className="w-full h-full">
@@ -42,7 +50,11 @@ const Register = ({
           />
         )}
         {step === 2 && (
-          <StepTwo handleNext={handleNext} handleNextLogin={handleNextLogin} />
+          <StepTwo
+            handleNext={handleNext}
+            handleNextLogin={handleNextLogin}
+            setIsSeller={setIsSeller}
+          />
         )}
         {step === 3 && (
           <StepThree navigate={navigate} onOpenChange={onOpenChange} />
@@ -158,7 +170,7 @@ const StepOne = ({ isVisible, toggleVisibility, handleNext, setSelected }) => {
   );
 };
 
-export const StepTwo = ({ handleNext, handleNextLogin }) => {
+export const StepTwo = ({ handleNext, handleNextLogin, setIsSeller }) => {
   const {
     handleSubmit,
     formState: { errors },
@@ -177,6 +189,7 @@ export const StepTwo = ({ handleNext, handleNextLogin }) => {
       localStorage.removeItem("email");
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("isSeller", data.isSeller);
+      setIsSeller(data.isSeller);
       handleNext();
       handleNextLogin(1);
       reset();
@@ -188,6 +201,36 @@ export const StepTwo = ({ handleNext, handleNextLogin }) => {
 
   const onSubmit = (data) => {
     mutate({ ...data, tokenOtp });
+  };
+
+  const [isDisable, setIsDisable] = useState(true);
+  const [timer, setTimer] = useState(300);
+
+  useEffect(() => {
+    if (timer > 0) {
+      setTimeout(() => setTimer(timer - 1), 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsDisable(false);
+    }
+  }, [timer]);
+
+  const { mutate: mutateOtp, isPending: isPendingOtp } = useMutation({
+    mutationFn: resendOtp,
+    onSuccess: (data) => {
+      toast.success(data.message);
+      localStorage.removeItem("tokenOtp");
+      localStorage.setItem("tokenOtp", data.tokenOtp);
+      setTimer(300);
+      setIsDisable(true);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleResendOtp = () => {
+    mutateOtp({ email });
   };
 
   return (
@@ -205,6 +248,25 @@ export const StepTwo = ({ handleNext, handleNextLogin }) => {
           <Button fullWidth color="danger" isLoading={isPending} type="submit">
             Verifikasi
           </Button>
+        </div>
+        <div className="flex flex-col justify-center items-center">
+          <p>Belum terima kode OTP?</p>
+          {timer > 0 ? (
+            <>
+              <p className="text-danger">
+                {Math.floor(timer / 60)}:
+                {timer % 60 < 10 ? `0${timer % 60}` : timer % 60} menit
+              </p>
+              <p className=" text-sm text-gray-400 underline">Kirim Ulang</p>
+            </>
+          ) : (
+            <p
+              className="text-danger underline cursor-pointer font-semibold text-sm"
+              onClick={handleResendOtp}
+            >
+              Kirim Ulang
+            </p>
+          )}
         </div>
       </>
     </form>
@@ -227,6 +289,7 @@ export const StepThree = ({ navigate, onOpenChange }) => {
       const user = JSON.stringify(data.data);
       localStorage.setItem("user", user);
       localStorage.setItem("isLogin", "true");
+      localStorage.setItem("seller", JSON.stringify(data.seller));
       navigate("/home");
       onOpenChange(false);
       reset();

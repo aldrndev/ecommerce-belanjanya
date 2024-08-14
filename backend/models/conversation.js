@@ -11,11 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Conversation.hasMany(models.Message);
       Conversation.belongsTo(models.User);
+      Conversation.belongsTo(models.Seller);
     }
   }
   Conversation.init(
     {
       UserId: DataTypes.INTEGER,
+      SellerId: DataTypes.INTEGER,
     },
     {
       sequelize,

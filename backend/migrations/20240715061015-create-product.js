@@ -33,6 +33,9 @@ module.exports = {
       location: {
         type: Sequelize.STRING,
       },
+      discount: {
+        type: Sequelize.INTEGER,
+      },
       SellerId: {
         type: Sequelize.INTEGER,
         references: {

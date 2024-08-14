@@ -33,8 +33,26 @@ module.exports = {
       totalPrice: {
         type: Sequelize.INTEGER,
       },
-      address: {
-        type: Sequelize.TEXT,
+      courier: {
+        type: Sequelize.STRING,
+      },
+      SellerId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Sellers",
+          key: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      },
+      ShipmentId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Shipments",
+          key: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
       },
       PromoId: {
         type: Sequelize.INTEGER,

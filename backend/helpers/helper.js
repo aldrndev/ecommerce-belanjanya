@@ -52,7 +52,7 @@ const sendEmail = async (email, otp) => {
   return await transporter.sendMail({
     from: process.env.SMTP_USER,
     to: email,
-    subject: "Verify Email",
+    subject: "Verifikasi Email",
     html: emailContent,
   });
 };

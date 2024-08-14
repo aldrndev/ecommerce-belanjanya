@@ -8,6 +8,7 @@ import {
   Image,
   Divider,
   Button,
+  Chip,
 } from "@nextui-org/react";
 import { RiPoliceBadgeFill } from "react-icons/ri";
 import { GrMoney } from "react-icons/gr";
@@ -15,20 +16,34 @@ import { IoLogOutOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../api/auth";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { useSeller } from "../seller/RegisterSeller";
+import { MdVerified } from "react-icons/md";
 
 const ProfileHover = ({ user }) => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
       <Link to="/user/profile">
-        <div className="flex gap-x-2 items-center">
+        <div className="flex gap-x-1 items-center">
           <Image
             src={`http://localhost:3000/${user.image}`}
-            width={50}
+            width={60}
+            height={60}
             radius="full"
+            alt="User profile"
+            className="object-contain"
           />
-          {/* <div>
-            <p className="text-sm capitalize">{user.name}</p>
-          </div> */}
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-x-1 items-center">
+              <MdVerified size={16} className="text-danger" />
+              <p className="text-base capitalize">{user.name}</p>
+            </div>
+            <div className="flex gap-1 items-center">
+              <Chip color="success" variant="flat" size="sm">
+                <p className="text-xs">Verified User</p>
+              </Chip>
+            </div>
+          </div>
         </div>
       </Link>
     </Tooltip>
@@ -73,6 +88,8 @@ const items2 = [
 ];
 const Content = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { setIsSeller } = useSeller();
 
   const messageCB = (message) => {
     toast.success(message);
@@ -81,35 +98,12 @@ const Content = () => {
   const handleLogout = () => {
     logout(messageCB);
     localStorage.clear();
-    navigate("/");
+    queryClient.clear();
+    setIsSeller(false);
+    navigate("/logout");
   };
   return (
     <div className="w-[300px]">
-      <Card className="mt-2" shadow="sm">
-        <CardBody>
-          <div className="flex gap-2">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              width={50}
-            />
-            <div className="flex flex-col gap-1">
-              <p>Aldrin Mursidi</p>
-              <div className="flex gap-1">
-                <RiPoliceBadgeFill size={20} className="text-sky-600" />
-                Member Diamond
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-      <div className="flex justify-between p-5 items-center mt-2">
-        <div className="flex gap-2 items-center">
-          <GrMoney size={20} className="text-warning" />
-          <p className="text-small">Saldo</p>
-        </div>
-        <div className="font-bold">Rp50.000.000</div>
-      </div>
-      <Divider className="my-1" />
       <div className="grid grid-cols-2 gap-2">
         <div className="mt-2 flex flex-col gap-y-1">
           {items2.map((item, index) => (

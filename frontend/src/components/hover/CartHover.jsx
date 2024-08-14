@@ -65,7 +65,10 @@ const Content = ({ data, totalCart }) => {
                   }`}
                   width={50}
                   height={50}
+                  alt={item?.Product?.title}
+                  className="object-contain"
                 />
+
                 <p className="">
                   {item?.Product?.title?.length >= 30
                     ? item?.Product?.title?.slice(0, 30) + "..."

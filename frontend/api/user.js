@@ -51,3 +51,187 @@ export const updateCart = async (body) => {
     );
   }
 };
+
+export const removeCart = async (cartId) => {
+  try {
+    const data = await api({
+      method: "DELETE",
+      url: "/user/cart",
+      data: {
+        cartId,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal menghapus cart"
+    );
+  }
+};
+
+export const bulkRemoveCart = async (cartId) => {
+  try {
+    const data = await api({
+      method: "DELETE",
+      url: "/user/cart/bulk",
+      data: {
+        cartId,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal menghapus cart"
+    );
+  }
+};
+
+export const addWishlist = async (productId) => {
+  try {
+    const data = await api({
+      method: "POST",
+      url: "/user/wishlist",
+      data: {
+        productId,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal menambahkan wishlist"
+    );
+  }
+};
+
+export const fetchWishlist = async () => {
+  try {
+    const { data } = await api({
+      method: "GET",
+      url: "/user/wishlist",
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data wishlist"
+    );
+  }
+};
+
+export const removeWishlist = async (productId) => {
+  try {
+    const data = await api({
+      method: "DELETE",
+      url: "/user/wishlist",
+      data: {
+        productId,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal menghapus wishlist"
+    );
+  }
+};
+
+export const addCheckout = async (cartId) => {
+  try {
+    const data = await api({
+      method: "POST",
+      url: "/user/checkout",
+      data: {
+        cartId,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal checkout"
+    );
+  }
+};
+
+export const fetchCheckout = async () => {
+  try {
+    const data = await api({
+      method: "GET",
+      url: "/user/checkout",
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data checkout"
+    );
+  }
+};
+
+export const addShipmentInfo = async (body) => {
+  try {
+    const data = await api({
+      method: "POST",
+      url: "/user/shipment",
+      data: {
+        ...body,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal checkout"
+    );
+  }
+};
+
+export const fetchShipmentInfo = async () => {
+  try {
+    const { data } = await api({
+      method: "GET",
+      url: "/user/shipment",
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data shipment"
+    );
+  }
+};
+export const addOrder = async (body) => {
+  try {
+    const data = await api({
+      method: "POST",
+      url: "/user/order",
+      data: {
+        ...body,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal membuat pesanan"
+    );
+  }
+};
+
+export const fetchOrder = async () => {
+  try {
+    const { data } = await api({
+      method: "GET",
+      url: "/user/order",
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data pesanan"
+    );
+  }
+};

@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
 
       Checkout.hasMany(models.Order);
       Checkout.belongsTo(models.User);
+      Checkout.belongsTo(models.Cart);
     }
   }
   Checkout.init(
     {
       CartId: DataTypes.INTEGER,
       UserId: DataTypes.INTEGER,
+      isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     },
     {
       sequelize,

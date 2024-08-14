@@ -1,4 +1,9 @@
+import { useMutation } from "@tanstack/react-query";
 import { Flex, Input, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { resendOtp } from "../../api/auth";
+import toast from "react-hot-toast";
+import { Button } from "@nextui-org/react";
 const { Title } = Typography;
 
 const OtpPage = ({ email, setValue }) => {
@@ -14,9 +19,6 @@ const OtpPage = ({ email, setValue }) => {
     }
   };
 
-  const sharedProps = {
-    onChange,
-  };
   return (
     <Flex gap="middle" align="middle" vertical>
       <Title level={5} align="middle">
@@ -29,7 +31,6 @@ const OtpPage = ({ email, setValue }) => {
       </div>
       <Input.OTP
         formatter={(str) => str.toUpperCase()}
-        {...sharedProps}
         justify="end"
         onChange={onChange}
       />

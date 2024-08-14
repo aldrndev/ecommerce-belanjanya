@@ -67,7 +67,8 @@ class SellerController {
 
       res.status(201).json({
         statusCode: 201,
-        message: "Selamat anda sudah terdaftar sebagai Seller",
+        message:
+          "Selamat anda terdaftar sebagai seller, silahkan tambahkan produk anda",
         data: create,
         isSeller: true,
       });

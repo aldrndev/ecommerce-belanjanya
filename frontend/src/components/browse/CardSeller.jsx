@@ -1,4 +1,16 @@
-import { Button, Card, CardBody, Image, input, Input } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  Tab,
+  Tabs,
+  useDisclosure,
+} from "@nextui-org/react";
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { GoPencil } from "react-icons/go";
@@ -10,12 +22,20 @@ import { FaStar } from "react-icons/fa";
 import CustomInputNumber from "../CustomInputNumber";
 import { formatRupiah } from "../../../utils/formatCurrency";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addCart } from "../../../api/user";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  addCart,
+  addWishlist,
+  fetchWishlist,
+  removeWishlist,
+} from "../../../api/user";
 import toast, { ToastBar } from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
+import AuthPage from "../AuthPage";
+import Login from "../auth/Login";
+import Register from "../auth/Register";
 
-const CardSeller = ({ product }) => {
+const CardSeller = ({ product, isLogin }) => {
   const [isNote, setIsNote] = useState("false");
   const queryClient = useQueryClient();
   const {
@@ -64,7 +84,7 @@ const CardSeller = ({ product }) => {
           />
         ),
         {
-          duration: 2000,
+          duration: 3000,
           style: {
             maxWidth: "500px",
           },
@@ -78,7 +98,9 @@ const CardSeller = ({ product }) => {
   });
 
   const onSubmit = (data) => {
-    mutate({ ...data, productId: product?.id });
+    if (isLogin) {
+      mutate({ ...data, productId: product?.id });
+    }
   };
 
   useEffect(() => {
@@ -86,6 +108,44 @@ const CardSeller = ({ product }) => {
       setValueForm("note", "");
     }
   }, [isNote]);
+
+  const { mutate: mutateAddWishlist, isPending: pendingAddWishlist } =
+    useMutation({
+      mutationFn: addWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const { data: wishlistData, isPending: pendingGetWishlist } = useQuery({
+    queryKey: ["wishlist"],
+    queryFn: fetchWishlist,
+    enabled: isLogin,
+  });
+
+  const handleWishlist = (id) => {
+    mutateAddWishlist(id);
+  };
+
+  const { mutate: removeWishlistMutate, isPending: pendingRemoveWishlist } =
+    useMutation({
+      mutationFn: removeWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleRemoveWishlist = (id) => {
+    removeWishlistMutate(id);
+  };
 
   return (
     <Card shadow="sm">
@@ -149,9 +209,17 @@ const CardSeller = ({ product }) => {
               <p className="font-semibold">{formatRupiah(subTotalPrice)}</p>
             </div>
             <div className="mt-4 flex flex-col gap-2 mb-6">
-              <Button color="danger" type="submit">
-                + Keranjang
-              </Button>
+              {isLogin ? (
+                <div>
+                  <Button color="danger" type="submit" fullWidth>
+                    + Keranjang
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <AuthPageCart />
+                </div>
+              )}
               <Button color="danger" variant="bordered">
                 Beli Langsung
               </Button>
@@ -178,21 +246,45 @@ const CardSeller = ({ product }) => {
                 </div>
                 <div className="flex items-center gap-2 text-sm capitalize">
                   <CiLocationOn />
-                  {product?.Seller?.city.toLowerCase()}
+                  {product?.Seller?.city?.toLowerCase()}
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-6 flex justify-between text-sm">
+          <div className="mt-6 flex justify-between text-sm items-center">
             <div className="flex items-center gap-2">
               <IoChatboxEllipsesOutline />
               Chat
             </div>
             {"|"}
-            <div className="flex items-center gap-2">
-              <HeartOutlined />
-              Wishlist
-            </div>
+            {isLogin ? (
+              <div
+                className="flex justify-end cursor-pointer"
+                onClick={
+                  wishlistData?.find((item) => item.ProductId === product?.id)
+                    ? () => handleRemoveWishlist(product?.id)
+                    : () => handleWishlist(product?.id)
+                }
+              >
+                {wishlistData?.find(
+                  (item) => item.ProductId === product?.id
+                ) ? (
+                  <div className="flex gap-x-2 items-center">
+                    <HeartFilled className="text-danger" />
+                    Wishlist
+                  </div>
+                ) : (
+                  <div className="flex gap-x-2 items-center">
+                    <HeartOutlined />
+                    Wishlist
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <AuthPage iconAuth={true} iconName={<HeartOutlined />} />
+              </div>
+            )}
             {"|"}
             <div className="flex items-center gap-2">
               <CiShare2 />
@@ -238,5 +330,78 @@ export const CustomToast = ({ t, product, quantity, totalPrice, message }) => {
         </>
       )}
     </ToastBar>
+  );
+};
+
+const AuthPageCart = () => {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selected, setSelected] = useState("login");
+  const [isVisible, setIsVisible] = useState(false);
+  const [step, setStep] = useState(1);
+  const [stepLogin, setStepLogin] = useState(1);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const handleNext = () => {
+    setStep(step + 1);
+  };
+
+  const handleNextLogin = (value) => {
+    setStepLogin(stepLogin + value);
+  };
+
+  return (
+    <>
+      <Button onPress={onOpen} color="danger" variant="solid" fullWidth>
+        + Keranjang
+      </Button>
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="top-center"
+        size="4xl"
+        scrollBehavior="outside"
+      >
+        <ModalContent>
+          <ModalBody>
+            <div className="flex flex-col w-full mt-5 p-5">
+              <Tabs
+                size="lg"
+                aria-label="Tabs form"
+                selectedKey={selected}
+                onSelectionChange={setSelected}
+                variant="solid"
+                className="mb-3 mx-auto max-w-lg"
+                radius="full"
+                fullWidth
+              >
+                <Tab key="login" title="Login">
+                  <Login
+                    onOpenChange={onOpenChange}
+                    isVisible={isVisible}
+                    toggleVisibility={toggleVisibility}
+                    stepLogin={stepLogin}
+                    handleNextLogin={handleNextLogin}
+                    setSelected={setSelected}
+                    handleNext={handleNext}
+                  />
+                </Tab>
+                <Tab key="sign-up" title="Daftar">
+                  <Register
+                    onOpenChange={onOpenChange}
+                    isVisible={isVisible}
+                    toggleVisibility={toggleVisibility}
+                    step={step}
+                    handleNext={handleNext}
+                    setSelected={setSelected}
+                    handleNextLogin={handleNextLogin}
+                  />
+                </Tab>
+              </Tabs>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };

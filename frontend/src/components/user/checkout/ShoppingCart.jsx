@@ -18,6 +18,7 @@ import {
 import {
   EditOutlined,
   HeartOutlined,
+  HeartFilled,
   DeleteOutlined,
   RightOutlined,
 } from "@ant-design/icons";
@@ -25,17 +26,31 @@ import { useEffect, useState } from "react";
 import CustomInputNumber from "../../CustomInputNumber";
 import { CiDiscount1 } from "react-icons/ci";
 import { Empty } from "antd";
-import { fetchCart, updateCart } from "../../../../api/user";
+import {
+  addCheckout,
+  addWishlist,
+  bulkRemoveCart,
+  fetchCart,
+  fetchWishlist,
+  removeCart,
+  removeWishlist,
+  updateCart,
+} from "../../../../api/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatRupiah } from "../../../../utils/formatCurrency";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { MdVerified } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = () => {
   const [allSelected, setAllSelected] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [selectedSeller, setSelectedSeller] = useState([]);
+  const [selectedCart, setSelectedCart] = useState([]);
+
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data, isPending } = useQuery({
     queryKey: ["cart"],
@@ -48,12 +63,17 @@ const ShoppingCart = () => {
         item.products.map((product) => product.ProductId)
       );
       const allSellerNames = data.map((item) => item.sellerName);
+      const allCart = data.flatMap((item) =>
+        item.products.map((product) => product.id)
+      );
       setSelectedItem(allProductIds);
       setSelectedSeller(allSellerNames);
+      setSelectedCart(allCart);
       setAllSelected(true);
     } else {
       setSelectedItem([]);
       setSelectedSeller([]);
+      setSelectedCart([]);
       setAllSelected(false);
     }
   };
@@ -81,69 +101,113 @@ const ShoppingCart = () => {
     }
   }, [selectedItem, selectedSeller, data]);
 
-  console.log(selectedItem);
-  console.log(selectedSeller);
+  const { mutate: mutateBulkRemoveCart, isPending: pendingBulkRemoveCart } =
+    useMutation({
+      mutationFn: bulkRemoveCart,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+        setSelectedItem([]);
+        setSelectedSeller([]);
+        setSelectedCart([]);
+        setAllSelected(false);
+        toast.success(data.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const bulkRemoveCartHandler = (cartId) => {
+    mutateBulkRemoveCart(cartId);
+  };
+
+  const { mutate: mutateAddCheckout, isPending: pendingMutateAddCheckout } =
+    useMutation({
+      mutationFn: addCheckout,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        navigate("/shipment");
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleAddCheckout = (cartId) => {
+    mutateAddCheckout(cartId);
+  };
 
   return (
     <>
       <div>
         <h1 className="text-2xl font-semibold">Keranjang</h1>
       </div>
-      <div className="flex justify-between gap-x-5 mt-3">
-        <div className="w-full">
-          <div className="flex justify-between p-5 shadow-small rounded-xl">
-            <div>
-              <Checkbox
-                isSelected={allSelected}
-                onChange={(e) => handleSelectAll(e.target.checked)}
-              >
-                <p className="ml-1">Pilih Semua ({selectedItem.length})</p>
-              </Checkbox>
-            </div>
-            {selectedItem.length > 0 && (
-              <div
-                className="text-danger hover:text-red-700 cursor-pointer"
-                onClick={() => {
-                  setSelectedItem([]);
-                  setSelectedSeller([]);
-                  setAllSelected(false);
-                }}
-              >
-                Hapus Keranjang
+      {data?.length === 0 ? (
+        <div className="flex flex-col gap-y-2 justify-center items-center">
+          <Empty />
+          <p>Keranjang kamu masih kosong</p>
+        </div>
+      ) : (
+        <div className="flex justify-between gap-x-5 mt-3">
+          <div className="w-full">
+            <div className="flex justify-between p-5 shadow-small rounded-xl">
+              <div>
+                <Checkbox
+                  isSelected={allSelected}
+                  onChange={(e) => handleSelectAll(e.target.checked)}
+                >
+                  <p className="ml-1">Pilih Semua ({selectedItem.length})</p>
+                </Checkbox>
               </div>
-            )}
-          </div>
-          {data?.map((item, index) => (
-            <div className="p-5 shadow-small mt-3 rounded-xl" key={index}>
-              <CartList
-                seller={item?.sellerName}
-                data={item.products}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-                selectedSeller={selectedSeller}
-                setSelectedSeller={setSelectedSeller}
-              />
+              {selectedItem.length > 0 && (
+                <div
+                  className="text-danger hover:text-red-700 cursor-pointer"
+                  onClick={() => {
+                    bulkRemoveCartHandler(selectedCart);
+                  }}
+                >
+                  Hapus Keranjang
+                </div>
+              )}
             </div>
-          ))}
+            {data?.map((item, index) => (
+              <div className="p-5 shadow-small mt-3 rounded-xl" key={index}>
+                <CartList
+                  seller={item?.sellerName}
+                  data={item.products}
+                  selectedItem={selectedItem}
+                  setSelectedItem={setSelectedItem}
+                  selectedSeller={selectedSeller}
+                  setSelectedSeller={setSelectedSeller}
+                  selectedCart={selectedCart}
+                  setSelectedCart={setSelectedCart}
+                />
+              </div>
+            ))}
+          </div>
+          <div className="shadow-small rounded-xl p-5 w-1/3 h-full sticky top-40">
+            <h1 className="text-lg font-semibold">Ringkasan Belanja</h1>
+            <div className="flex justify-between items-center mt-2">
+              <p className="text-gray-500">Total</p>
+              <p className="font-semibold">{formatRupiah(totalPrice)}</p>
+            </div>
+            <Divider className="my-4" />
+            <div>
+              <PromoModal />
+            </div>
+            <Divider className="my-4" />
+            <div>
+              <Button
+                color="danger"
+                fullWidth
+                onClick={() => handleAddCheckout(selectedCart)}
+              >
+                Beli
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="shadow-small rounded-xl p-5 w-1/3 h-full sticky top-40">
-          <h1 className="text-lg font-semibold">Ringkasan Belanja</h1>
-          <div className="flex justify-between items-center mt-2">
-            <p className="text-gray-500">Total</p>
-            <p className="font-semibold">{formatRupiah(totalPrice)}</p>
-          </div>
-          <Divider className="my-4" />
-          <div>
-            <PromoModal />
-          </div>
-          <Divider className="my-4" />
-          <div>
-            <Button color="danger" fullWidth>
-              Beli
-            </Button>
-          </div>
-        </div>
-      </div>
+      )}
     </>
   );
 };
@@ -157,6 +221,7 @@ const CartList = ({
   setSelectedItem,
   selectedSeller,
   setSelectedSeller,
+  setSelectedCart,
 }) => {
   const [isOpen, setIsOpen] = useState(null);
   const [quantities, setQuantities] = useState(
@@ -217,7 +282,8 @@ const CartList = ({
   };
 
   const handleSellerCheck = (checked) => {
-    const sellerProductIds = data.map((item) => item.ProductId);
+    const sellerProductIds = data?.map((item) => item.ProductId);
+    const cartId = data?.map((item) => item.id);
 
     if (checked) {
       setSelectedItem((prev) => {
@@ -229,11 +295,16 @@ const CartList = ({
       if (!selectedSeller.includes(seller)) {
         setSelectedSeller((prev) => [...prev, seller]);
       }
+      setSelectedCart((prev) => {
+        const newSelectedCart = prev.filter((id) => !cartId.includes(id));
+        return [...newSelectedCart, ...cartId];
+      });
     } else {
       setSelectedItem((prev) =>
         prev.filter((id) => !sellerProductIds.includes(id))
       );
       setSelectedSeller((prev) => prev.filter((sel) => sel !== seller));
+      setSelectedCart((prev) => prev.filter((id) => !cartId.includes(id)));
     }
   };
 
@@ -264,6 +335,89 @@ const CartList = ({
     }
   }, [selectedItem, data]);
 
+  const { mutate: mutateAddWishlist, isPending: pendingAddWishlist } =
+    useMutation({
+      mutationFn: addWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const { data: wishlistData, isPending: pendingGetWishlist } = useQuery({
+    queryKey: ["wishlist"],
+    queryFn: fetchWishlist,
+  });
+
+  const handleWishlist = (id) => {
+    mutateAddWishlist(id);
+  };
+
+  const { mutate: removeWishlistMutate, isPending: pendingRemoveWishlist } =
+    useMutation({
+      mutationFn: removeWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleRemoveWishlist = (id) => {
+    removeWishlistMutate(id);
+  };
+
+  const { mutate: mutateRemoveCart, isPending: pendingRemoveCart } =
+    useMutation({
+      mutationFn: removeCart,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+        toast.success(data.message);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleRemoveCart = (id) => {
+    mutateRemoveCart(id);
+  };
+
+  const handleCheckBox = (productIds) => {
+    setSelectedItem((prevSelectedItems) => {
+      const unCheckedIds = prevSelectedItems.filter(
+        (id) => !productIds.includes(id)
+      );
+      const newCheckedIds = productIds.filter(
+        (id) => !prevSelectedItems.includes(id)
+      );
+
+      const cartItemsToRemove = data.filter((item) =>
+        unCheckedIds.includes(item.ProductId)
+      );
+      const cartItemsToAdd = data.filter((item) =>
+        newCheckedIds.includes(item.ProductId)
+      );
+
+      const cartIdsToRemove = cartItemsToRemove.map((item) => item.id);
+      const cartIdsToAdd = cartItemsToAdd.map((item) => item.id);
+
+      setSelectedCart((prevSelectedCarts) => {
+        const newSelectedCart = prevSelectedCarts.filter(
+          (id) => !cartIdsToRemove.includes(id)
+        );
+        return [...newSelectedCart, ...cartIdsToAdd];
+      });
+
+      return productIds;
+    });
+  };
+
   return (
     <div>
       <div className="capitalize">
@@ -286,29 +440,32 @@ const CartList = ({
           </div>
         </div>
       </div>
-      <CheckboxGroup value={selectedItem} onValueChange={setSelectedItem}>
+
+      <CheckboxGroup value={selectedItem} onValueChange={handleCheckBox}>
         {data?.map((item, index) => (
           <div className="mt-3" key={index}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex justify-between items-center">
-                <div className="flex w-3/5">
+              <Divider className="mb-4" />
+              <div className="flex justify-between items-center gap-x-2">
+                <div className="flex w-full">
                   <Checkbox value={item?.ProductId}>
-                    <div className="flex gap-x-3">
-                      <Image
-                        src={`http://localhost:3000/${
-                          item?.Product?.Images?.at(0).image
-                        }`}
-                        width={80}
-                      />
-                      <div className="flex flex-col">
+                    <div className="flex gap-x-3 items-center">
+                      <div className="w-20 h-20 flex justify-center items-center">
+                        <Image
+                          src={`http://localhost:3000/${
+                            item?.Product?.Images?.at(0).image
+                          }`}
+                          width={80}
+                          height={80}
+                          className="object-contain"
+                          alt={item?.Product?.title}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-y-1 flex-1">
                         <p className="text-warning text-xs">
                           Sisa {item?.Product?.stock}
                         </p>
-                        <p>
-                          {item?.Product?.title.length > 70
-                            ? `${item?.Product?.title.slice(0, 70)}...`
-                            : item?.Product?.title}
-                        </p>
+                        <p>{item?.Product?.title}</p>
                         <p className="text-sm text-gray-500 mt-1">
                           Catatan: {item.note || "Tidak ada catatan"}
                         </p>
@@ -316,11 +473,14 @@ const CartList = ({
                     </div>
                   </Checkbox>
                 </div>
-                <div className="flex flex-col gap-y-1 justify-end items-end">
+                <div className="flex flex-col gap-y-1 justify-end items-end ">
                   <div className="font-semibold">
                     {formatRupiah(item?.quantity * item?.Product?.price)}
                   </div>
-                  <div className="line-through text-gray-400">Rp439.000</div>
+                  {item.Product.discount !== 0 && (
+                    <div className="line-through text-gray-400">Rp439.000</div>
+                  )}
+
                   <div className="flex items-center gap-x-3">
                     <Popover
                       placement="bottom"
@@ -361,8 +521,28 @@ const CartList = ({
                         </div>
                       </PopoverContent>
                     </Popover>
-                    <HeartOutlined className="text-xl text-gray-500 cursor-pointer" />
-                    <DeleteOutlined className="text-xl text-gray-500 cursor-pointer" />
+                    <div
+                      className="flex justify-end cursor-pointer"
+                      onClick={
+                        wishlistData?.find(
+                          (wishlist) => wishlist.ProductId === item.ProductId
+                        )
+                          ? () => handleRemoveWishlist(item.ProductId)
+                          : () => handleWishlist(item.ProductId)
+                      }
+                    >
+                      {wishlistData?.find(
+                        (wishlist) => wishlist.ProductId === item.ProductId
+                      ) ? (
+                        <HeartFilled className="text-danger text-xl" />
+                      ) : (
+                        <HeartOutlined className="text-xl" />
+                      )}
+                    </div>
+                    <DeleteOutlined
+                      className="text-xl text-gray-500 cursor-pointer"
+                      onClick={() => handleRemoveCart(item.id)}
+                    />
                     <CustomInputNumber
                       width={"w-16"}
                       value={quantities[index]}

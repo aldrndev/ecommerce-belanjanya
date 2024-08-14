@@ -19,12 +19,14 @@ import SalesHistory from "../src/components/seller/SalesHistory";
 import RegisterSeller from "../src/components/seller/RegisterSeller";
 import CartPage from "../src/pages/CartPage";
 import ShipmentPage from "../src/pages/ShipmentPage";
+import OrderPage from "../src/components/user/checkout/OrderPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   },
+
   {
     path: "/home",
     element: <Home />,
@@ -37,9 +39,10 @@ const router = createBrowserRouter([
       return null;
     },
   },
+
   {
-    path: "/dashboard",
-    element: <AdminPage />,
+    path: "/logout",
+    element: <Home />,
   },
   {
     path: "/product",
@@ -52,6 +55,14 @@ const router = createBrowserRouter([
   {
     path: "/user",
     element: <UserPage />,
+    loader: () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        return redirect("/");
+      }
+      return null;
+    },
     children: [
       {
         path: "profile",
@@ -94,6 +105,14 @@ const router = createBrowserRouter([
   {
     path: "/seller",
     element: <UserPage />,
+    loader: () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        return redirect("/");
+      }
+      return null;
+    },
     children: [
       {
         path: "register",
@@ -124,10 +143,38 @@ const router = createBrowserRouter([
   {
     path: "/cart",
     element: <CartPage />,
+    loader: () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        return redirect("/");
+      }
+      return null;
+    },
   },
   {
-    path: "/cart/shipment",
+    path: "/shipment",
     element: <ShipmentPage />,
+    loader: () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        return redirect("/");
+      }
+      return null;
+    },
+  },
+  {
+    path: "/order",
+    element: <OrderPage />,
+    loader: () => {
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        return redirect("/");
+      }
+      return null;
+    },
   },
 ]);
 

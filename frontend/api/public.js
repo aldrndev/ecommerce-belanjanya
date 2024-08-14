@@ -45,7 +45,7 @@ export const fetchProductWithFilter = async (
   location,
   sort,
   newCategory,
-  page = 1
+  page
 ) => {
   try {
     const { data } = await axiosApi({

@@ -118,7 +118,7 @@ const SellingProduct = () => {
               onChange={handleSelectionChange}
             >
               <SelectItem key={"baru"}>Baru</SelectItem>
-              <SelectItem key={"bekas"}>bekas</SelectItem>
+              <SelectItem key={"bekas"}>Bekas</SelectItem>
             </Select>
             <Input
               isRequired

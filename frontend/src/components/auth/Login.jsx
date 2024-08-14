@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { StepThree, StepTwo } from "./Register";
+import { useSeller } from "../seller/RegisterSeller";
 
 const Login = ({
   onOpenChange,
@@ -25,6 +26,7 @@ const Login = ({
   } = useForm();
 
   const navigate = useNavigate();
+  const { setIsSeller } = useSeller();
 
   const { isPending, mutate } = useMutation({
     mutationFn: login,
@@ -36,6 +38,8 @@ const Login = ({
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("user", user);
         localStorage.setItem("isSeller", data.isSeller);
+        localStorage.setItem("seller", JSON.stringify(data.seller));
+        setIsSeller(data.isSeller);
         navigate("/home");
         onOpenChange(false);
         reset();
@@ -50,6 +54,7 @@ const Login = ({
       } else {
         toast.error(data.message);
         localStorage.setItem("access_token", data.access_token);
+        setIsSeller(data.isSeller);
         handleNextLogin(2);
       }
     },

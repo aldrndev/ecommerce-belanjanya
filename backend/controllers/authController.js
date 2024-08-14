@@ -1,5 +1,5 @@
 const { generateOTP, sendEmail } = require("../helpers/helper");
-const { User, Profile, sequelize } = require("../models");
+const { User, Profile, Seller } = require("../models");
 const { comparePassword } = require("../utils/bcrypt");
 const {
   createOtp,
@@ -67,7 +67,7 @@ class AuthController {
           sameSite: "Strict",
         });
 
-        res.status(200).json({
+        return res.status(200).json({
           statusCode: 200,
           message:
             "Profile anda belum terdaftar, silahkan lengkapi profile anda dibawah ini",
@@ -75,7 +75,18 @@ class AuthController {
           isProfile: false,
           access_token: generateToken,
         });
-        return;
+      }
+
+      const checkSeller = await Seller.findOne({
+        where: {
+          UserId: checkUser.id,
+        },
+      });
+
+      let dataSeller = {};
+
+      if (checkSeller) {
+        dataSeller = { ...checkSeller.dataValues };
       }
 
       const payload = {
@@ -104,6 +115,7 @@ class AuthController {
         isVerified: true,
         isProfile: true,
         isSeller: checkUser.isSeller,
+        seller: checkSeller ? dataSeller : {},
       });
     } catch (error) {
       next(error);
@@ -204,6 +216,18 @@ class AuthController {
         UserId: checkUser.id,
       });
 
+      const checkSeller = await Seller.findOne({
+        where: {
+          UserId: checkUser.id,
+        },
+      });
+
+      let dataSeller = {};
+
+      if (checkSeller) {
+        dataSeller = { ...checkSeller.dataValues };
+      }
+
       const user = {
         email: checkUser.email,
         name: createProfile.name,
@@ -216,6 +240,7 @@ class AuthController {
         statusCode: 201,
         message: `Selamat ${createProfile.name}, Profile anda berhasil dibuat`,
         data: user,
+        seller: checkSeller ? dataSeller : {},
       });
     } catch (error) {
       if (req.file) {
@@ -278,6 +303,39 @@ class AuthController {
       res.status(200).json({
         statusCode: 200,
         message: "Berhasil keluar",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async resendOtp(req, res, next) {
+    try {
+      const { email } = req.body;
+
+      const checkUser = await User.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (!checkUser) return next(new Error("User tidak ditemukan"));
+
+      const otp = generateOTP();
+
+      const payload = {
+        id: checkUser.id,
+        email: checkUser.email,
+        otp,
+      };
+
+      const tokenOtp = createOtp(payload);
+      await sendEmail(email, otp);
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Silahkan cek email anda untuk verifikasi OTP",
+        tokenOtp,
       });
     } catch (error) {
       next(error);

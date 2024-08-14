@@ -1,20 +1,34 @@
-import { Image } from "@nextui-org/react";
+import { Divider, Image } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import CardLayout from "./CardLayout";
 
 const UseProfile = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const seller = JSON.parse(localStorage.getItem("seller"));
+  const isSeller = localStorage.getItem("isSeller") === "true";
+
+  let newAddress = "";
+
+  if (isSeller) {
+    const {
+      address,
+      province,
+      city,
+      district,
+      subDistrict,
+      rt,
+      rw,
+      postalCode,
+    } = seller;
+
+    newAddress = `${address}, rt ${rt} rw ${rw}, kelurahan ${district}, kecamatan ${subDistrict}, ${city}, ${province}, ${postalCode}`;
+  }
+
   return (
     <div>
       <CardLayout>
-        <div className="flex gap-x-10">
-          <div>
-            <Image
-              src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?q=80&w=2885&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="image"
-              width={450}
-            />
-          </div>
-          <table className="w-full text-sm">
+        <div className="flex gap-x-10 h-[400px] p-2">
+          <table className="w-full text-sm capitalize">
             <tbody>
               <tr>
                 <td colSpan={2} className="text-lg font-bold mb-4">
@@ -22,21 +36,21 @@ const UseProfile = () => {
                 </td>
               </tr>
               <tr>
-                <td className="font-semibold pr-4">Nama</td>
-                <td>Aldrin Mursidi</td>
+                <td className="font-semibold w-1/4">Nama</td>
+                <td>{user?.name}</td>
               </tr>
               <tr>
-                <td className="font-semibold pr-4">No Handphone</td>
-                <td>081234567890</td>
+                <td className="font-semibold w-1/4">No Handphone</td>
+                <td>{user?.phone}</td>
               </tr>
               <tr>
-                <td className="font-semibold pr-4">Alamat</td>
-                <td>Jl Kramat Jati Indonesia, 17233</td>
+                <td className="font-semibold w-1/4">Alamat</td>
+                <td className="capitalize">{user?.address}</td>
               </tr>
               <tr>
-                <td className="font-semibold pr-4">Email</td>
-                <td>
-                  aldrin@gmail.com
+                <td className="font-semibold w-1/4">Email</td>
+                <td className="lowercase">
+                  {user?.email}
                   <Chip
                     color="success"
                     variant="flat"
@@ -47,6 +61,23 @@ const UseProfile = () => {
                   </Chip>
                 </td>
               </tr>
+              {isSeller && (
+                <>
+                  <tr>
+                    <td colSpan={2} className="text-lg font-bold mb-4">
+                      Biodata Seller
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="font-semibold w-1/4">Nama</td>
+                    <td>{seller?.name}</td>
+                  </tr>
+                  <tr>
+                    <td className="font-semibold w-1/4">Alamat</td>
+                    <td className="capitalize">{newAddress.toLowerCase()}</td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>

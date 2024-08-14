@@ -142,13 +142,12 @@ const UserSidebar = () => {
     setSelectedKey(defaultSelectedKey);
   }, [location]);
 
-  const onClick = (e) => {
-    console.log("click ", e);
-  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [selectedKey]);
 
   return (
     <Menu
-      onClick={onClick}
       style={{
         width: 256,
         boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",

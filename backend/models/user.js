@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Discussion);
       User.hasMany(models.DiscussionMessage);
       User.hasMany(models.Review);
+      User.hasOne(models.Shipment);
     }
   }
   User.init(

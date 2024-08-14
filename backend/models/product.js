@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       weight: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       location: DataTypes.STRING,
+      discount: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       SellerId: DataTypes.INTEGER,
       ChildrenSubCategoryId: DataTypes.INTEGER,
     },

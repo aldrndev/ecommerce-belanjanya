@@ -10,7 +10,7 @@ export const login = async (body) => {
         ...body,
       },
     });
-    console.log(data);
+
     return data;
   } catch (error) {
     throw new Error(
@@ -178,6 +178,25 @@ export const logout = async (messageCb) => {
       error.response?.data.message ||
         error?.message ||
         "Ada kesalahan saat keluar"
+    );
+  }
+};
+
+export const resendOtp = async (body) => {
+  try {
+    const { data } = await axiosApi({
+      method: "POST",
+      url: `/auth/resend`,
+      data: {
+        ...body,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data.message ||
+        error?.message ||
+        "Ada kesalahan saat resend otp"
     );
   }
 };

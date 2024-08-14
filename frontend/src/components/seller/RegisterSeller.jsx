@@ -36,8 +36,10 @@ const RegisterSeller = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       localStorage.removeItem("isSeller");
+      localStorage.removeItem("seller");
       setIsSeller(data.isSeller); // update context
       localStorage.setItem("isSeller", data.isSeller);
+      localStorage.setItem("seller", JSON.stringify(data.data));
       navigate("/seller/add-product");
       reset();
     },
@@ -74,31 +76,31 @@ const RegisterSeller = () => {
   });
 
   const handleProvince = (value) => {
-    const selected = province.find((province) => province.id === value);
-    setSelectedProvince(selected.id);
-    setValue("province", selected.name);
+    const selected = province?.find((province) => province.id === value);
+    setSelectedProvince(selected?.id);
+    setValue("province", selected?.name);
     if (selectedProvince) refetchCity();
   };
 
   const handleCity = (value) => {
-    const selected = cityData.find((city) => city.id === value);
-    setSelectedCity(selected.id);
-    setValue("city", selected.name);
+    const selected = cityData?.find((city) => city.id === value);
+    setSelectedCity(selected?.id);
+    setValue("city", selected?.name);
     if (selectedCity) refetchDistrict();
   };
 
   const handleDistrict = (value) => {
-    const selected = districtData.find((district) => district.id === value);
-    setSelectedDistrict(selected.id);
-    setValue("district", selected.name);
+    const selected = districtData?.find((district) => district.id === value);
+    setSelectedDistrict(selected?.id);
+    setValue("district", selected?.name);
     if (selectedDistrict) refetchSubDistrict();
   };
 
   const handleSubDistrict = (value) => {
-    const selected = subDistrictData.find(
+    const selected = subDistrictData?.find(
       (subDistrict) => subDistrict.id === value
     );
-    setValue("subDistrict", selected.name);
+    setValue("subDistrict", selected?.name);
   };
 
   const onSubmit = (data) => {

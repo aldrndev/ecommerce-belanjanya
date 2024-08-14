@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { TreeSelect } from "antd";
 import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
 import { CiLocationOn } from "react-icons/ci";
-
-import { useSearchParams } from "react-router-dom";
 import {
   fetchCategory,
   fetchChildrenSubCategory,
@@ -11,9 +9,22 @@ import {
 } from "../../../api/seller";
 import { useQuery } from "@tanstack/react-query";
 
-const Sidebar = ({ setCategoryId, updateSearchParams }) => {
+const Sidebar = ({
+  setCategoryId,
+  updateSearchParams,
+  name,
+  location,
+  categoryParams,
+  priceMin,
+  priceMax,
+  handleBlur,
+  handleEnter,
+  handleKeyDownPrice,
+}) => {
   const nameHandler = (value) => {
-    updateSearchParams("name", value);
+    if (value === "") {
+      updateSearchParams("name", "");
+    }
   };
 
   const categoryHandler = (value) => {
@@ -21,15 +32,21 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
   };
 
   const priceMinHandler = (value) => {
-    updateSearchParams("priceMin", value);
+    if (value === "") {
+      updateSearchParams("priceMin", "");
+    }
   };
 
   const priceMaxHandler = (value) => {
-    updateSearchParams("priceMax", value);
+    if (value === "") {
+      updateSearchParams("priceMax", "");
+    }
   };
 
   const locationHandler = (value) => {
-    updateSearchParams("location", value);
+    if (value === "") {
+      updateSearchParams("location", "");
+    }
   };
 
   return (
@@ -43,7 +60,11 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
           <Input
             placeholder="Nama produk"
             onValueChange={nameHandler}
+            onKeyDown={(e) => handleEnter(e, "name", e.target.value)}
+            onBlur={(e) => handleBlur("name", e.target.value)}
             isClearable
+            defaultValue={name}
+            e
           />
         </div>
         <div>
@@ -51,6 +72,7 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
           <SelectCategory
             categoryHandler={categoryHandler}
             setCategoryId={setCategoryId}
+            categoryParams={categoryParams}
           />
         </div>
         <div>
@@ -62,6 +84,11 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
               startContent="Rp"
               isClearable
               onValueChange={priceMinHandler}
+              onKeyDown={(e) =>
+                handleKeyDownPrice(e, "priceMin", e.target.value)
+              }
+              onBlur={(e) => handleBlur("priceMin", e.target.value)}
+              defaultValue={priceMin}
             />
 
             <Input
@@ -70,23 +97,26 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
               startContent="Rp"
               isClearable
               onValueChange={priceMaxHandler}
+              onKeyDown={(e) =>
+                handleKeyDownPrice(e, "priceMax", e.target.value)
+              }
+              onBlur={(e) => handleBlur("priceMax", e.target.value)}
+              defaultValue={priceMax}
             />
           </div>
         </div>
         <div>
           <h1 className=" mb-3 mt-5">Lokasi</h1>
           <div className="flex justify-between gap-3 items-center">
-            <Autocomplete
-              placeholder="Pilih lokasimu..."
-              variant="bordered"
-              startContent={<CiLocationOn className="text-xl" />}
-              className="max-w-xs"
-              label="Kota"
+            <Input
+              placeholder="Masukan kota kamu"
               isClearable
-              onSelectionChange={locationHandler}
-            >
-              <AutocompleteItem key={"jakarta"}>Jakarta</AutocompleteItem>
-            </Autocomplete>
+              startContent={<CiLocationOn />}
+              onValueChange={locationHandler}
+              onKeyDown={(e) => handleEnter(e, "location", e.target.value)}
+              onBlur={(e) => handleBlur("location", e.target.value)}
+              defaultValue={location}
+            />
           </div>
         </div>
       </div>
@@ -96,7 +126,7 @@ const Sidebar = ({ setCategoryId, updateSearchParams }) => {
 
 export default Sidebar;
 
-const SelectCategory = ({ categoryHandler, setCategoryId }) => {
+const SelectCategory = ({ categoryHandler, setCategoryId, categoryParams }) => {
   const [treeData, setTreeData] = useState([]);
   const [value, setValueState] = useState(undefined);
 
@@ -183,6 +213,7 @@ const SelectCategory = ({ categoryHandler, setCategoryId }) => {
           size="large"
           treeNodeFilterProp="title"
           treeExpandAction="click"
+          defaultValue={categoryParams}
         />
       </div>
     </>

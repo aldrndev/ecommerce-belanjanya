@@ -11,7 +11,7 @@ import { useState } from "react";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 
-const AuthPage = () => {
+const AuthPage = ({ iconAuth, iconName }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selected, setSelected] = useState("login");
   const [isVisible, setIsVisible] = useState(false);
@@ -29,15 +29,28 @@ const AuthPage = () => {
 
   return (
     <>
-      <Button
-        onPress={onOpen}
-        color="danger"
-        variant="bordered"
-        radius="full"
-        size="lg"
-      >
-        Login / Daftar
-      </Button>
+      {iconAuth ? (
+        <Button
+          onPress={onOpen}
+          isIconOnly
+          // color="danger"
+          variant="light"
+          radius="full"
+          size="lg"
+        >
+          {iconName}
+        </Button>
+      ) : (
+        <Button
+          onPress={onOpen}
+          color="danger"
+          variant="bordered"
+          radius="full"
+          size="lg"
+        >
+          Login / Daftar
+        </Button>
+      )}
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

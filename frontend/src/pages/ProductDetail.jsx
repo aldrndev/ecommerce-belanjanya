@@ -14,29 +14,23 @@ import { FaStar } from "react-icons/fa";
 import CardSeller from "../components/browse/CardSeller";
 import ReviewDiscussionPage from "../components/browse/ReviewDiscussionPage";
 import RecommendProduct from "../components/browse/RecommendProduct";
-import { useEffect, useState } from "react";
 import FloatChat from "../components/user/chat/FloatChat";
-import { fetchProductById } from "../../api/public";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { formatRupiah } from "../../utils/formatCurrency";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 const ProductDetail = () => {
-  const [searchParams] = useSearchParams();
+  const { state } = useLocation();
+  const { product } = state || {};
 
-  const id = searchParams.get("id");
+  const isLogin = localStorage.getItem("isLogin") === "true";
 
-  const { data, isPending } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProductById(id),
-  });
+  const [isDescription, setIsDescription] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState("");
-
-  const description = data?.description;
-  if (description?.length > 100) {
-    description.slice(0, 100);
-  }
+  const description =
+    product?.description?.length >= 200
+      ? product?.description.slice(0, 200) + "..."
+      : product?.description;
 
   const navigate = useNavigate();
 
@@ -48,12 +42,6 @@ const ProductDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (data) {
-      setCurrentPage(data?.title);
-    }
-  }, [data]);
-
   return (
     <main>
       <div className="fixed top-0 z-50 w-full bg-white border-b-1">
@@ -61,39 +49,27 @@ const ProductDetail = () => {
       </div>
       <div className="container mx-auto">
         <div className="mt-40">
-          <Breadcrumbs
-            underline="active"
-            onAction={(key) => setCurrentPage(key)}
-            className="capitalize"
-          >
-            <BreadcrumbItem
-              key="home"
-              isCurrent={currentPage === "home"}
-              onPress={() => pressHandler("home")}
-            >
+          <Breadcrumbs underline="active" className="capitalize">
+            <BreadcrumbItem key="home" onPress={() => pressHandler("home")}>
               Home
             </BreadcrumbItem>
             <BreadcrumbItem
               key="product"
-              isCurrent={currentPage === "product"}
               onPress={() => pressHandler("product")}
             >
               Product
             </BreadcrumbItem>
-            <BreadcrumbItem
-              key={data?.title}
-              isCurrent={currentPage === data?.title}
-            >
-              {data?.title}
+            <BreadcrumbItem key={product?.title} isCurrent>
+              {product?.title}
             </BreadcrumbItem>
           </Breadcrumbs>
         </div>
         <div className="mt-4 p-8 bg-gray-100 rounded-xl flex justify-between gap-8">
           <div className="w-full">
-            <ImageProduct images={data?.Images} />
+            <ImageProduct images={product?.Images} />
           </div>
           <div className="w-full">
-            <h1 className="text-xl font-bold">{data?.title}</h1>
+            <h1 className="text-xl font-bold">{product?.title}</h1>
             <div className="flex justify-between mt-3">
               <p>Terjual 450</p>
               {"|"}
@@ -106,28 +82,44 @@ const ProductDetail = () => {
             </div>
             <div className="mt-5">
               <h1 className="text-3xl font-bold">
-                {formatRupiah(data?.price)}
+                {formatRupiah(product?.price)}
               </h1>
-              <Chip color="warning" size="sm" radius="sm">
-                -70%
-              </Chip>
-              <span className="line-through text-gray-500 ml-2">Rp250.000</span>
+              {product?.discount !== 0 && (
+                <div className="flex items-center gap-x-2 mt-1">
+                  <Chip color="warning" size="sm" radius="sm">
+                    -70%
+                  </Chip>
+                  <span className="line-through text-gray-500">Rp250.000</span>
+                </div>
+              )}
             </div>
             <Divider className="my-4" />
             <div className="mt-5 text-sm flex gap-2 flex-col">
-              <p>Kategori: {data?.ChildrenSubCategory?.title}</p>
-              <p>Kondisi: {data?.condition}</p>
-              <p>Merek: {data?.brand}</p>
-              <p>Berat: {data?.weight} Gram</p>
+              <p>Kategori: {product?.ChildrenSubCategory?.title}</p>
+              <p>Kondisi: {product?.condition}</p>
+              <p>Merek: {product?.brand}</p>
+              <p>Berat: {product?.weight} Gram</p>
             </div>
             <div className="mt-8 mb-8">
               <h1 className="text-lg font-bold">Deskripsi</h1>
-              <p className="mt-2 text-base">{data?.description}</p>
+              <p className="mt-2 whitespace-pre-wrap break-all">
+                {isDescription ? product?.description : description}
+              </p>
+              {product?.description.length >= 200 && (
+                <span
+                  className="cursor-pointer text-danger"
+                  onClick={() => setIsDescription(!isDescription)}
+                >
+                  {isDescription
+                    ? " Lihat Lebih Sedikit"
+                    : " Lihat Selengkapnya"}
+                </span>
+              )}
             </div>
           </div>
           <div className="w-3/5">
             <div className="sticky top-40">
-              <CardSeller product={data} />
+              <CardSeller product={product} isLogin={isLogin} />
             </div>
           </div>
         </div>

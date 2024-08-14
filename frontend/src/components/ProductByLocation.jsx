@@ -1,5 +1,4 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-// import { Pagination } from "swiper/modules";
 import {
   Autocomplete,
   AutocompleteItem,
@@ -8,11 +7,11 @@ import {
   CardBody,
   CardFooter,
   Image,
+  Input,
 } from "@nextui-org/react";
 import { CiLocationOn } from "react-icons/ci";
 
 import "swiper/css";
-// import "swiper/css/pagination";
 
 import { formatRupiah } from "../../utils/formatCurrency";
 import {
@@ -21,29 +20,82 @@ import {
   HeartFilled,
 } from "@ant-design/icons";
 import { FaStar } from "react-icons/fa";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchProductByLocation } from "../../api/public";
 import { Link, useSearchParams } from "react-router-dom";
 import { Empty } from "antd";
+import { addWishlist, fetchWishlist, removeWishlist } from "../../api/user";
+import toast from "react-hot-toast";
+import AuthPage from "./AuthPage";
+import { useEffect, useState } from "react";
 
 const ProductByLocation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const location = searchParams.get("location");
+  const isLogin = localStorage.getItem("isLogin") === "true";
 
-  const cityHandler = (value) => {
-    if (value) {
-      setSearchParams({ location: value });
-    } else {
-      searchParams.delete("location");
-      setSearchParams(searchParams);
+  const [city, setCity] = useState("");
+
+  const handleCity = (value) => {
+    setCity(value);
+  };
+  const cityHandler = (e) => {
+    if (e.key === "Enter") {
+      setSearchParams({ location: city });
     }
   };
 
-  const { data, isPending } = useQuery({
+  useEffect(() => {
+    if (!city) {
+      searchParams.delete("location");
+      setSearchParams(searchParams);
+    }
+  }, [city]);
+
+  const { data, isPending: pendingProduct } = useQuery({
     queryKey: ["products", location],
     queryFn: () => fetchProductByLocation(location),
   });
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: addWishlist,
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const { data: wishlistData, isPending: pendingGetWishlist } = useQuery({
+    queryKey: ["wishlist"],
+    queryFn: fetchWishlist,
+    enabled: isLogin,
+  });
+
+  const handleWishlist = (id) => {
+    mutate(id);
+  };
+
+  const { mutate: removeWishlistMutate, isPending: pendingRemoveWishlist } =
+    useMutation({
+      mutationFn: removeWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleRemoveWishlist = (id) => {
+    removeWishlistMutate(id);
+  };
 
   return (
     <div className="bg-gray-100 rounded-3xl p-10">
@@ -52,19 +104,17 @@ const ProductByLocation = () => {
           <h1 className="text-2xl font-semibold flex justify-center items-center">
             Produk terbaru di dekatmu
           </h1>
-          <Autocomplete
-            placeholder="Pilih lokasimu..."
+          <Input
+            placeholder="Masukan kota kamu.."
             variant="bordered"
-            startContent={<CiLocationOn className="text-xl" />}
-            className="max-w-xs"
-            label="Kota"
+            size="lg"
+            className="w-1/2"
+            startContent={<CiLocationOn size={20} />}
+            onKeyDown={cityHandler}
+            onValueChange={handleCity}
+            value={city}
             isClearable
-            onSelectionChange={cityHandler}
-          >
-            <AutocompleteItem key="KABUPATEN SIMEULUE">
-              KABUPATEN SIMEULUE
-            </AutocompleteItem>
-          </Autocomplete>
+          />
         </div>
         <div className="flex justify-end w-1/2 mb-10">
           <Link
@@ -76,20 +126,23 @@ const ProductByLocation = () => {
         </div>
       </div>
       <div>
-        <Swiper
-          slidesPerView={4}
-          spaceBetween={30}
-          // modules={[Pagination]}
-          // pagination={{ clickable: true, dynamicBullets: true }}
-          // className="h-[450px]"
-        >
+        <Swiper slidesPerView={4} spaceBetween={30}>
           {data?.length === 0 ? (
-            <Empty className="p-20" />
+            <div className="flex justify-center items-center flex-col gap-y-2 p-10">
+              <Empty />
+              <p>Tidak ada produk yang di temukan</p>
+            </div>
           ) : (
             data?.map((item, index) => {
               return (
                 <SwiperSlide key={index}>
-                  <ProductCard product={item} />
+                  <ProductCard
+                    product={item}
+                    handleRemoveWishlist={handleRemoveWishlist}
+                    handleWishlist={handleWishlist}
+                    wishlistData={wishlistData}
+                    isLogin={isLogin}
+                  />
                 </SwiperSlide>
               );
             })
@@ -102,17 +155,25 @@ const ProductByLocation = () => {
 
 export default ProductByLocation;
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({
+  product,
+  wishlistData,
+  handleRemoveWishlist,
+  handleWishlist,
+  isLogin,
+}) => {
   return (
-    <Card shadow="none">
-      <CardBody className="overflow-visible rounded-2xl ">
+    <Card shadow="none" className="h-[430px]">
+      <CardBody className="overflow-visible rounded-2xl">
         <div>
           <Link
             to={`/${product?.Seller?.name
               .toLowerCase()
               .replace(" ", "")}/${product?.title
               .toLowerCase()
-              .replaceAll(" ", "-")}?id=${product?.id}`}
+              .replace(/[-\s]+/g, "-")
+              .replace(/\//g, "-")}`}
+            state={{ product }}
           >
             <Image
               shadow="sm"
@@ -127,7 +188,7 @@ const ProductCard = ({ product }) => {
         </div>
       </CardBody>
       <CardFooter className="h-full">
-        <div className="flex justify-start flex-col gap-2 w-full p-3">
+        <div className="flex flex-col gap-2 w-full p-3">
           <div className="flex justify-between items-center">
             <div className="flex justify-start">
               <Link
@@ -135,19 +196,42 @@ const ProductCard = ({ product }) => {
                   .toLowerCase()
                   .replace(" ", "")}/${product?.title
                   .toLowerCase()
-                  .replaceAll(" ", "-")}?id=${product?.id}`}
+                  .replace(/[-\s]+/g, "-")
+                  .replace(/\//g, "-")}`}
+                state={{ product }}
               >
-                <b>{product?.title}</b>
+                <b>
+                  {product?.title.length >= 35
+                    ? product?.title.slice(0, 35) + "..."
+                    : product?.title}
+                </b>
               </Link>
             </div>
-            <div className="flex justify-end">
-              <HeartOutlined />
-            </div>
+            {isLogin ? (
+              <div
+                className="flex justify-end cursor-pointer"
+                onClick={
+                  wishlistData?.find((item) => item.ProductId === product?.id)
+                    ? () => handleRemoveWishlist(product?.id)
+                    : () => handleWishlist(product?.id)
+                }
+              >
+                {wishlistData?.find(
+                  (item) => item.ProductId === product?.id
+                ) ? (
+                  <HeartFilled className="text-danger" />
+                ) : (
+                  <HeartOutlined />
+                )}
+              </div>
+            ) : (
+              <AuthPage iconAuth={true} iconName={<HeartOutlined />} />
+            )}
           </div>
           <p className="text-default-500">{formatRupiah(product?.price)}</p>
           <div className="flex items-center gap-1">
             <EnvironmentOutlined />
-            {product?.location}
+            <p className="capitalize">{product?.location?.toLowerCase()}</p>
           </div>
           <div className="flex justify-between items-center">
             <div className="flex gap-x-2 items-center">

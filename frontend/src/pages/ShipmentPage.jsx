@@ -12,6 +12,9 @@ const ShipmentPage = () => {
         <div className="mt-40">
           <Shipment />
         </div>
+        <div className="mt-20">
+          <Footer />
+        </div>
       </div>
     </main>
   );

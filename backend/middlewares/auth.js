@@ -55,10 +55,10 @@ const authorizeAddCart = async (req, res, next) => {
 
     if (!checkProduct) return next(new Error("Product tidak di temukan"));
 
-    if (checkProduct.Seller.UserId === id)
-      return next(
-        new Error("Tidak dapat menambahkan produk sendiri ke keranjang")
-      );
+    // if (checkProduct.Seller.UserId === id)
+    //   return next(
+    //     new Error("Tidak dapat menambahkan produk sendiri ke keranjang")
+    //   );
 
     next();
   } catch (error) {

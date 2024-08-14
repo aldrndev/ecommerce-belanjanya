@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       Order.belongsTo(models.Checkout);
       Order.belongsTo(models.User);
       Order.belongsTo(models.Promo);
+      Order.belongsTo(models.Shipment);
+      Order.belongsTo(models.Seller);
     }
   }
   Order.init(
@@ -20,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       UserId: DataTypes.INTEGER,
       status: DataTypes.STRING,
       totalPrice: DataTypes.INTEGER,
-      address: DataTypes.TEXT,
+      courier: DataTypes.STRING,
+      SellerId: DataTypes.INTEGER,
+      ShipmentId: DataTypes.TEXT,
       PromoId: DataTypes.INTEGER,
     },
     {

@@ -218,9 +218,9 @@ const ProductDetail = () => {
         <div className="mt-5">
           <RecommendProduct moreProduct={moreProduct} />
         </div>
-        <div>
+        {/* <div>
           <FloatChat />
-        </div>
+        </div> */}
         <div className="mt-20">
           <Footer />
         </div>

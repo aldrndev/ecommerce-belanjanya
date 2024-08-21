@@ -20,6 +20,12 @@ import RegisterSeller from "../src/components/seller/RegisterSeller";
 import CartPage from "../src/pages/CartPage";
 import ShipmentPage from "../src/pages/ShipmentPage";
 import OrderPage from "../src/components/user/checkout/OrderPage";
+import AboutUs from "../src/components/footer/AboutUs";
+import ContactUs from "../src/components/footer/ContactUs";
+import Faq from "../src/components/footer/Faq";
+import PrivacyPolicy from "../src/components/footer/PrivacyPolicy";
+import TermCondition from "../src/components/footer/TermCondition";
+import ReturnPolicy from "../src/components/footer/ReturnPolicy";
 
 const router = createBrowserRouter([
   {
@@ -175,6 +181,30 @@ const router = createBrowserRouter([
       }
       return null;
     },
+  },
+  {
+    path: "/about-us",
+    element: <AboutUs />,
+  },
+  {
+    path: "/contact",
+    element: <ContactUs />,
+  },
+  {
+    path: "/faq",
+    element: <Faq />,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: "/terms-condition",
+    element: <TermCondition />,
+  },
+  {
+    path: "/return-policy",
+    element: <ReturnPolicy />,
   },
 ]);
 

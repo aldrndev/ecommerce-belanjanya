@@ -36,6 +36,12 @@ module.exports = {
       courier: {
         type: Sequelize.STRING,
       },
+      shipmentFee: {
+        type: Sequelize.INTEGER,
+      },
+      invoiceNo: {
+        type: Sequelize.STRING,
+      },
       SellerId: {
         type: Sequelize.INTEGER,
         references: {
@@ -62,6 +68,21 @@ module.exports = {
         },
         onDelete: "cascade",
         onUpdate: "cascade",
+      },
+      confirmedAt: {
+        type: Sequelize.DATE,
+      },
+      prossessedAt: {
+        type: Sequelize.DATE,
+      },
+      deliveredAt: {
+        type: Sequelize.DATE,
+      },
+      completedAt: {
+        type: Sequelize.DATE,
+      },
+      canceledAt: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

@@ -2,39 +2,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("DiscussionMessages", {
+    await queryInterface.createTable("SlugProducts", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      DiscussionId: {
+      slugSeller: {
+        type: Sequelize.STRING,
+      },
+      slugProduct: {
+        type: Sequelize.STRING,
+      },
+      ProductId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Discussions",
+          model: "Products",
           key: "id",
         },
         onDelete: "cascade",
         onUpdate: "cascade",
       },
-      UserId: {
+      SellerId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
-          key: "id",
+          model: "Sellers",
         },
         onDelete: "cascade",
         onUpdate: "cascade",
-      },
-      content: {
-        type: Sequelize.TEXT,
-      },
-      isReply: {
-        type: Sequelize.BOOLEAN,
-      },
-      isSeller: {
-        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
@@ -47,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("DiscussionMessages");
+    await queryInterface.dropTable("SlugProducts");
   },
 };

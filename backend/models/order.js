@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Order.belongsTo(models.Promo);
       Order.belongsTo(models.Shipment);
       Order.belongsTo(models.Seller);
+      Order.hasMany(models.Payment);
     }
   }
   Order.init(
@@ -23,9 +24,16 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.STRING,
       totalPrice: DataTypes.INTEGER,
       courier: DataTypes.STRING,
+      shipmentFee: DataTypes.INTEGER,
+      invoiceNo: DataTypes.STRING,
       SellerId: DataTypes.INTEGER,
       ShipmentId: DataTypes.TEXT,
       PromoId: DataTypes.INTEGER,
+      confirmedAt: DataTypes.DATE,
+      prossessedAt: DataTypes.DATE,
+      deliveredAt: DataTypes.DATE,
+      completedAt: DataTypes.DATE,
+      canceledAt: DataTypes.DATE,
     },
     {
       sequelize,

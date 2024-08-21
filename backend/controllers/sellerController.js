@@ -7,7 +7,7 @@ const {
   Category,
   SubCategory,
   ChildrenSubCategory,
-  ListProduct,
+  SlugProduct,
 } = require("../models");
 
 class SellerController {
@@ -95,6 +95,20 @@ class SellerController {
 
       const productImg = req.files?.map((file) => file.path);
 
+      const checkProduct = await Product.findOne({
+        where: {
+          title,
+          SellerId: id,
+        },
+      });
+
+      if (checkProduct)
+        return next(
+          new Error(
+            "Kamu sudah mempunyai produk dengan judul yang sama, silahkan ubah judul"
+          )
+        );
+
       const create = await Product.create(
         {
           title,
@@ -118,6 +132,19 @@ class SellerController {
             image: img,
           };
         }),
+        { transaction }
+      );
+
+      await SlugProduct.create(
+        {
+          slugSeller: req.seller.name.toLowerCase().replace(" ", ""),
+          slugProduct: create.title
+            .toLowerCase()
+            .replace(/[-\s]+/g, "-")
+            .replace(/\//g, "-"),
+          SellerId: req.seller.id,
+          ProductId: create.id,
+        },
         { transaction }
       );
 

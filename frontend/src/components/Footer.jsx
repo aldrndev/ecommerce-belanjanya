@@ -13,43 +13,26 @@ const Footer = () => {
             <Logo />
           </div>
           <p>
-            Belanjanya adalah situ jual beli barang yang sudah tidak terpakai
-            agar menghasilkan uang. Mulai jual semua barang kamu yang sudah
-            tidak terpakai sekarang juga
+            Belanjanya.com adalah situs jual beli online yang menghadirkan
+            beragam produk berkualitas dari penjual terpercaya. Mulai bergabung
+            dan temukan barang impian kamu sekarang juga.
           </p>
         </div>
-        <div className="w-1/3">
-          <Option title="Jual Barang">
-            <Link to="/product/elektronik-komputer">Elektronik & Komputer</Link>
-            <Link to="/product/pakaian-pria">Pakaian Pria</Link>
-            <Link to="/product/pakaian-wanita">Pakaian Wanita</Link>
-            <Link to="/product/peralatan-rumah-tangga">
-              Peralatan Rumah Tangga
-            </Link>
-            <Link to="/product/peralatan-olahraga">Peralatan Olahraga</Link>
-            <Link to="/product/otomotif">Otomotif</Link>
-            <Link to="/product/hobi">Hobi & Koleksi</Link>
-            <Link to="/product/aksesoris">Aksesoris</Link>
-          </Option>
-        </div>
+
         <div className="w-1/3">
           <Option title="Beli Barang">
-            <Link to="/product/elektronik-komputer">Elektronik & Komputer</Link>
-            <Link to="/product/pakaian-pria">Pakaian Pria</Link>
-            <Link to="/product/pakaian-wanita">Pakaian Wanita</Link>
-            <Link to="/product/peralatan-rumah-tangga">
-              Peralatan Rumah Tangga
-            </Link>
-            <Link to="/product/peralatan-olahraga">Peralatan Olahraga</Link>
-            <Link to="/product/otomotif">Otomotif</Link>
-            <Link to="/product/hobi">Hobi & Koleksi</Link>
-            <Link to="/product/aksesoris">Aksesoris</Link>
+            <Link to="/product?NewCategory=1">Elektronik & Komputer</Link>
+            <Link to="/product?NewCategory=2">Pakaian Pria</Link>
+            <Link to="/product?NewCategory=3">Pakaian Wanita</Link>
+            <Link to="/product?NewCategory=4">Peralatan Rumah Tangga</Link>
+            <Link to="/product?NewCategory=5">Peralatan Olahraga</Link>
+            <Link to="/product?NewCategory=6">Otomotif</Link>
           </Option>
         </div>
         <div className="w-1/3">
           <Option title="Perusahaan">
             <Link to="/about-us">Tentang Kami</Link>
-            <Link to="/contact-us">Kontak Kami</Link>
+            <Link to="/contact">Kontak Kami</Link>
             <Link to="/faq">FAQ</Link>
             <Link to="/privacy-policy">Privacy Policy</Link>
             <Link to="/terms-condition">Terms & Condition</Link>

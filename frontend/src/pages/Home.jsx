@@ -29,9 +29,9 @@ const Home = () => {
         <div className="mt-20">
           <WhyUs />
         </div>
-        <div>
+        {/* <div>
           <FloatChat />
-        </div>
+        </div> */}
         <div className="mt-20">
           <Footer />
         </div>

@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, or } = require("sequelize");
 const {
   Product,
   ChildrenSubCategory,
@@ -7,6 +7,12 @@ const {
   User,
   Seller,
   ProductImage,
+  Discussion,
+  Profile,
+  DiscussionMessage,
+  Review,
+  ReviewImage,
+  SlugProduct,
 } = require("../models");
 class PublicController {
   static async getAllProduct(req, res, next) {
@@ -269,6 +275,237 @@ class PublicController {
         statusCode: 200,
         message: "Sukses mengambil data product",
         data: newProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getMoreProduct(req, res, next) {
+    try {
+      const { category } = req.query;
+
+      let categoryFilter = category
+        ? {
+            ChildrenSubCategoryId: category,
+          }
+        : {};
+
+      const product = await Product.findAll({
+        where: {
+          ...categoryFilter,
+        },
+        include: [Seller],
+        order: [["createdAt", "DESC"]],
+        limit: 8,
+      });
+
+      const newProduct = await Promise.all(
+        product.map(async (product) => {
+          const findImage = await ProductImage.findAll({
+            where: {
+              ProductId: product.id,
+            },
+          });
+          return {
+            ...product.toJSON(),
+            Images: findImage,
+          };
+        })
+      );
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data product",
+        data: newProduct,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getDiscussionPublic(req, res, next) {
+    try {
+      const { productId } = req.params;
+      const { page } = req.query;
+
+      const limit = 5;
+      const pageLimit = page ? Number(page) : 1;
+      const offset = (pageLimit - 1) * limit;
+
+      const { count, rows } = await Discussion.findAndCountAll({
+        where: {
+          ProductId: productId,
+        },
+        include: {
+          model: Product,
+          include: {
+            model: Seller,
+          },
+        },
+        limit,
+        offset,
+        order: [["createdAt", "DESC"]],
+      });
+
+      if (count === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Belum ada diskusi",
+          data: [],
+        });
+      }
+
+      const discussionMsg = await DiscussionMessage.findAll({
+        include: {
+          model: Discussion,
+          include: {
+            model: Product,
+            include: {
+              model: Seller,
+            },
+          },
+        },
+        order: [["createdAt", "ASC"]],
+      });
+
+      const groupedDiscussion = await Promise.all(
+        rows.map(async (discussion) => {
+          const messages = discussionMsg.filter(
+            (msg) => msg.DiscussionId === discussion.id
+          );
+
+          const profile = await Profile.findOne({
+            where: {
+              UserId: discussion.UserId,
+            },
+          });
+
+          return {
+            ...discussion.toJSON(),
+            messages,
+            profile,
+          };
+        })
+      );
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data diskusi",
+        data: groupedDiscussion,
+        pagination: {
+          currentPage: pageLimit,
+          totalPage: Math.ceil(count / limit),
+          count,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getReviewPublic(req, res, next) {
+    try {
+      const { productId, page } = req.query;
+
+      const limit = 5;
+      const pageLimit = page ? Number(page) : 1;
+      const offset = (pageLimit - 1) * limit;
+
+      const { count, rows } = await Review.findAndCountAll({
+        where: {
+          ProductId: productId,
+        },
+        include: {
+          model: Product,
+          include: {
+            model: Seller,
+          },
+        },
+        limit,
+        offset,
+      });
+
+      if (count === 0) {
+        return res.status(200).json({
+          statusCode: 200,
+          message: "Belum ada review",
+          data: [],
+        });
+      }
+
+      const groupedReview = await Promise.all(
+        rows.map(async (review) => {
+          const image = await ReviewImage.findAll({
+            where: {
+              ReviewId: review.id,
+            },
+          });
+
+          const newReview = review.toJSON();
+          newReview.Images = image;
+          return newReview;
+        })
+      );
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data review",
+        data: groupedReview,
+        pagination: {
+          currentPage: pageLimit,
+          totalPage: Math.ceil(count / limit),
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getSlugProduct(req, res, next) {
+    try {
+      const { seller, title } = req.query;
+
+      const slug = await SlugProduct.findOne({
+        where: {
+          slugSeller: seller,
+          slugProduct: title,
+        },
+        include: [
+          {
+            model: Product,
+            include: [
+              {
+                model: ChildrenSubCategory,
+              },
+              {
+                model: Seller,
+              },
+            ],
+          },
+          {
+            model: Seller,
+          },
+        ],
+      });
+
+      if (!slug) {
+        return next(new Error("Slug product tidak ditemukan"));
+      }
+
+      const findImage = await ProductImage.findAll({
+        where: {
+          ProductId: slug.ProductId,
+        },
+      });
+
+      const newSlug = slug.toJSON();
+      newSlug.Product.Images = findImage;
+
+      res.status(200).json({
+        statusCode: 200,
+        message: "Sukses mengambil data slug product",
+        data: newSlug,
       });
     } catch (error) {
       next(error);

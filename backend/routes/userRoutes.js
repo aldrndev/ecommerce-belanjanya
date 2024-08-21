@@ -12,6 +12,7 @@ router.delete("/cart", UserController.removeCart);
 router.delete("/cart/bulk", UserController.bulkRemoveCart);
 router.post("/wishlist", UserController.addWishlist);
 router.get("/wishlist", UserController.getWishlist);
+router.get("/wishlist/pagination", UserController.getWishlistWithPagination);
 router.delete("/wishlist", UserController.removeWishlist);
 router.post("/checkout", UserController.addCheckout);
 router.get("/checkout", UserController.getCheckout);
@@ -19,5 +20,7 @@ router.post("/shipment", UserController.addShipmentInfo);
 router.get("/shipment", UserController.getShipmentInfo);
 router.get("/order", UserController.getOrders);
 router.post("/order", UserController.addOrder);
+router.get("/discussion", UserController.getDiscussion);
+router.post("/discussion", UserController.addDiscussion);
 
 module.exports = router;

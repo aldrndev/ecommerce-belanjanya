@@ -1,13 +1,7 @@
 import React from "react";
 import Navbar from "../../Navbar";
 import Footer from "../../Footer";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Image,
-} from "@nextui-org/react";
+import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
 import { useLocation } from "react-router-dom";
 import { MdVerified } from "react-icons/md";
 import { formatRupiah } from "../../../../utils/formatCurrency";
@@ -38,7 +32,7 @@ const OrderPage = () => {
               </CardHeader>
               <CardBody>
                 <div>
-                  <h2>Berikut adalah detail pesanan kamu :</h2>
+                  <h2>Berikut adalah produk pesanan kamu :</h2>
                 </div>
                 {data?.data?.map((item, index) => (
                   <div
@@ -60,7 +54,7 @@ const OrderPage = () => {
                         <div className="flex gap-x-2 items-center">
                           <div className="w-20 h-20 flex justify-center items-center">
                             <Image
-                              src={`http://localhost:3000/${product.Cart.Product.Images[0].image}`}
+                              src={`http://localhost:3000/${product?.Cart?.Product?.Images[0]?.image}`}
                               width={80}
                               height={80}
                               alt={product.Cart.Product.title}
@@ -77,7 +71,12 @@ const OrderPage = () => {
                         <div className="w-1/2 flex justify-end">
                           <p className="font-semibold">
                             {product.Cart.quantity} x{" "}
-                            {formatRupiah(product.Cart.Product.price)}
+                            {formatRupiah(
+                              product.Cart.Product.discount
+                                ? product.Cart.Product.price -
+                                    product.Cart.Product.discount
+                                : product.Cart.Product.price
+                            )}
                           </p>
                         </div>
                       </div>
@@ -85,7 +84,6 @@ const OrderPage = () => {
                   </div>
                 ))}
               </CardBody>
-              <CardFooter></CardFooter>
             </Card>
           )}
         </div>

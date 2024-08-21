@@ -191,7 +191,7 @@ const NotReview = () => {
   );
 };
 
-const DoneReview = () => {
+export const DoneReview = () => {
   const [isReview, setIsReview] = useState(false);
   return (
     <Card shadow="sm" className="mb-4 p-2">

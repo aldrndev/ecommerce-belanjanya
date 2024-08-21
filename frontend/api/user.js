@@ -111,6 +111,27 @@ export const fetchWishlist = async () => {
       method: "GET",
       url: "/user/wishlist",
     });
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data wishlist"
+    );
+  }
+};
+
+export const fetchWishlistWithPagination = async (page = 1) => {
+  try {
+    const data = await api({
+      method: "GET",
+      url: "/user/wishlist/pagination",
+      params: {
+        page,
+      },
+    });
+
     return data;
   } catch (error) {
     throw new Error(
@@ -220,11 +241,16 @@ export const addOrder = async (body) => {
   }
 };
 
-export const fetchOrder = async () => {
+export const fetchOrder = async (title, date, page = 1) => {
   try {
-    const { data } = await api({
+    const data = await api({
       method: "GET",
       url: "/user/order",
+      params: {
+        page,
+        title,
+        date,
+      },
     });
     return data;
   } catch (error) {
@@ -232,6 +258,40 @@ export const fetchOrder = async () => {
       error.response.data.message ||
         error.message ||
         "Gagal mengambil data pesanan"
+    );
+  }
+};
+
+export const fetchDiscussion = async () => {
+  try {
+    const { data } = await api({
+      method: "GET",
+      url: "/user/discussion",
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data discussion"
+    );
+  }
+};
+
+export const addDiscussion = async (body) => {
+  try {
+    const data = await api({
+      method: "POST",
+      url: "/user/discussion",
+      data: {
+        ...body,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message || error.message || "Gagal membuat discussion"
     );
   }
 };

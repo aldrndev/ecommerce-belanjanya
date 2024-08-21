@@ -1,77 +1,114 @@
-import { useEffect } from "react";
 import ProductCard from "../ProductCard";
 import CardLayout from "./CardLayout";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { Pagination } from "@nextui-org/react";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  addWishlist,
+  fetchWishlistWithPagination,
+  removeWishlist,
+} from "../../../api/user";
+
+import toast from "react-hot-toast";
+import { Empty, Pagination } from "antd";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const WishlistPage = () => {
+  const queryClient = useQueryClient();
+  const isLogin = localStorage.getItem("isLogin") === "true";
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [totalPage, setTotalPage] = useState(1);
+
+  const page = searchParams.get("page");
+
+  const { data, isPending } = useQuery({
+    queryKey: ["wishlist", page],
+    queryFn: () => fetchWishlistWithPagination(page),
+    enabled: isLogin,
+  });
+
+  const { mutate: addingWishlist, isPending: pendingAddWishlist } = useMutation(
+    {
+      mutationFn: addWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
+
+  const { mutate: removingWishlist, isPending: pendingRemoveWishlist } =
+    useMutation({
+      mutationFn: removeWishlist,
+      onSuccess: (data) => {
+        toast.success(data.message);
+        queryClient.invalidateQueries({ queryKey: ["wishlist"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+
+  const handleAddWishlist = (id) => {
+    addingWishlist(id);
+  };
+
+  const handleRemoveWishlist = (id) => {
+    removingWishlist(id);
+  };
+
   useEffect(() => {
-    AOS.init({ duration: 500, easing: "linear" });
-  }, []);
-  const list = [
-    {
-      title: "Orange",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$5.50",
-    },
-    {
-      title: "Tangerine",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$3.00",
-    },
-    {
-      title: "Raspberry",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$10.00",
-    },
-    {
-      title: "Lemon",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$5.30",
-    },
-    {
-      title: "Avocado",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$15.70",
-    },
-    {
-      title: "Lemon 2",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$8.00",
-    },
-    {
-      title: "Banana",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$7.50",
-    },
-    {
-      title: "Watermelon",
-      img: "https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg",
-      price: "$12.20",
-    },
-  ];
+    if (!page) setSearchParams({ page: 1 });
+
+    window.scrollTo(0, 0);
+  }, [page]);
+
+  useEffect(() => {
+    if (data?.pagination) {
+      setTotalPage(data?.pagination?.totalPage);
+    }
+  }, [data?.pagination]);
+
   return (
     <div>
       <CardLayout>
-        <div className="grid grid-cols-4 gap-5">
-          {list.map((item, index) => {
-            return (
-              <div data-aos="zoom-in" key={index}>
-                <ProductCard product={item} />
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-8 flex justify-center items-center">
-          <Pagination
-            isCompact
-            showControls
-            total={10}
-            initialPage={1}
-            color="danger"
-          />
-        </div>
+        {data?.data.length > 0 ? (
+          <>
+            <div className="grid grid-cols-3 gap-5">
+              {data?.data?.map((item, index) => {
+                return (
+                  <div key={index}>
+                    <ProductCard
+                      product={item.Product}
+                      isLogin={isLogin}
+                      handleRemoveWishlist={handleRemoveWishlist}
+                      handleWishlist={handleAddWishlist}
+                      wishlistData={data?.data}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-8 flex justify-center items-center">
+              {data?.data && (
+                <Pagination
+                  current={Number(page)}
+                  onChange={(page) => setSearchParams({ page })}
+                  total={totalPage * 10}
+                />
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="flex justify-center items-center flex-col gap-y-2">
+            <Empty />
+            <p>Belum ada wishlist</p>
+          </div>
+        )}
       </CardLayout>
     </div>
   );

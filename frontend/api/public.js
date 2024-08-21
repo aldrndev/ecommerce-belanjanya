@@ -93,3 +93,83 @@ export const fetchProductById = async (id) => {
     );
   }
 };
+
+export const fetchProductMore = async (category) => {
+  try {
+    const { data } = await axiosApi({
+      method: "GET",
+      url: "/public/product/more",
+      params: {
+        category,
+      },
+    });
+    return data.data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data product"
+    );
+  }
+};
+
+export const fetchDiscussionPublic = async (productId, page = 1) => {
+  try {
+    const { data } = await axiosApi({
+      method: "GET",
+      url: `/public/discussion/${productId}`,
+      params: {
+        page,
+      },
+    });
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data discussion"
+    );
+  }
+};
+
+export const fetchReviewPublic = async (productId, page = 1) => {
+  try {
+    const { data } = await axiosApi({
+      method: "GET",
+      url: `/public/review`,
+      params: {
+        page,
+        productId,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data review"
+    );
+  }
+};
+
+export const fetchSlugProduct = async (seller, title) => {
+  try {
+    const { data } = await axiosApi({
+      method: "GET",
+      url: `/public/product/slug`,
+      params: {
+        seller,
+        title,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error.response.data.message ||
+        error.message ||
+        "Gagal mengambil data review"
+    );
+  }
+};

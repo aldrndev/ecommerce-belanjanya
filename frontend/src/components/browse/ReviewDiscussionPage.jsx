@@ -2,22 +2,34 @@ import {
   Button,
   Card,
   CardBody,
+  Chip,
   Divider,
   Image,
-  Pagination,
   Progress,
   Tooltip,
 } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/tabs";
-import { Rate } from "antd";
+import { Empty, Pagination, Rate } from "antd";
 import { Textarea } from "@nextui-org/react";
 import { MdOutlineRateReview } from "react-icons/md";
 import { GoCommentDiscussion } from "react-icons/go";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addDiscussion } from "../../../api/user";
+import toast from "react-hot-toast";
+import { fetchDiscussionPublic } from "../../../api/public";
+import { formatDateOrder } from "../../../utils/formatDate";
 
-const ReviewDiscussionPage = () => {
+const ReviewDiscussionPage = ({ product }) => {
+  const isLogin = localStorage.getItem("isLogin") === "true";
+
+  const handleScroll = () => {
+    const parentElement = document.getElementById("diskusi");
+    parentElement.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="flex w-full justify-center items-center flex-col">
       <Tabs
@@ -39,13 +51,14 @@ const ReviewDiscussionPage = () => {
           <div className="w-[1280px]">
             <Card className="p-5">
               <CardBody>
-                <ReviewPage />
+                <ReviewPage product={product} />
               </CardBody>
             </Card>
           </div>
         </Tab>
         <Tab
           key="diskusi"
+          id="diskusi"
           title={
             <div className="flex items-center space-x-2">
               <GoCommentDiscussion size={24} />
@@ -56,7 +69,11 @@ const ReviewDiscussionPage = () => {
           <div className="w-[1280px]">
             <Card className="p-5">
               <CardBody>
-                <DiscussionPage />
+                <DiscussionPage
+                  product={product}
+                  isLogin={isLogin}
+                  handleScroll={handleScroll}
+                />
               </CardBody>
             </Card>
           </div>
@@ -192,588 +209,339 @@ const TotalReview = () => {
     </Card>
   );
 };
-const ReviewPage = () => {
+const ReviewPage = ({ product }) => {
+  const [totalPage, setTotalPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isPending } = useQuery({
+    queryKey: ["review", product?.id, currentPage],
+    queryFn: () => fetchReviewPublic(product?.id, currentPage),
+  });
+
+  useEffect(() => {
+    if (data?.pagination) setTotalPage(data?.pagination?.totalPage);
+  }, [data?.pagination]);
+
   return (
     <>
-      <div className="flex justify-between gap-x-8">
-        <TotalReview />
-        <div>
-          <div className="flex gap-3 items-center">
-            <Rate />
-            <p className="text-sm">3 hari lalu</p>
-          </div>
-          <div className="flex gap-3 mt-3 items-center">
-            <div className="w-[90px]">
+      {data?.data.length > 0 ? (
+        <div className="flex justify-between gap-x-8">
+          <TotalReview />
+          <div>
+            <div className="flex gap-3 items-center">
+              <Rate />
+              <p className="text-sm">3 hari lalu</p>
+            </div>
+            <div className="flex gap-3 mt-3 items-center">
+              <div className="w-[90px]">
+                <Image
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                  radius="full"
+                />
+              </div>
+              <div className="flex flex-col">
+                <p>Aldrin Mursidi</p>
+                <p>
+                  Super enak ,bahan berkualitas tinggi , higienis,sehat udah
+                  bertahun tahun langganan di toko ini tidak pernah mengecewakan
+                  selalu terjaga kualitasnya,sangat rekomendasi toko ini
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
               <Image
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                radius="full"
+                src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
+                width={50}
+                height={50}
               />
             </div>
-            <div className="flex flex-col">
-              <p>Aldrin Mursidi</p>
-              <p>
-                Super enak ,bahan berkualitas tinggi , higienis,sehat udah
-                bertahun tahun langganan di toko ini tidak pernah mengecewakan
-                selalu terjaga kualitasnya,sangat rekomendasi toko ini
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-          </div>
-          <div className="flex gap-3 items-center">
-            <Rate />
-            <p className="text-sm">3 hari lalu</p>
-          </div>
-          <div className="flex gap-3 mt-3 items-center">
-            <div className="w-[90px]">
-              <Image
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                radius="full"
+            <div className="mt-8 flex justify-center items-center">
+              <Pagination
+                current={Number(currentPage)}
+                onChange={setCurrentPage}
+                total={totalPage * 10}
               />
             </div>
-            <div className="flex flex-col">
-              <p>Aldrin Mursidi</p>
-              <p>
-                Super enak ,bahan berkualitas tinggi , higienis,sehat udah
-                bertahun tahun langganan di toko ini tidak pernah mengecewakan
-                selalu terjaga kualitasnya,sangat rekomendasi toko ini
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-          </div>
-          <div className="flex gap-3 items-center">
-            <Rate />
-            <p className="text-sm">3 hari lalu</p>
-          </div>
-          <div className="flex gap-3 mt-3 items-center">
-            <div className="w-[90px]">
-              <Image
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                radius="full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <p>Aldrin Mursidi</p>
-              <p>
-                Super enak ,bahan berkualitas tinggi , higienis,sehat udah
-                bertahun tahun langganan di toko ini tidak pernah mengecewakan
-                selalu terjaga kualitasnya,sangat rekomendasi toko ini
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-          </div>
-          <div className="flex gap-3 items-center">
-            <Rate />
-            <p className="text-sm">3 hari lalu</p>
-          </div>
-          <div className="flex gap-3 mt-3 items-center">
-            <div className="w-[90px]">
-              <Image
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                radius="full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <p>Aldrin Mursidi</p>
-              <p>
-                Super enak ,bahan berkualitas tinggi , higienis,sehat udah
-                bertahun tahun langganan di toko ini tidak pernah mengecewakan
-                selalu terjaga kualitasnya,sangat rekomendasi toko ini
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-          </div>
-          <div className="flex gap-3 items-center">
-            <Rate />
-            <p className="text-sm">3 hari lalu</p>
-          </div>
-          <div className="flex gap-3 mt-3 items-center">
-            <div className="w-[90px]">
-              <Image
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                radius="full"
-              />
-            </div>
-            <div className="flex flex-col">
-              <p>Aldrin Mursidi</p>
-              <p>
-                Super enak ,bahan berkualitas tinggi , higienis,sehat udah
-                bertahun tahun langganan di toko ini tidak pernah mengecewakan
-                selalu terjaga kualitasnya,sangat rekomendasi toko ini
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-4 w-1/3 gap-1 mb-3">
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-            <Image
-              src="https://dynamic.zacdn.com/gQRduJacFWUiEQ-zMOMBjLGIYGQ=/filters:quality(70):format(webp)/https://static-id.zacdn.com/p/new-balance-9996-5422514-1.jpg"
-              width={50}
-              height={50}
-            />
-          </div>
-          <div className="mt-8 flex justify-center items-center">
-            <Pagination
-              isCompact
-              showControls
-              total={10}
-              initialPage={1}
-              color="danger"
-            />
           </div>
         </div>
-      </div>
-
-      <Divider className="my-4" />
+      ) : (
+        <div className="flex justify-center items-center flex-col gap-y-2">
+          <Empty />
+          <p>Belum ada ulasan</p>
+        </div>
+      )}
     </>
   );
 };
 
-const DiscussionPage = () => {
-  const [isReply, setIsReply] = useState(false);
+const DiscussionPage = ({ product, isLogin, handleScroll }) => {
+  const [contentNew, setContentNew] = useState("");
+  const [contentReply, setContentReply] = useState("");
+  const [moreReply, setMoreReply] = useState({});
+  const [comment, setComment] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
+  const queryClient = useQueryClient();
+
+  const { data, isPending: pendingDiscussion } = useQuery({
+    queryKey: ["discussion", product?.id, currentPage],
+    queryFn: () => fetchDiscussionPublic(product?.id, currentPage),
+    enabled: !!product,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: addDiscussion,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["discussion"] });
+      setContentNew("");
+      setContentReply("");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const handleSubmit = (e, discussionId) => {
+    e.preventDefault();
+    mutate({
+      contentNew,
+      contentReply,
+      productId: product.id,
+      discussionId,
+    });
+  };
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const seller =
+    localStorage.getItem("isSeller") === "true"
+      ? JSON.parse(localStorage.getItem("seller"))
+      : null;
+
+  useEffect(() => {
+    if (data?.pagination) {
+      setTotalPage(data?.pagination?.totalPage);
+    }
+  }, [data?.pagination]);
+
+  useEffect(() => {
+    if (currentPage) handleScroll();
+  }, [currentPage]);
+
   return (
     <>
-      <div className="bg-gray-100 p-3 rounded-2xl">
-        <div>
-          <Textarea
-            label="Diskusi"
-            placeholder="Tulis pertanyaan kamu disini"
-            variant="bordered"
-          />
-        </div>
-        <div className="flex justify-end mt-3">
-          <Button variant="bordered" color="danger">
-            Kirim
-          </Button>
-        </div>
-      </div>
-
-      <Divider className="my-4" />
-      <div className="flex gap-3 mt-3">
-        <div className="w-[50px]">
-          <Image
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            radius="full"
-          />
-        </div>
-        <div className="flex flex-col">
-          <p className="text-sm">3 hari lalu</p>
-          <p>Aldrin Mursidi</p>
-
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste earum
-          </p>
-          <p
-            className="text-danger cursor-pointer hover:text-red-700 mt-1"
-            onClick={() => setIsReply(!isReply)}
-          >
-            {isReply ? "Tutup" : "Komentar"}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
-        <div className="flex gap-3 ml-20 mt-3">
-          <div className="w-[50px]">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              radius="full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p className="text-sm">3 hari lalu</p>
-            <p className="text-base">Aldrin Mursidi</p>
-            <p>Lorem, ipsum dolor sit</p>
-          </div>
-        </div>
-
-        {isReply && (
-          <>
-            <div className="flex gap-3 ml-20 items-center mt-1">
-              <div>
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                  width={50}
-                />
-              </div>
-              <div className="w-[1280px] mt-3">
-                <Textarea
-                  placeholder="Tulis balasan kamu disini"
-                  variant="bordered"
-                />
-              </div>
+      {isLogin && (
+        <div className="bg-gray-100 p-3 rounded-2xl">
+          <form onSubmit={handleSubmit}>
+            <div>
+              <Textarea
+                label="Diskusi"
+                placeholder="Tulis pertanyaan kamu disini"
+                variant="bordered"
+                value={contentNew}
+                onValueChange={setContentNew}
+              />
             </div>
             <div className="flex justify-end mt-3">
-              <Button color="danger" variant="bordered">
+              <Button variant="bordered" color="danger" type="submit">
                 Kirim
               </Button>
             </div>
-          </>
-        )}
-      </div>
-      <div className="flex gap-3 mt-3">
-        <div className="w-[50px]">
-          <Image
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            radius="full"
-          />
+          </form>
         </div>
-        <div className="flex flex-col">
-          <p className="text-sm">3 hari lalu</p>
-          <p>Aldrin Mursidi</p>
+      )}
 
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste earum
-          </p>
-          <p
-            className="text-danger cursor-pointer hover:text-red-700 mt-1"
-            onClick={() => setIsReply(!isReply)}
-          >
-            {isReply ? "Tutup" : "Komentar"}
-          </p>
+      {data?.data?.length === 0 ? (
+        <div className="flex justify-center items-center flex-col gap-y-1 mt-5">
+          <Empty />
+          <p>Belum ada diskusi</p>
         </div>
-      </div>
+      ) : (
+        <>
+          {data?.data?.map((msg, index) => (
+            <div key={index}>
+              <Divider className="my-4" />
+              <div className="flex gap-3 mt-3">
+                <div className="w-[65px]">
+                  <Image
+                    src={`http://localhost:3000/${msg?.profile?.image}`}
+                    radius="full"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm">
+                    {formatDateOrder(new Date(msg?.createdAt))}
+                  </p>
+                  <p className="capitalize text-sm">{msg?.profile?.name}</p>
 
-      <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
-        <div className="flex gap-3 ml-20 mt-3">
-          <div className="w-[50px]">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              radius="full"
+                  <p>{msg?.messages[0]?.content}</p>
+                  {isLogin && (
+                    <p
+                      className="text-danger cursor-pointer hover:text-red-700 mt-1"
+                      onClick={() => {
+                        setComment({
+                          ...comment,
+                          [index]: !comment[index],
+                        });
+                        setMoreReply({
+                          ...moreReply,
+                          [index]: !moreReply[index],
+                        });
+                      }}
+                    >
+                      {comment[index] ? "Tutup" : "Komentar"}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {msg?.messages?.length > 1 && (
+                <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
+                  <div>
+                    {moreReply[index]
+                      ? msg?.messages?.slice(1).map((data, idx) => (
+                          <div className="flex gap-3 ml-20 mt-3" key={idx}>
+                            <div className="w-[65px]">
+                              <Image
+                                src={`http://localhost:3000/${
+                                  data?.isSeller
+                                    ? msg?.Product?.Seller?.image
+                                    : msg?.profile?.image
+                                }`}
+                                radius="full"
+                                alt="avatar"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="text-sm">
+                                {formatDateOrder(new Date(data?.createdAt))}
+                              </p>
+                              <div className="flex gap-x-1 items-center">
+                                <p className="text-sm capitalize">
+                                  {data?.isSeller
+                                    ? msg?.Product?.Seller?.name
+                                    : msg?.profile?.name}
+                                </p>
+                                <span>
+                                  {data?.isSeller && (
+                                    <Chip
+                                      size="sm"
+                                      color="danger"
+                                      variant="flat"
+                                    >
+                                      Penjual
+                                    </Chip>
+                                  )}
+                                </span>
+                              </div>
+                              <p>{data?.content}</p>
+                            </div>
+                          </div>
+                        ))
+                      : msg?.messages?.slice(1, 3).map((data, idx) => (
+                          <div className="flex gap-3 ml-20 mt-5" key={idx}>
+                            <div className="w-[65px]">
+                              <Image
+                                src={`http://localhost:3000/${
+                                  data?.isSeller
+                                    ? msg?.Product?.Seller?.image
+                                    : msg?.profile?.image
+                                }`}
+                                radius="full"
+                                alt="avatar"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="text-sm">
+                                {formatDateOrder(new Date(data?.createdAt))}
+                              </p>
+                              <div className="flex gap-x-1 items-center">
+                                <p className="text-sm capitalize">
+                                  {data?.isSeller
+                                    ? msg?.Product?.Seller?.name
+                                    : msg?.profile?.name}
+                                </p>
+                                <span>
+                                  {data?.isSeller && (
+                                    <Chip
+                                      size="sm"
+                                      color="danger"
+                                      variant="flat"
+                                    >
+                                      Penjual
+                                    </Chip>
+                                  )}
+                                </span>
+                              </div>
+                              <p>{data?.content}</p>
+                            </div>
+                          </div>
+                        ))}
+                  </div>
+                  {msg?.messages?.length > 3 ? (
+                    <div className="ml-20 mt-3">
+                      <p
+                        className="text-danger cursor-pointer"
+                        onClick={() =>
+                          setMoreReply({
+                            ...moreReply,
+                            [index]: !moreReply[index],
+                          })
+                        }
+                      >
+                        {moreReply[index]
+                          ? "Lihat sedikit"
+                          : "Lihat semua balasan"}
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              )}
+
+              {comment[index] && (
+                <form onSubmit={(e) => handleSubmit(e, msg?.id)}>
+                  <div className="flex gap-3 ml-20 items-center mt-1">
+                    <div>
+                      <Image
+                        src={`http://localhost:3000/${
+                          msg?.Product?.Seller.id === seller?.id
+                            ? seller?.image
+                            : user.image
+                        }`}
+                        radius="full"
+                        alt="avatar"
+                        width={60}
+                      />
+                    </div>
+                    <div className="w-[1280px] mt-3">
+                      <Textarea
+                        placeholder="Tulis balasan kamu disini"
+                        variant="bordered"
+                        onValueChange={setContentReply}
+                        value={contentReply}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end mt-3">
+                    <Button color="danger" variant="bordered" type="submit">
+                      Kirim
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </div>
+          ))}
+
+          <div className="mt-8 flex justify-center items-center">
+            <Pagination
+              current={Number(currentPage)}
+              onChange={setCurrentPage}
+              total={totalPage * 10}
             />
           </div>
-          <div className="flex flex-col">
-            <p className="text-sm">3 hari lalu</p>
-            <p className="text-base">Aldrin Mursidi</p>
-            <p>Lorem, ipsum dolor sit</p>
-          </div>
-        </div>
-
-        {isReply && (
-          <>
-            <div className="flex gap-3 ml-20 items-center mt-1">
-              <div>
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                  width={50}
-                />
-              </div>
-              <div className="w-[1280px] mt-3">
-                <Textarea
-                  placeholder="Tulis balasan kamu disini"
-                  variant="bordered"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-3">
-              <Button color="danger" variant="bordered">
-                Kirim
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="flex gap-3 mt-3">
-        <div className="w-[50px]">
-          <Image
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            radius="full"
-          />
-        </div>
-        <div className="flex flex-col">
-          <p className="text-sm">3 hari lalu</p>
-          <p>Aldrin Mursidi</p>
-
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste earum
-          </p>
-          <p
-            className="text-danger cursor-pointer hover:text-red-700 mt-1"
-            onClick={() => setIsReply(!isReply)}
-          >
-            {isReply ? "Tutup" : "Komentar"}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
-        <div className="flex gap-3 ml-20 mt-3">
-          <div className="w-[50px]">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              radius="full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p className="text-sm">3 hari lalu</p>
-            <p className="text-base">Aldrin Mursidi</p>
-            <p>Lorem, ipsum dolor sit</p>
-          </div>
-        </div>
-
-        {isReply && (
-          <>
-            <div className="flex gap-3 ml-20 items-center mt-1">
-              <div>
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                  width={50}
-                />
-              </div>
-              <div className="w-[1280px] mt-3">
-                <Textarea
-                  placeholder="Tulis balasan kamu disini"
-                  variant="bordered"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-3">
-              <Button color="danger" variant="bordered">
-                Kirim
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="flex gap-3 mt-3">
-        <div className="w-[50px]">
-          <Image
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            radius="full"
-          />
-        </div>
-        <div className="flex flex-col">
-          <p className="text-sm">3 hari lalu</p>
-          <p>Aldrin Mursidi</p>
-
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste earum
-          </p>
-          <p
-            className="text-danger cursor-pointer hover:text-red-700 mt-1"
-            onClick={() => setIsReply(!isReply)}
-          >
-            {isReply ? "Tutup" : "Komentar"}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
-        <div className="flex gap-3 ml-20 mt-3">
-          <div className="w-[50px]">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              radius="full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p className="text-sm">3 hari lalu</p>
-            <p className="text-base">Aldrin Mursidi</p>
-            <p>Lorem, ipsum dolor sit</p>
-          </div>
-        </div>
-
-        {isReply && (
-          <>
-            <div className="flex gap-3 ml-20 items-center mt-1">
-              <div>
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                  width={50}
-                />
-              </div>
-              <div className="w-[1280px] mt-3">
-                <Textarea
-                  placeholder="Tulis balasan kamu disini"
-                  variant="bordered"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-3">
-              <Button color="danger" variant="bordered">
-                Kirim
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="flex gap-3 mt-3">
-        <div className="w-[50px]">
-          <Image
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-            radius="full"
-          />
-        </div>
-        <div className="flex flex-col">
-          <p className="text-sm">3 hari lalu</p>
-          <p>Aldrin Mursidi</p>
-
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste earum
-          </p>
-          <p
-            className="text-danger cursor-pointer hover:text-red-700 mt-1"
-            onClick={() => setIsReply(!isReply)}
-          >
-            {isReply ? "Tutup" : "Komentar"}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-gray-100 p-3 mt-3 rounded-2xl">
-        <div className="flex gap-3 ml-20 mt-3">
-          <div className="w-[50px]">
-            <Image
-              src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-              radius="full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <p className="text-sm">3 hari lalu</p>
-            <p className="text-base">Aldrin Mursidi</p>
-            <p>Lorem, ipsum dolor sit</p>
-          </div>
-        </div>
-
-        {isReply && (
-          <>
-            <div className="flex gap-3 ml-20 items-center mt-1">
-              <div>
-                <Image
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  radius="full"
-                  width={50}
-                />
-              </div>
-              <div className="w-[1280px] mt-3">
-                <Textarea
-                  placeholder="Tulis balasan kamu disini"
-                  variant="bordered"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-3">
-              <Button color="danger" variant="bordered">
-                Kirim
-              </Button>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="mt-8 flex justify-center items-center">
-        <Pagination
-          isCompact
-          showControls
-          total={10}
-          initialPage={1}
-          color="danger"
-        />
-      </div>
+        </>
+      )}
     </>
   );
 };

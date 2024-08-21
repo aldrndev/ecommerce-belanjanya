@@ -1,4 +1,3 @@
-import { Divider, Image } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import CardLayout from "./CardLayout";
 

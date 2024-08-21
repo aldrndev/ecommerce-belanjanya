@@ -36,11 +36,11 @@ import { useNavigate } from "react-router-dom";
 
 const Shipment = () => {
   const [isAddress, setIsAddress] = useState(false);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState({});
   const [shipmentFee, setShipmentFee] = useState({});
   const [totalShipment, setTotalShipment] = useState(0);
   const [couriers, setCouriers] = useState({});
-  const [seller, setSeller] = useState(null);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const navigate = useNavigate();
 
@@ -65,10 +65,28 @@ const Shipment = () => {
 
   useEffect(() => {
     if (data) {
-      const total = data?.beforeGroup?.reduce((acc, item) => {
-        return acc + item.Cart.quantity * item.Cart.Product.price;
-      }, 0);
-      setTotal(total);
+      const totals = data?.data?.reduce((acc, item) => {
+        const sellerId = item.sellerId;
+        const sellerTotal = item.carts.reduce((subAcc, cartItem) => {
+          return (
+            subAcc +
+            (cartItem.Cart.Product.discount
+              ? cartItem.Cart.quantity *
+                (cartItem.Cart.Product.price - cartItem.Cart.Product.discount)
+              : cartItem.Cart.quantity * cartItem.Cart.Product.price)
+          );
+        }, 0);
+
+        if (acc[sellerId]) {
+          acc[sellerId] += sellerTotal;
+        } else {
+          acc[sellerId] = sellerTotal;
+        }
+
+        return acc;
+      }, {});
+
+      setTotal(totals);
     }
   }, [data]);
 
@@ -100,6 +118,16 @@ const Shipment = () => {
     );
     setTotalShipment(totalFee);
   }, [shipmentFee]);
+
+  useEffect(() => {
+    if (total) {
+      const totalFee = Object.values(total).reduce(
+        (acc, item) => acc + item,
+        0
+      );
+      setTotalPrice(totalFee + totalShipment);
+    }
+  }, [total]);
 
   const { mutate: mutateAddShipmentInfo, isPending: pendingShipmentInfo } =
     useMutation({
@@ -160,11 +188,14 @@ const Shipment = () => {
 
     mutateAddOrder({
       checkoutId: data?.beforeGroup?.map((item) => item.id),
-      totalPrice: total + totalShipment,
+      totalPrice: total,
+      shipmentFee: shipmentFee,
       courier: couriers,
       sellerId: data?.data?.map((item) => item.sellerId),
       shipmentId: dataShipment?.id,
     });
+
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -303,6 +334,7 @@ const Shipment = () => {
                 </form>
               )}
             </div>
+
             {data?.data?.map((item, index) => (
               <div className="shadow-small p-5 rounded-2xl mt-3" key={index}>
                 <p className="  text-gray-400">PESANAN {index + 1}</p>
@@ -318,7 +350,7 @@ const Shipment = () => {
                     <div className="flex gap-x-2 items-center">
                       <div className="w-20 h-20 flex justify-center items-center">
                         <Image
-                          src={`http://localhost:3000/${product.Cart.Product.Images[0].image}`}
+                          src={`http://localhost:3000/${product?.Cart?.Product?.Images[0]?.image}`}
                           width={80}
                           height={80}
                           alt={product.Cart.Product.title}
@@ -334,7 +366,12 @@ const Shipment = () => {
                     <div className="w-1/2 flex justify-end">
                       <p className="font-semibold">
                         {product.Cart.quantity} x{" "}
-                        {formatRupiah(product.Cart.Product.price)}
+                        {formatRupiah(
+                          product.Cart.Product.discount
+                            ? product.Cart.Product.price -
+                                product.Cart.Product.discount
+                            : product.Cart.Product.price
+                        )}
                       </p>
                     </div>
                   </div>
@@ -354,6 +391,7 @@ const Shipment = () => {
               </div>
             ))}
           </div>
+
           <div className="shadow-small rounded-xl p-5 w-1/3 h-full sticky top-40">
             <h1 className="text-lg font-semibold">Ringkasan Belanja</h1>
             <div className="flex justify-between items-center mt-2">
@@ -370,9 +408,9 @@ const Shipment = () => {
             <div className="flex justify-between items-center mt-2">
               <p className="text-gray-500">Total Belanja</p>
               <p className="font-semibold">
-                {(total &&
+                {(totalPrice &&
                   totalShipment !== 0 &&
-                  formatRupiah(total + totalShipment)) ||
+                  formatRupiah(totalPrice + totalShipment)) ||
                   0}
               </p>
             </div>

@@ -14,7 +14,7 @@ import {
 import { Divider } from "antd";
 import { useEffect, useState } from "react";
 import { GoPencil } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
 import { CiLocationOn, CiShare2 } from "react-icons/ci";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addCart,
+  addCheckout,
   addWishlist,
   fetchWishlist,
   removeWishlist,
@@ -35,9 +36,12 @@ import AuthPage from "../AuthPage";
 import Login from "../auth/Login";
 import Register from "../auth/Register";
 
-const CardSeller = ({ product, isLogin }) => {
-  const [isNote, setIsNote] = useState("false");
+const CardSeller = ({ product, isLogin, isNote, setIsNote }) => {
+  const [noted, setNoted] = useState("");
+  const [subTotalPrice, setSubTotalPrice] = useState(0);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -68,7 +72,15 @@ const CardSeller = ({ product, isLogin }) => {
     }
   };
 
-  const subTotalPrice = value * product?.price;
+  useEffect(() => {
+    if (product?.price) {
+      setSubTotalPrice(
+        product?.discount
+          ? value * (product?.price - product?.discount)
+          : value * product?.price
+      );
+    }
+  }, [value]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: addCart,
@@ -99,7 +111,31 @@ const CardSeller = ({ product, isLogin }) => {
 
   const onSubmit = (data) => {
     if (isLogin) {
-      mutate({ ...data, productId: product?.id });
+      mutate({ ...data, productId: product?.id, isDirect: false });
+    }
+  };
+
+  const { mutate: addCheckoutDirect, isPending: pendingDirectCheckout } =
+    useMutation({
+      mutationFn: addCheckout,
+    });
+
+  const { mutate: addCartDirect, isPending: pendingCartDirect } = useMutation({
+    mutationFn: addCart,
+    onSuccess: (data) => {
+      addCheckoutDirect([data.data.id]);
+      navigate("/shipment");
+    },
+  });
+
+  const handleDirectBuy = () => {
+    if (isLogin) {
+      addCartDirect({
+        productId: product?.id,
+        quantity: value,
+        note: noted,
+        isDirect: true,
+      });
     }
   };
 
@@ -189,24 +225,27 @@ const CardSeller = ({ product, isLogin }) => {
               </div>
             </div>
             <div className="mt-4">
-              <Link onClick={handleNoteClick} variant="light">
+              <div onClick={handleNoteClick} variant="light">
                 <div className="flex items-center gap-2 text-danger text-sm">
                   <GoPencil />
                   {isNote ? "Tambahkan catatan" : "Hapus catatan"}
                 </div>
-              </Link>
+              </div>
               {!isNote && (
                 <div className="mt-2">
                   <Input
                     placeholder="Contoh: warna putih"
                     {...register("note")}
+                    onValueChange={setNoted}
                   />
                 </div>
               )}
             </div>
             <div className="mt-4 flex justify-between">
               <p className="text-base">Subtotal</p>
-              <p className="font-semibold">{formatRupiah(subTotalPrice)}</p>
+              <p className="font-semibold">
+                {subTotalPrice ? formatRupiah(subTotalPrice) : product?.price}
+              </p>
             </div>
             <div className="mt-4 flex flex-col gap-2 mb-6">
               {isLogin ? (
@@ -220,7 +259,11 @@ const CardSeller = ({ product, isLogin }) => {
                   <AuthPageCart />
                 </div>
               )}
-              <Button color="danger" variant="bordered">
+              <Button
+                color="danger"
+                variant="bordered"
+                onClick={handleDirectBuy}
+              >
                 Beli Langsung
               </Button>
             </div>

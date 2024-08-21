@@ -77,7 +77,12 @@ const Content = ({ data, totalCart }) => {
               </div>
               <div>
                 <p className="font-bold">
-                  {item?.quantity} x {formatRupiah(item?.Product?.price)}
+                  {item?.quantity} x{" "}
+                  {formatRupiah(
+                    item?.Product?.discount
+                      ? item?.Product?.price - item?.Product?.discount
+                      : item?.Product?.price
+                  )}
                 </p>
               </div>
             </div>

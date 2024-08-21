@@ -1,4 +1,4 @@
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Chip, Image } from "@nextui-org/react";
 import {
   EnvironmentOutlined,
   HeartOutlined,
@@ -28,9 +28,9 @@ const ProductCard = ({
         <div>
           <Link
             to={`/${product?.Seller?.name
-              .toLowerCase()
+              ?.toLowerCase()
               .replace(" ", "")}/${product?.title
-              .toLowerCase()
+              ?.toLowerCase()
               .replace(/[-\s]+/g, "-")
               .replace(/\//g, "-")}`}
             state={{ product }}
@@ -53,15 +53,15 @@ const ProductCard = ({
             <div className="flex justify-start">
               <Link
                 to={`/${product?.Seller?.name
-                  .toLowerCase()
+                  ?.toLowerCase()
                   .replace(" ", "")}/${product?.title
-                  .toLowerCase()
+                  ?.toLowerCase()
                   .replace(/[-\s]+/g, "-")
                   .replace(/\//g, "-")}`}
                 state={{ product }}
               >
                 <b>
-                  {product?.title.length >= 45
+                  {product?.title?.length >= 45
                     ? product?.title.slice(0, 45) + "..."
                     : product?.title}
                 </b>
@@ -88,12 +88,32 @@ const ProductCard = ({
               <AuthPage iconAuth={true} iconName={<HeartOutlined />} />
             )}
           </div>
-          <p className="text-default-500">{formatRupiah(product?.price)}</p>
-          <div className="flex items-center gap-1">
+          {product?.discount > 0 ? (
+            <div>
+              <p className=" font-semibold">
+                {formatRupiah(product?.price - product?.discount)}
+              </p>
+              <div className="flex gap-x-1 items-center">
+                <p className="text-gray-600 line-through text-xs">
+                  {formatRupiah(product?.price)}
+                </p>
+                <p className="text-danger text-sm">
+                  {Math.round(
+                    ((product?.price - (product?.price - product?.discount)) /
+                      product?.price) *
+                      100
+                  ) + "%"}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="font-semibold">{formatRupiah(product?.price)}</p>
+          )}
+          <div className="flex items-center gap-1 text-gray-500 text-sm">
             <EnvironmentOutlined />
             <p className="capitalize">{product?.location?.toLowerCase()}</p>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center text-gray-500 text-sm">
             <div className="flex gap-x-2 items-center">
               <FaStar className="text-yellow-400" />
               <span>4.9</span>

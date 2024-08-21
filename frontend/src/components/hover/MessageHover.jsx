@@ -12,7 +12,7 @@ const MessageHover = () => {
   return (
     <Tooltip content={<Content />} closeDelay={100}>
       <Button as={Link} to={"/user/chat"} isIconOnly variant="light" size="lg">
-        <Badge content="2" color="danger">
+        <Badge content="0" color="danger">
           <HiOutlineEnvelope size={24} />
         </Badge>
       </Button>
@@ -24,15 +24,15 @@ export default MessageHover;
 
 const items = [
   {
-    key: "new",
+    key: "fitur sedang dalam pengembangan 1",
     label: "Chat",
   },
   {
-    key: "copy",
+    key: "fitur sedang dalam pengembangan 2",
     label: "Diskusi",
   },
   {
-    key: "edit",
+    key: "fitur sedang dalam pengembangan 3",
     label: "Ulasan",
   },
 ];

@@ -82,7 +82,14 @@ const ShoppingCart = () => {
     const item = data
       ?.flatMap((group) => group.products)
       .find((product) => product.ProductId === itemId);
-    return acc + (item ? item.quantity * item.Product.price : 0);
+    return (
+      acc +
+      (item
+        ? item.Product.discount
+          ? item.quantity * (item.Product.price - item.Product.discount)
+          : item.quantity * item.Product.price
+        : 0)
+    );
   }, 0);
 
   useEffect(() => {
@@ -453,7 +460,7 @@ const CartList = ({
                       <div className="w-20 h-20 flex justify-center items-center">
                         <Image
                           src={`http://localhost:3000/${
-                            item?.Product?.Images?.at(0).image
+                            item?.Product?.Images?.at(0)?.image
                           }`}
                           width={80}
                           height={80}
@@ -475,10 +482,17 @@ const CartList = ({
                 </div>
                 <div className="flex flex-col gap-y-1 justify-end items-end ">
                   <div className="font-semibold">
-                    {formatRupiah(item?.quantity * item?.Product?.price)}
+                    {formatRupiah(
+                      item?.Product?.discount
+                        ? item?.quantity *
+                            (item?.Product?.price - item?.Product?.discount)
+                        : item?.quantity * item?.Product?.price
+                    )}
                   </div>
                   {item.Product.discount !== 0 && (
-                    <div className="line-through text-gray-400">Rp439.000</div>
+                    <div className="line-through text-gray-400">
+                      {formatRupiah(item?.Product?.price)}
+                    </div>
                   )}
 
                   <div className="flex items-center gap-x-3">

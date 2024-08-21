@@ -34,9 +34,9 @@ const SellingProduct = () => {
     mutationFn: createProduct,
     onSuccess: (data) => {
       toast.success(data.message);
-      // treeSelectRef.current.resetTreeSelect();
-      // uploadRef.current.resetUpload();
-      // reset();
+      treeSelectRef.current.resetTreeSelect();
+      uploadRef.current.resetUpload();
+      reset();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -53,6 +53,8 @@ const SellingProduct = () => {
       }
     }
     mutate(formData);
+
+    window.scrollTo(0, 0);
   };
 
   const handleSelectionChange = (e) => {

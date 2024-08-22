@@ -25,11 +25,6 @@ import { formatDateOrder } from "../../../utils/formatDate";
 const ReviewDiscussionPage = ({ product }) => {
   const isLogin = localStorage.getItem("isLogin") === "true";
 
-  const handleScroll = () => {
-    const parentElement = document.getElementById("diskusi");
-    parentElement.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <div className="flex w-full justify-center items-center flex-col">
       <Tabs
@@ -58,7 +53,6 @@ const ReviewDiscussionPage = ({ product }) => {
         </Tab>
         <Tab
           key="diskusi"
-          id="diskusi"
           title={
             <div className="flex items-center space-x-2">
               <GoCommentDiscussion size={24} />
@@ -69,11 +63,7 @@ const ReviewDiscussionPage = ({ product }) => {
           <div className="w-[1280px]">
             <Card className="p-5">
               <CardBody>
-                <DiscussionPage
-                  product={product}
-                  isLogin={isLogin}
-                  handleScroll={handleScroll}
-                />
+                <DiscussionPage product={product} isLogin={isLogin} />
               </CardBody>
             </Card>
           </div>
@@ -275,7 +265,7 @@ const ReviewPage = ({ product }) => {
   );
 };
 
-const DiscussionPage = ({ product, isLogin, handleScroll }) => {
+const DiscussionPage = ({ product, isLogin }) => {
   const [contentNew, setContentNew] = useState("");
   const [contentReply, setContentReply] = useState("");
   const [moreReply, setMoreReply] = useState({});
@@ -326,13 +316,13 @@ const DiscussionPage = ({ product, isLogin, handleScroll }) => {
   }, [data?.pagination]);
 
   useEffect(() => {
-    if (currentPage) handleScroll();
+    if (currentPage) window.scrollTo({ behavior: "smooth", top: 700 });
   }, [currentPage]);
 
   return (
     <>
       {isLogin && (
-        <div className="bg-gray-100 p-3 rounded-2xl">
+        <div className="bg-gray-100 p-3 rounded-2xl" id="scroll">
           <form onSubmit={handleSubmit}>
             <div>
               <Textarea

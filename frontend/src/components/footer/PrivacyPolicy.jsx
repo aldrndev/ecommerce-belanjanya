@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../Logo";
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
       <Link to="/">

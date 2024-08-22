@@ -16,9 +16,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   Participant.init(
     {
-      ConversationId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      lastRead: DataTypes.DATE,
+      ConversationId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      lastRead: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

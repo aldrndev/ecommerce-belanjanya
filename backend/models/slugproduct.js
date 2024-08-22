@@ -16,10 +16,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   SlugProduct.init(
     {
-      slugSeller: DataTypes.STRING,
-      slugProduct: DataTypes.STRING,
-      ProductId: DataTypes.INTEGER,
-      SellerId: DataTypes.INTEGER,
+      slugSeller: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      slugProduct: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      ProductId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      SellerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

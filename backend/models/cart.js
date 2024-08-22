@@ -16,10 +16,37 @@ module.exports = (sequelize, DataTypes) => {
   }
   Cart.init(
     {
-      ProductId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      quantity: DataTypes.INTEGER,
-      note: DataTypes.TEXT,
+      ProductId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          min: {
+            args: 1,
+            msg: "Minimal quantity 1",
+          },
+        },
+      },
+      note: {
+        type: DataTypes.TEXT,
+        validate: {
+          len: {
+            args: [0, 100],
+            msg: "Maximal 100 karakter",
+          },
+        },
+      },
       isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     },
     {

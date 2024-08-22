@@ -15,8 +15,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   ChildrenSubCategory.init(
     {
-      title: DataTypes.STRING,
-      SubCategoryId: DataTypes.INTEGER,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      SubCategoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

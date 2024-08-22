@@ -15,11 +15,38 @@ module.exports = (sequelize, DataTypes) => {
   }
   DiscussionMessage.init(
     {
-      DiscussionId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      content: DataTypes.TEXT,
-      isReply: DataTypes.BOOLEAN,
-      isSeller: DataTypes.BOOLEAN,
+      DiscussionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [0, 300],
+            msg: "Maksimal 300 karakter",
+          },
+        },
+      },
+      isReply: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      isSeller: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

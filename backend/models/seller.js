@@ -17,17 +17,96 @@ module.exports = (sequelize, DataTypes) => {
   }
   Seller.init(
     {
-      name: DataTypes.STRING,
-      address: DataTypes.STRING,
-      province: DataTypes.STRING,
-      city: DataTypes.STRING,
-      district: DataTypes.STRING,
-      subDistrict: DataTypes.STRING,
-      rt: DataTypes.STRING,
-      rw: DataTypes.STRING,
-      postalCode: DataTypes.STRING,
-      image: DataTypes.STRING,
-      UserId: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [4, 20],
+            msg: "Nama minimal 4 karakter dan maksimal 20 karakter",
+          },
+        },
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [5, 100],
+            msg: "Alamat minimal 5 karakter dan maksimal 100 karakter",
+          },
+        },
+      },
+      province: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      district: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      subDistrict: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      rt: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [1, 3],
+            msg: "RT minimal 1 karakter dan maksimal 3 karakter",
+          },
+        },
+      },
+      rw: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [1, 3],
+            msg: "RW minimal 1 karakter dan maksimal 3 karakter",
+          },
+        },
+      },
+      postalCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [3, 10],
+            msg: "Kode Pos minimal 3 karakter dan maksimal 10 karakter",
+          },
+        },
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

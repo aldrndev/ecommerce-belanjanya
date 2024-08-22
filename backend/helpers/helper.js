@@ -40,7 +40,7 @@ const sendEmail = async (email, otp) => {
 </head>
 <body>
     <div class="container">
-        <img src="https://belanjanya.aldrincloud.com/logo2.png" alt="Logo" width="100">
+        <img src="http://localhost:3000/logo2.png" alt="Logo" width="100">
         <h1>Verifikasi Email</h1>
         <p>Masukkan kode OTP berikut untuk memverifikasi email Anda:</p>
         <div class="otp">${otp}</div>

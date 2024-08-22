@@ -15,9 +15,31 @@ module.exports = (sequelize, DataTypes) => {
   }
   DeliveryOption.init(
     {
-      name: DataTypes.STRING,
-      cost: DataTypes.INTEGER,
-      DeliveryCategoryId: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [0, 20],
+            msg: "Maksimal 20 karakter",
+          },
+        },
+      },
+      cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+        },
+      },
+      DeliveryCategoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

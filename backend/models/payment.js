@@ -16,11 +16,31 @@ module.exports = (sequelize, DataTypes) => {
   }
   Payment.init(
     {
-      PaymentOptionId: DataTypes.INTEGER,
-      OrderId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      amount: DataTypes.INTEGER,
-      status: DataTypes.STRING,
+      PaymentOptionId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      OrderId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

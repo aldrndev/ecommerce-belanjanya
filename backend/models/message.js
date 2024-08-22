@@ -15,10 +15,36 @@ module.exports = (sequelize, DataTypes) => {
   }
   Message.init(
     {
-      SenderId: DataTypes.INTEGER,
-      ConversationId: DataTypes.INTEGER,
-      content: DataTypes.TEXT,
-      isRead: DataTypes.BOOLEAN,
+      SenderId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      ConversationId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [0, 300],
+            msg: "Maksimal 300 karakter",
+          },
+        },
+      },
+      isRead: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+        },
+      },
     },
     {
       sequelize,

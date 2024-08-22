@@ -71,6 +71,7 @@ class PublicController {
           },
         },
         limit: 12,
+        order: [["createdAt", "DESC"]],
       });
 
       if (products.length === 0) {

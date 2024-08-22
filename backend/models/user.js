@@ -31,9 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: {
+          msg: "Email sudah terdaftar",
+          args: true,
+        },
         validate: {
-          isEmail: true,
+          isEmail: {
+            msg: "Email tidak valid",
+            args: true,
+          },
           notEmpty: true,
           notNull: true,
         },
@@ -44,7 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           notEmpty: true,
           notNull: true,
-          len: [5],
+          len: {
+            args: [5],
+            msg: "Password minimal 5 karakter",
+          },
         },
       },
       isSeller: {

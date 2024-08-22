@@ -14,8 +14,23 @@ module.exports = (sequelize, DataTypes) => {
   }
   Promo.init(
     {
-      name: DataTypes.STRING,
-      discount: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          min: {
+            args: 1,
+            msg: "Diskon minimal 1%",
+          },
+        },
+      },
     },
     {
       sequelize,

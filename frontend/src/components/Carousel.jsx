@@ -5,28 +5,16 @@ const CarouselPage = () => {
   return (
     <CarouselAnt arrows infinite={true} autoplay={true} draggable={true}>
       <div>
-        <Image
-          src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/7/2/cd0a4cde-a6c0-4a1d-af38-2916a64d6148.jpg.webp?ect=4g"
-          width={"100%"}
-        />
+        <Image src="/1.jpg.webp" width={"100%"} />
       </div>
       <div>
-        <Image
-          src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/7/2/cd0a4cde-a6c0-4a1d-af38-2916a64d6148.jpg.webp?ect=4g"
-          width={"100%"}
-        />
+        <Image src="/2.jpg.webp" width={"100%"} />
       </div>
       <div>
-        <Image
-          src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/7/2/cd0a4cde-a6c0-4a1d-af38-2916a64d6148.jpg.webp?ect=4g"
-          width={"100%"}
-        />
+        <Image src="/3.jpg.webp" width={"100%"} />
       </div>
       <div>
-        <Image
-          src="https://images.tokopedia.net/img/cache/1208/NsjrJu/2024/7/2/cd0a4cde-a6c0-4a1d-af38-2916a64d6148.jpg.webp?ect=4g"
-          width={"100%"}
-        />
+        <Image src="/4.jpg.webp" width={"100%"} />
       </div>
     </CarouselAnt>
   );

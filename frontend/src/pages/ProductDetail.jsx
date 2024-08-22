@@ -9,7 +9,7 @@ import RecommendProduct from "../components/browse/RecommendProduct";
 import FloatChat from "../components/user/chat/FloatChat";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { formatRupiah } from "../../utils/formatCurrency";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   fetchDiscussionPublic,
@@ -71,6 +71,10 @@ const ProductDetail = () => {
       ),
     enabled: !!(state || productData),
   });
+
+  useEffect(() => {
+    if (!isDescription) window.scrollTo({ behavior: "smooth", top: 0 });
+  }, [isDescription]);
 
   return (
     <main>

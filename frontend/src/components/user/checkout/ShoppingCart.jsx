@@ -140,7 +140,7 @@ const ShoppingCart = () => {
       },
     });
 
-  const handleAddCheckout = (cartId) => {
+  const handleAddCheckout = (cartId, data) => {
     mutateAddCheckout(cartId);
   };
 
@@ -259,10 +259,12 @@ const CartList = ({
     setValueForm("quantity", newQuantity);
   };
 
-  const handleInputChange = (index, value) => {
+  const handleInputChange = (index, stock, value) => {
     if (value === "") {
       handleQuantityChange(index, "");
-    } else if (value > 0) {
+    } else if (value > stock) {
+      handleQuantityChange(index, stock);
+    } else {
       handleQuantityChange(index, +value);
     }
   };
@@ -561,7 +563,11 @@ const CartList = ({
                       width={"w-16"}
                       value={quantities[index]}
                       onChange={(e) => {
-                        handleInputChange(index, e.target.value);
+                        handleInputChange(
+                          index,
+                          item?.Product?.stock,
+                          e.target.value
+                        );
                         setProductId(item?.ProductId);
                       }}
                       handleBlur={() => handleBlur(index)}
@@ -582,6 +588,8 @@ const CartList = ({
                       }
                       endContent={
                         <button
+                          type="button"
+                          disabled={quantities[index] >= item?.Product?.stock}
                           onClick={(e) => {
                             e.preventDefault();
                             const newQuantity = quantities[index] + 1;

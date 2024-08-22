@@ -15,10 +15,47 @@ module.exports = (sequelize, DataTypes) => {
   }
   Shipment.init(
     {
-      receiver: DataTypes.STRING,
-      phone: DataTypes.STRING,
-      address: DataTypes.STRING,
-      UserId: DataTypes.INTEGER,
+      receiver: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [3, 20],
+            msg: "Penerima minimal 3 karakter dan maksimal 20 karakter",
+          },
+        },
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [5, 20],
+            msg: "Nomor HP minimal 5 karakter dan maksimal 20 karakter",
+          },
+        },
+      },
+      address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [5, 150],
+            msg: "Alamat minimal 5 karakter dan maksimal 150 karakter",
+          },
+        },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

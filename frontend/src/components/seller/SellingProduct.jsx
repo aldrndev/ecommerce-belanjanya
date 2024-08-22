@@ -37,6 +37,7 @@ const SellingProduct = () => {
       treeSelectRef.current.resetTreeSelect();
       uploadRef.current.resetUpload();
       reset();
+      window.scrollTo({ behavior: "smooth", top: 0 });
     },
     onError: (error) => {
       toast.error(error.message);
@@ -53,8 +54,6 @@ const SellingProduct = () => {
       }
     }
     mutate(formData);
-
-    window.scrollTo(0, 0);
   };
 
   const handleSelectionChange = (e) => {

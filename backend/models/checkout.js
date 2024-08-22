@@ -17,8 +17,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   Checkout.init(
     {
-      CartId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
+      CartId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
       isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
     },
     {

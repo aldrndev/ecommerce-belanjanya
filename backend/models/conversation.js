@@ -16,8 +16,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   Conversation.init(
     {
-      UserId: DataTypes.INTEGER,
-      SellerId: DataTypes.INTEGER,
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      SellerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

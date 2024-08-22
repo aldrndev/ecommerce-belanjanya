@@ -49,7 +49,7 @@ const ProductCard = ({
       </CardBody>
       <CardFooter className="h-full">
         <div className="flex flex-col gap-2 w-full p-3">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center gap-x-2">
             <div className="flex justify-start">
               <Link
                 to={`/${product?.Seller?.name

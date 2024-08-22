@@ -14,8 +14,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   PaymentOption.init(
     {
-      name: DataTypes.STRING,
-      code: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
     },
     {
       sequelize,

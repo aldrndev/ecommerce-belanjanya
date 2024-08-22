@@ -19,15 +19,51 @@ module.exports = (sequelize, DataTypes) => {
   }
   Order.init(
     {
-      CheckoutId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      status: DataTypes.STRING,
-      totalPrice: DataTypes.INTEGER,
-      courier: DataTypes.STRING,
-      shipmentFee: DataTypes.INTEGER,
-      invoiceNo: DataTypes.STRING,
-      SellerId: DataTypes.INTEGER,
-      ShipmentId: DataTypes.TEXT,
+      CheckoutId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      totalPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      courier: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      shipmentFee: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      invoiceNo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      SellerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      ShipmentId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
       PromoId: DataTypes.INTEGER,
       confirmedAt: DataTypes.DATE,
       prossessedAt: DataTypes.DATE,

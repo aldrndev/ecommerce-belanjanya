@@ -16,10 +16,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   Review.init(
     {
-      ProductId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
-      rating: DataTypes.STRING,
-      message: DataTypes.TEXT,
+      ProductId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true },
+      },
+      rating: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: { notEmpty: true, notNull: true, equals: [1, 2, 3, 4, 5] },
+      },
+      message: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: { args: [0, 300], msg: "Review Maksimal 300 karakter" },
+        },
+      },
     },
     {
       sequelize,

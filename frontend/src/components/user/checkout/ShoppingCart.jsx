@@ -455,7 +455,7 @@ const CartList = ({
           <div className="mt-3" key={index}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Divider className="mb-4" />
-              <div className="flex justify-between items-center gap-x-2">
+              <div className="flex justify-between items-center gap-x-5">
                 <div className="flex w-full">
                   <Checkbox value={item?.ProductId}>
                     <div className="flex gap-x-3 items-center">
@@ -482,7 +482,7 @@ const CartList = ({
                     </div>
                   </Checkbox>
                 </div>
-                <div className="flex flex-col gap-y-1 justify-end items-end ">
+                <div className="flex flex-col gap-y-1 justify-end items-end">
                   <div className="font-semibold">
                     {formatRupiah(
                       item?.Product?.discount

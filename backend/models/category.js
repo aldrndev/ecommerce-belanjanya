@@ -13,7 +13,18 @@ module.exports = (sequelize, DataTypes) => {
   }
   Category.init(
     {
-      title: DataTypes.STRING,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          notNull: true,
+          len: {
+            args: [0, 20],
+            msg: "Maksimal 20 karakter",
+          },
+        },
+      },
     },
     {
       sequelize,

@@ -829,6 +829,19 @@ class UserController {
         },
       });
 
+      const checkProduct = await Product.findOne({
+        where: {
+          id: productId,
+        },
+      });
+
+      if (quantity > checkProduct.stock)
+        return next(
+          new Error(
+            `Jumlah pesanan melebihi stok product, stok tersedia ${checkProduct.stock}`
+          )
+        );
+
       if (checkCart && !checkCart.isActive) {
         checkCart.quantity = quantity;
         checkCart.note = note;
@@ -944,6 +957,19 @@ class UserController {
       const { note, quantity, productId } = req.body;
       const { id } = req.user;
 
+      const checkProduct = await Product.findOne({
+        where: {
+          id: productId,
+        },
+      });
+
+      if (quantity > checkProduct.stock)
+        return next(
+          new Error(
+            `Jumlah pesanan melebihi stok product, stok tersedia ${checkProduct.stock}`
+          )
+        );
+
       const update = await Cart.update(
         {
           quantity,
@@ -1015,14 +1041,14 @@ class UserController {
       const { cartId } = req.body;
       const { id } = req.user;
 
-      const checkCheckout = await Checkout.findAll({
+      const carts = await Checkout.findAll({
         where: {
-          UserId: id,
+          CartId: cartId,
           isActive: true,
         },
       });
 
-      if (checkCheckout.length > 0) {
+      if (carts.length > 0) {
         await Checkout.update(
           {
             isActive: false,
@@ -1048,8 +1074,6 @@ class UserController {
         data: checkout,
       });
     } catch (error) {
-      console.log(error);
-
       next(error);
     }
   }
